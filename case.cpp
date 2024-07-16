@@ -81,7 +81,7 @@ int main(){
 
     while(!arquivo.eof()) {
         arquivo.get(c);
-        cout << "Caractere lido: " << c << endl;
+        cout << "Caractere lido:" << c << "t" << endl;
         switch(estado_atual) {
             case 1:
                 if(regex_match(string(1, c), op_arit_sum)) {
@@ -104,7 +104,7 @@ int main(){
                     cout << "Token estado 12:" << token << endl;
                     estado_atual = 12;
                     token = token + c;
-                } else if(regex_match(string(1, c), space)) {
+                } else if(regex_match(string(1, c), spaces)) {
                     cout << "Token Spaces: " << token << endl;
                     estado_atual = 1;
                     token = token + c;
