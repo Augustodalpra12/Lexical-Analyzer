@@ -1,0 +1,14 @@
+int race() {
+
+int exemplo = 0.
+
+laps(int i = 0; i<50; i = overtake) {
+
+exemplo = i.
+
+prt(exemplo).
+
+}
+
+return 0.
+}
