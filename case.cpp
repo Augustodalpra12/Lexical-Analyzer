@@ -47,6 +47,7 @@ regex op_rel_bEqual("≥");
 regex op_rel_notEqual("≠");
 
 regex spaces("[\\s\t\n]+");
+regex space("\\s"); // espaço n ta funcionando
 regex all_symbols(".");
 regex comment("Radio[{][.\\s\t\n]*[}]");
 
@@ -64,10 +65,6 @@ bool get_double(string token){
 
   return true;
 }
-
-
-
-
 
 int main(){
 
@@ -107,7 +104,7 @@ int main(){
                     cout << "Token estado 12:" << token << endl;
                     estado_atual = 12;
                     token = token + c;
-                } else if(regex_match(string(1, c), spaces)) {
+                } else if(regex_match(string(1, c), space)) {
                     cout << "Token Spaces: " << token << endl;
                     estado_atual = 1;
                     token = token + c;
