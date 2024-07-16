@@ -1,2 +1,5 @@
-int abc jiji.
+int race() { 
+    abc jiji.
     hihi 12.
+
+}
