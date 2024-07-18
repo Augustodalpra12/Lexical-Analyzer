@@ -21,13 +21,23 @@ int main(){
     char c;
     string token;
     int estado_atual = 1;
+    int linha_atual = 1;
+    int erro_linha = 1;
+    
 
     while (true) {  // Loop infinito para permanecer no switch
         if (!arquivo.get(c)) {
             break;  // Sai do loop se não conseguir ler o caractere
         }
+        // if (regex_match(string(1,c), line_feed)) {
+        //     linha_atual++;
+        // }
+        if (c == '\n') {
+            linha_atual++;
+        }
         int ascii_value = static_cast<int>(c);
-        cout << "Caractere lido: " << c << " ASCII: " << ascii_value << endl;
+        // cout << "Caractere lido: " << c << " ASCII: " << ascii_value << endl;
+        //     cout << "estado atual" << estado_atual << endl << endl;
         switch (estado_atual) {
             case 1:
                 if(regex_match(string(1, c), op_arit_sum)) {
@@ -42,15 +52,14 @@ int main(){
                 } else if(regex_match(string(1, c), char_regex)) {
                     estado_atual = 10;
                     token += c;
-                } else if(regex_match(string(1, c), symbol_op_init)) {
-                    estado_atual = 12;
-                    token += c;
                 } else if(regex_match(string(1, c), spaces)) {
                     // cout << "Espaco: token ->" << token << endl;
                     estado_atual = 1;
                 } else if(regex_match(string(1, c), end_line)) {
+                    // cout << "ta finando no ponto" << endl;
                     estado_atual = 1;
                 } else if (regex_match(string(1, c), symbol_op_init) || regex_match(string(1, c), symbol_op_end) || regex_match(string(1, c), symbol_parameter_init) || regex_match(string(1, c), symbol_parameter_end) || regex_match(string(1, c), symbol_op_mid)) {
+                    // cout << "entrou no if do {}" << c << endl;
                     estado_atual = 14;
                     token += c;
 
@@ -64,6 +73,7 @@ int main(){
                 } else {
                     estado_atual = 2;
                     token += c;
+                    erro_linha = linha_atual;
                 }
                 break;
             case 2:
@@ -71,7 +81,7 @@ int main(){
                 //     estado_atual = 1;
                 //     token.clear();
                 // } else {
-                cout << "Erro:" << token << endl;
+                cout << "Erro na linha " << erro_linha << ": " << token << endl;
                 token.clear();
                 estado_atual = 1;
                 // }
@@ -142,7 +152,14 @@ int main(){
                     token += c;
                 } else {
                     if(get_token(token, lex)) {
-                        estado_atual = 1;
+                        // cout << "getou o token " << endl;
+                        // cout << "token: " << token << endl;
+                        if(regex_match(token, reserved_comment)) {
+                            // cout << "fez o regex do token commnent" << endl;
+                            estado_atual = 17;
+                        } else {
+                            estado_atual = 1;
+                        }
                         token.clear();
                         arquivo.putback(c);
                     } else {
@@ -151,12 +168,12 @@ int main(){
                 }
                 break;
             case 12:
-                if(regex_match(string(1, c), all_symbols)) {
+                if(regex_match(string(1, c), all_except_close_brace)) {
                     estado_atual = 12;
-                    token += c;
-                } else if (regex_match(string(1, c), symbol_op_end)) {
-                    estado_atual = 13;
-                    token += c;
+                } else if (get_end_comment(string(1, c), lex)) {
+                    estado_atual = 1;
+                    token.clear();
+                    
                 } else {
                     estado_atual = 2;
                     token += c;
@@ -170,8 +187,11 @@ int main(){
 
             case 14:
                 arquivo.putback(c); //{
-                cout << "caso 14 " << token << endl;
+                // cout<< "token no 14 " << token << endl;
+                // cout << "caso 14 " << token << endl;
                 if(get_special_char(token, lex)) {
+                    // cout << "getou token special char" << endl;
+                    // cout << "token " << token << endl;
                     estado_atual = 1;   
                     token.clear();
                 } else {
@@ -218,6 +238,18 @@ int main(){
                     }
                 }
                 break;
+            
+            case 17:
+                token += c;
+                // cout << "estado atual 17 " << token << endl;
+                 if(get_init_comment(token, lex)) {
+                    estado_atual = 12;   
+                    token.clear();
+                } else {
+                    estado_atual = 2;
+                }
+                // cout << "estado atual dps do 17 " << estado_atual << endl;
+
         }
     }
 
@@ -225,6 +257,31 @@ int main(){
     //     // cout << "frio ne" << endl;
     //     // cout << pair.first << ": " << pair.second << endl;
     // }
+    if (!token.empty()) {
+        switch (estado_atual) {
+            case 5:
+                get_integer(token, lex);
+                break;
+            case 8:
+                get_double(token, lex);
+                break;
+            case 10:
+                get_token(token, lex);
+                break;
+            case 14:
+                get_special_char(token, lex);
+                break;
+            case 15:
+                get_op_rel(token, lex);
+                break;
+            case 16:
+                get_op_arit(token, lex);
+                break;
+            case 17:
+                get_init_comment(token, lex);
+                break;
+        }
+    }
     cout << "tamanho: " << lex.size() << endl;
     for (const auto& pair : lex) {
         int key = pair.first;

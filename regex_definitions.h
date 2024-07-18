@@ -51,10 +51,13 @@ regex op_rel_mEqual("≤");
 regex op_rel_bEqual("≥");
 regex op_rel_notEqual("≠");
 
+regex line_feed(R"(\r?\n)");
+
 regex spaces("[\\s\t\r\n]+");
 // regex space(" ");
 // regex space("\\s"); // espaço n ta funcionando
-regex all_symbols(".");
+// regex all_symbols(".");
+regex all_except_close_brace("[^}]");
 regex comment("Radio[{][.\\s\t\n]*[}]");
 
 #endif // REGEX_DEFINITIONS_H

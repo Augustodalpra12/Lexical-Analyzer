@@ -4,11 +4,20 @@ int exemplo = 0.
 
 laps(int i = 0; i<50; i = overtake) {
 
-exemplo = i.
+exemplo = i. Radio{ tlg ne 
+fio }
 
 prt(exemplo).
-
 }
+$
 
 return 0.
 }
+
+
+
+
+
+
+
+
