@@ -291,7 +291,13 @@ int main()
 
             case 18:
                 arquivo.putback(c);
-                estado_atual = 1;
+                
+                if(get_dot(token, lex)) {
+                    estado_atual = 1;
+                }
+                else{
+                    estado_atual = 14;
+                }
                 if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
                     linha_atual--;
                 }

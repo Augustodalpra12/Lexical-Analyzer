@@ -331,6 +331,26 @@ bool get_token(string token, map<int, tuple<string, string>> &lex)
     return false;
 }
 
+bool get_dot(string token, map<int, tuple<string, string>> &lex)
+{
+    int lastIndex;
+    if (!lex.empty())
+    {
+        auto last = lex.rbegin(); // rbegin() aponta para o último elemento
+        lastIndex = last->first;
+        lastIndex++;
+    }
+    else
+    {
+        lastIndex = 0;
+    }
+    if (regex_match(token, end_line))
+    {
+        lex[lastIndex] = make_tuple("dot", token);
+        return true;
+    }
+    return false;
+}
 
 
 
