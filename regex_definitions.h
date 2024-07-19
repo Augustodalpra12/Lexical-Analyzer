@@ -7,7 +7,7 @@ using namespace std;
 
 regex integer("[0-9]+");
 regex integer_signal("(\\+|-)?[0-9]+");
-regex double_regex("(\\+|-)?[0-9]+(\\.[0-9]+)?(E(\\+|-)?[0-9]+)?");
+regex double_regex("(\\+|-)?[0-9]+(\\,[0-9]+)?(E(\\+|-)?[0-9]+)?");
 regex char_regex("[a-zA-Z]");
 regex digit("[0-9]");
 
@@ -47,11 +47,13 @@ regex op_arit_pow("\\^");
 regex op_rel_minor("<");
 regex op_rel_bigger(">");
 regex op_rel_equal("=");
+regex op_rel_not("!");
 regex op_rel_mEqual("≤");
 regex op_rel_bEqual("≥");
 regex op_rel_notEqual("≠");
 
-regex line_feed(R"(\r?\n)");
+regex line_feed("(\r\n|\n)");
+regex line_feed2("[\r\n]+");
 
 regex spaces("[\\s\t\r\n]+");
 // regex space(" ");
