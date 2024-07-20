@@ -26,6 +26,7 @@ int main()
     int linha_atual = 1;
     int erro_linha = 1;
     string red_flag = "\U0001F6A9";
+    string line;
 
     while (true)
     { // Loop infinito para permanecer no switch
@@ -43,9 +44,9 @@ int main()
         int ascii_value = static_cast<int>(c);
         // if(ascii_value != 10) {
             // cout << "Caractere lido: " << c << " ASCII: " << ascii_value << endl;
-        
+
         // } // 13 = \r
-        
+
         //     cout << "estado atual" << estado_atual << endl << endl;
         switch (estado_atual)
         {
@@ -76,7 +77,7 @@ int main()
                     estado_atual = 18;
                     token += c;
                 } else {
-                    
+
                     estado_atual = 14;
                     erro_linha = linha_atual;
                     token += c;
@@ -151,7 +152,7 @@ int main()
                     if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
                     linha_atual--;
                 }
-                } 
+                }
                 break;
             case 7:
                 arquivo.putback(c);
@@ -173,7 +174,7 @@ int main()
                 } else {
                     estado_atual = 14;
 
-                    
+
                 }
                 break;
             case 9:
@@ -186,7 +187,7 @@ int main()
                     if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
                     linha_atual--;
                 }
-                } 
+                }
                 break;
 
             case 10:
@@ -214,7 +215,7 @@ int main()
                 }
                 }
                 break;
-            
+
             case 12:
                 arquivo.putback(c);
 
@@ -253,12 +254,27 @@ int main()
             case 14:
                 arquivo.putback(c);
                 cout << red_flag << " Erro na linha: " << erro_linha << " Caracter Inválido:  " << token << endl;
-                token.clear();
                 estado_atual = 1;
+                int lastIndex;
+                 if (!lex.empty())
+                {
+                    auto last = lex.rbegin(); // rbegin() aponta para o último elemento
+                    lastIndex = last->first;
+                    lastIndex++;
+                }
+                else
+                {
+                    lastIndex = 0;
+                }
+
+                line = "Linha Erro: " + to_string(erro_linha);
+                lex[lastIndex] = make_tuple(line, token);
+                
                 // }
                 if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
                     linha_atual--;
                 }
+                token.clear();
                 break;
             case 15:
                 if(regex_match(string(1, c), symbol_op_init)){
@@ -266,7 +282,7 @@ int main()
                 } else {
                     estado_atual = 14;
 
-                    
+
                 }
                 break;
 
@@ -291,7 +307,7 @@ int main()
 
             case 18:
                 arquivo.putback(c);
-                
+
                 if(get_dot(token, lex)) {
                     estado_atual = 1;
                 }
