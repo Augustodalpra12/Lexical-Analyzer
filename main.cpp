@@ -8,11 +8,11 @@
 #include "regex_functions.h"
 using namespace std;
 
-map<int, tuple<string, string>> lex;
+map<int, tuple<string, string, int>> lex;
 
 int main()
 {
-    ifstream arquivo("exemplo.txt");
+    ifstream arquivo("exemploTotal.senna");
 
     if (!arquivo)
     {
@@ -76,8 +76,17 @@ int main()
                 } else if(regex_match(string(1, c), end_line)) {
                     estado_atual = 18;
                     token += c;
+                } else if (regex_match(string(1, c), aspas)) {
+                    estado_atual = 19;
+                    token = token + c;
+                } else if (regex_match(string(1, c), op_log_e)) {
+                    estado_atual = 22;
+                    token = token + c;
+                }else if (regex_match(string(1, c), op_log_or)) {
+                    estado_atual = 23;
+                    token = token + c;
                 } else {
-
+                    
                     estado_atual = 14;
                     erro_linha = linha_atual;
                     token += c;
@@ -87,57 +96,65 @@ int main()
 
             case 2:
                 arquivo.putback(c); //{
-                if (get_braces(token, lex)) {
+                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
+                    linha_atual--;
+                }
+                
+                if (get_braces(token, lex, linha_atual)) {
                     estado_atual = 1;
                     token.clear();
                 } else {
                     estado_atual = 14;
+                    erro_linha = linha_atual;
 
-                }
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
                 }
                 break;
 
             case 3:
                 arquivo.putback(c); //{
-                if (get_parameters(token, lex)) {
+                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
+                    linha_atual--;
+                }
+                if (get_parameters(token, lex, linha_atual)) {
                     estado_atual = 1;
                     token.clear();
                 } else {
                     estado_atual = 14;
+                    erro_linha = linha_atual;
 
                 }
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
+                
                 break;
 
             case 4:
                 arquivo.putback(c);
-                if (get_arit(token, lex)) {
+                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
+                    linha_atual--;
+                }
+                if (get_arit(token, lex, linha_atual)) {
                     estado_atual = 1;
                     token.clear();
                 } else {
                     estado_atual = 14;
+                    erro_linha = linha_atual;
 
                 }
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
+
                 break;
             case 5:
                 arquivo.putback(c);
-                if (get_logic(token, lex)) {
+                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
+                    linha_atual--;
+                }
+                if (get_logic(token, lex, linha_atual)) {
                     estado_atual = 1;
                     token.clear();
                 } else {
 
                     estado_atual = 14;
+                    erro_linha = linha_atual;
                 }
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
+
                 break;
             case 6:
                 if (regex_match(string(1, c), integer)) {
@@ -156,16 +173,18 @@ int main()
                 break;
             case 7:
                 arquivo.putback(c);
-                if (get_integer(token, lex)) {
+                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
+                    linha_atual--;
+                }
+                if (get_integer(token, lex, linha_atual)) {
                     estado_atual = 1;
                     token.clear();
                 } else {
                     estado_atual = 14;
+                    erro_linha = linha_atual;
 
                 }
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
+
                 break;
             case 8:
                 if(regex_match(string(1, c), integer)) {
@@ -173,6 +192,7 @@ int main()
                     token += c;
                 } else {
                     estado_atual = 14;
+                    erro_linha = linha_atual;
 
 
                 }
@@ -192,19 +212,21 @@ int main()
 
             case 10:
                 arquivo.putback(c);
-                if (get_double(token, lex)) {
+                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
+                    linha_atual--;
+                }
+                if (get_double(token, lex, linha_atual)) {
                     estado_atual = 1;
                     token.clear();
                 } else {
                     estado_atual = 14;
+                    erro_linha = linha_atual;
 
                 }
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
+
                 break;
             case 11:
-                if (regex_match(string(1, c), id)){
+                if (regex_match(string(1, c), id) || regex_match(string(1, c), symbol_id)){
                     estado_atual = 11;
                     token += c;
                 } else {
@@ -218,8 +240,10 @@ int main()
 
             case 12:
                 arquivo.putback(c);
-
-                if (get_token(token, lex)){
+                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
+                    linha_atual--;
+                }
+                if (get_token(token, lex, linha_atual)){
 
                         if (regex_match(token, reserved_comment)){
                             // cout << "fez o regex do token commnent" << endl;
@@ -230,50 +254,52 @@ int main()
                         token.clear();
                 } else {
                     estado_atual = 14;
+                    erro_linha = linha_atual;
 
                 }
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
+
                 break;
 
             case 13:
                 arquivo.putback(c);
+                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
+                    linha_atual--;
+                }
                 if (regex_match(token, spaces) || regex_match(token, line_feed) || regex_match(token, line_feed2))
                 {
                     estado_atual = 1;
                 } else {
                     estado_atual = 14;
+                    erro_linha = linha_atual;
                     cout << "token invalido: " << token << endl;
                 }
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
+
                 token.clear();
                 break;
             case 14:
                 arquivo.putback(c);
-                cout << red_flag << " Erro na linha: " << erro_linha << " Caracter Inválido:  " << token << endl;
-                estado_atual = 1;
-                int lastIndex;
-                 if (!lex.empty())
-                {
-                    auto last = lex.rbegin(); // rbegin() aponta para o último elemento
-                    lastIndex = last->first;
-                    lastIndex++;
-                }
-                else
-                {
-                    lastIndex = 0;
-                }
-
-                line = "Linha Erro: " + to_string(erro_linha);
-                lex[lastIndex] = make_tuple(line, token);
-                
-                // }
                 if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
                     linha_atual--;
                 }
+                cout << red_flag << " Erro na linha: " << erro_linha << " Caracter Inválido:  " << token << endl;
+                estado_atual = 1;
+                // int lastIndex;
+                //  if (!lex.empty())
+                // {
+                //     auto last = lex.rbegin(); // rbegin() aponta para o último elemento
+                //     lastIndex = last->first;
+                //     lastIndex++;
+                // }
+                // else
+                // {
+                //     lastIndex = 0;
+                // }
+
+                // line = "Linha Erro: " + to_string(erro_linha);
+                // lex[lastIndex] = make_tuple(line, token);
+                
+                // }
+
                 token.clear();
                 break;
             case 15:
@@ -281,6 +307,7 @@ int main()
                     estado_atual = 16;
                 } else {
                     estado_atual = 14;
+                    erro_linha = linha_atual;
 
 
                 }
@@ -293,33 +320,132 @@ int main()
                     estado_atual = 17;
                 } else {
                     estado_atual = 14;
+                    erro_linha = linha_atual;
 
                 }
                 break;
 
             case 17:
                 arquivo.putback(c);
-                estado_atual = 1;
                 if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
                     linha_atual--;
                 }
+                estado_atual = 1;
+
                 break;
 
             case 18:
                 arquivo.putback(c);
-
-                if(get_dot(token, lex)) {
+                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
+                    linha_atual--;
+                }
+                if(get_dot(token, lex, linha_atual)) {
                     estado_atual = 1;
                 }
                 else{
                     estado_atual = 14;
+                    erro_linha = linha_atual;
                 }
+
+                token.clear();
+                break;
+            
+            case 19:
+                 arquivo.putback(c); //{
                 if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
                     linha_atual--;
                 }
-                token.clear();
+                
+                if (get_aspas(token, lex, linha_atual)) {
+                    estado_atual = 20;
+                    token.clear();
+                } else {
+                    estado_atual = 14;
+                    erro_linha = linha_atual;
+
+                }
                 break;
-        }
+            case 20:
+                // arquivo.putback(c); //{
+                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
+                    linha_atual--;
+                }
+                if(regex_match(string(1, c), all_except_aspas)){
+                    estado_atual = 20;
+                    token += c;
+                } else if (regex_match(string(1, c), aspas)){
+                    // cout << "aspas" << endl;
+                    estado_atual = 21;
+                    if(get_text_between_aspas(token, lex, linha_atual)) {
+                        // cout << "get_text_between_aspas"  << endl;
+                    }
+                    token.clear();
+                    arquivo.putback(c);
+                } else {
+                    estado_atual = 14;
+                    erro_linha = linha_atual;
+
+                }
+                break;
+            case 21:
+                // arquivo.putback(c); //{
+                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
+                    linha_atual--;
+                }
+                token = c;
+                if (get_aspas(token, lex, linha_atual)) {
+                    estado_atual = 1;
+                    token.clear();
+                }  else {
+                    estado_atual = 14;
+                    erro_linha = linha_atual;
+
+                }
+                break;
+
+            case 22:
+                arquivo.putback(c); //{
+                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
+                    linha_atual--;
+                }
+                
+                if (get_log_e(token, lex, linha_atual)) {
+                    estado_atual = 1;
+                    token.clear();
+                } else {
+                    estado_atual = 14;
+                    erro_linha = linha_atual;
+
+                }
+                break;
+            case 23:
+                arquivo.putback(c); //{
+                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
+                    linha_atual--;
+                }
+                
+                if (get_log_or(token, lex, linha_atual)) {
+                    estado_atual = 1;
+                    token.clear();
+                } else {
+                    estado_atual = 14;
+                    erro_linha = linha_atual;
+
+                }
+                break;
+        }   
+        //     case 20:
+        //         arquivo.putback(c);
+        //         if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
+        //             linha_atual--;
+        //         }
+        //         if (get_aspas(token, lex, linha_atual)) {
+        //             estado_atual = 21;
+        //             token.clear();
+        //         } else {
+        //             estado_atual = 14;
+        erro_linha = linha_atual;
+        // }
     }
 
        if (!token.empty())
@@ -327,43 +453,43 @@ int main()
         switch (estado_atual)
         {
             case 2:
-                if (!get_braces(token, lex))
+                if (!get_braces(token, lex, linha_atual))
                 {
                     cout << "Erro na linha " << erro_linha << ": " << token << endl;
                 }
                 break;
             case 3:
-                if (!get_parameters(token, lex))
+                if (!get_parameters(token, lex, linha_atual))
                 {
                     cout << "Erro na linha " << erro_linha << ": " << token << endl;
                 }
                 break;
             case 4:
-                if (!get_arit(token, lex))
+                if (!get_arit(token, lex, linha_atual))
                 {
                     cout << "Erro na linha " << erro_linha << ": " << token << endl;
                 }
                 break;
             case 5:
-                if (!get_logic(token, lex))
+                if (!get_logic(token, lex, linha_atual))
                 {
                     cout << "Erro na linha " << erro_linha << ": " << token << endl;
                 }
                 break;
             case 7:
-                if (!get_integer(token, lex))
+                if (!get_integer(token, lex, linha_atual))
                 {
                     cout << "Erro na linha " << erro_linha << ": " << token << endl;
                 }
                 break;
             case 10:
-                if (!get_double(token, lex))
+                if (!get_double(token, lex, linha_atual))
                 {
                     cout << "Erro na linha " << erro_linha << ": " << token << endl;
                 }
                 break;
             case 12:
-                if (!get_token(token, lex))
+                if (!get_token(token, lex, linha_atual))
                 {
                     cout << "Erro na linha " << erro_linha << ": " << token << endl;
                 }
@@ -377,13 +503,13 @@ int main()
         }
     }
 
-    cout << "tamanho: " << lex.size() << endl;
     for (const auto &pair : lex)
     {
         int key = pair.first;
         string id = get<0>(pair.second);    // Acessa o primeiro elemento da tupla
         string token = get<1>(pair.second); // Acessa o segundo elemento da tupla
-        cout << key << ": [" << id << ", '" << token << "']" << endl;
+        int line = get<2>(pair.second);
+        cout << key << ": [" << id << ", '" << token << "', '" << line << "']" << endl;
     }
 
     return 0;

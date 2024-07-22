@@ -1,0 +1,21 @@
+int qualifying(int speed, int limit) {
+
+bool isOverLimit = false.
+
+if (speed > limit) {
+isOverLimit = true.
+}
+
+prt("Excedeu o limite: ", isOverLimit).
+
+bool isEqual = (speed == limit).
+prt("Igual ao limite: ", isEqual).
+
+bool isNotEqual = (speed != limit).
+prt("Diferente do limite: ", isNotEqual).
+
+bool isBelowLimit = (speed < limit).
+prt("Abaixo do limite: ", isBelowLimit).
+
+return 0.
+}

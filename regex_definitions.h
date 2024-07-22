@@ -11,7 +11,7 @@ regex double_regex("(\\+|-)?[0-9]+(\\,[0-9]+)?(E(\\+|-)?[0-9]+)?");
 regex char_regex("[a-zA-Z]");
 regex digit("[0-9]");
 
-regex symbol_id("[_]");
+regex symbol_id("[\\_]");
 regex symbol_parameter_init("[(]");
 regex symbol_parameter_end("[)]");
 
@@ -32,9 +32,9 @@ regex reserved_prt("(prt)");
 regex reserved_scn("(scn)");  
 
 
-regex op_log_and("&&");
-regex op_log_or("\\|\\|");  // Dupla contrabarra para escapar o pipe "|"
-regex op_log_not("!");
+regex op_log_e("&");
+regex op_log_or("\\|");  // Dupla contrabarra para escapar o pipe "|"
+regex op_log_not("\\!");
 
 regex end_line("\\.");
 
@@ -47,7 +47,7 @@ regex op_arit_pow("\\^");
 regex op_rel_minor("<");
 regex op_rel_bigger(">");
 regex op_rel_equal("=");
-regex op_rel_not("!");
+regex op_rel_not("\\!");
 regex op_rel_mEqual("≤");
 regex op_rel_bEqual("≥");
 regex op_rel_notEqual("≠");
@@ -56,10 +56,15 @@ regex line_feed("(\r\n|\n)");
 regex line_feed2("[\r\n]+");
 
 regex spaces("[\\s\t\r\n]+");
+regex space("[\\s\t]+");
 // regex space(" ");
 // regex space("\\s"); // espaço n ta funcionando
-// regex all_symbols(".");
+regex all_symbols("[\\p{L}\\p{M}\\s]+");
 regex all_except_close_brace("[^}]");
 regex comment("Radio[{][.\\s\t\n]*[}]");
+regex portuguese("/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/");
 
+
+regex aspas(R"(\")");
+regex all_except_aspas(R"([^"]+)");
 #endif // REGEX_DEFINITIONS_H

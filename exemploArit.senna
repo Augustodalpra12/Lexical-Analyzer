@@ -1,0 +1,21 @@
+int pitStop(int a, int b) {
+
+int resultado = 0.
+
+resultado = a + b.
+prt("Soma: ", resultado).
+
+resultado = a - b.
+prt("Subtração: ", resultado).
+
+resultado = a * b.
+prt("Multiplicação: ", resultado).
+
+resultado = a / b.
+prt("Divisão: ", resultado).
+
+resultado = a ^ b.
+prt("Potência: ", resultado).
+
+return resultado.
+}
