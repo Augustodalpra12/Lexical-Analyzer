@@ -1,0 +1,54 @@
+int race() {
+
+    Radio{Exemplo de loop}
+    int exemplo = 0.
+
+    laps(int i = 0; i<50; i = overtake) {
+        exemplo = i.
+        Radio{ tlg ne fio }
+        prt(exemplo).
+    }
+    
+    Radio{Exemplo de condicional if-else}
+    int velocidade = 120.
+    
+    pitEntry (velocidade > 100) {
+        prt("Velocidade alta, reduza!")..
+    } pitExit {
+        prt("Velocidade segura.")..
+    }
+
+    void sprintRace(driver maxVerstappen) {
+        prt("Hino da holanda :" + "p1")
+    }
+
+    Radio{Exemplo de operacões aritméticas}
+    int a = 10.
+    int b = 5.
+    int soma = a + b.
+    int subtracao = a - b.
+    int multiplicacao = a * b.
+    int divisao = a / b.
+
+    prt("Soma: " + soma).
+    prt("Subtracao: " + subtracao).
+    prt("Multiplicacao: " + multiplicacao).
+    prt("Divisao: " + divisao).
+
+    Radio{Exemplo de operacões lógicas}
+    bool x = true.
+    bool y = false.
+    bool and_op = x && y.
+    bool or_op = x || y.
+    bool not_op  =!x.
+
+    prt("AND: " + and_op).
+    prt("OR: " + or_op).
+    prt("NOT: " + not_op).
+
+    prt("NOT: " + not_op)
+
+    return 0.
+}
+
+$

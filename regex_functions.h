@@ -309,6 +309,17 @@ bool get_log_or(string token, map<int, tuple<string, string, int>> &lex, int lin
     }
     return false;
 }
+
+bool get_error(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
+{
+    int lastIndex = get_index(lex);
+    if (regex_match(token, restricted_symbols))
+    {
+        lex[lastIndex] = make_tuple("error", token, linha_atual);
+        return true;
+    }
+    return false;
+}
 // bool get_special_char(string token, map<int, tuple<string, string, int>> &lex)
 // {
 //     int lastIndex;

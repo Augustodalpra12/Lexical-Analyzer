@@ -12,7 +12,7 @@ map<int, tuple<string, string, int>> lex;
 
 int main()
 {
-    ifstream file("exemploTotal.senna");
+    ifstream file("exemploSprint.senna");
 
     if (!file)
     {
@@ -462,6 +462,13 @@ int main()
                     cout << "Erro na linha " << error_line << ": " << token << endl;
                 }
                 break;
+            case 14:
+                // fazer o case 14 nao está identificando o erro
+                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
+                    cout << "Erro na linha " << error_line << ": " << token << endl;
+                }
+                break;
+
             case 18:
                 if (!get_dot(token, lex, current_line))
                 {

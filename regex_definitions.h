@@ -60,11 +60,63 @@ regex space("[\\s\t]+");
 // regex space(" ");
 // regex space("\\s"); // espaço n ta funcionando
 regex all_symbols("[\\p{L}\\p{M}\\s]+");
-regex all_except_close_brace("[^}]");
 regex comment("Radio[{][.\\s\t\n]*[}]");
 regex portuguese("/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/");
-
-
 regex aspas(R"(\")");
+
+regex all_except_close_brace("[^}]");
+
 regex all_except_aspas(R"([^"]+)");
+
+
+
+regex restricted_symbols(
+        "(?!("
+        "[0-9]+|"
+        "(\\+|-)?[0-9]+|"
+        "(\\+|-)?[0-9]+(\\,[0-9]+)?(E(\\+|-)?[0-9]+)?|"
+        "[a-zA-Z]|"
+        "[0-9]|"
+        "[\\_]|"
+        "[(]|"
+        "[)]|"
+        "[{]|"
+        "[}]|"
+        "[;]|"
+        "[a-zA-Z]([a-zA-Z0-9]|[_])*|"
+        ","
+        "|(laps|circuit)|"
+        "(pitEntry|pitExit)|"
+        "(overtake|brake)|"
+        "(race)|"
+        "(Radio)|"
+        "(int|double|char|boolean|str)|"
+        "(prt)|"
+        "(scn)|"
+        "&|"
+        "\\||"
+        "\\!|"
+        "\\.|"
+        "\\+|"
+        "-|"
+        "\\*|"
+        "/|"
+        "\\^|"
+        "<|"
+        ">|"
+        "=|"
+        "\\!|"
+        "≤|"
+        "≥|"
+        "≠|"
+        "(\r\n|\n)|"
+        "[\r\n]+|"
+        "[\\s\t\r\n]+|"
+        "[\\s\t]+|"
+        "[\\p{L}\\p{M}\\s]+|"
+        "Radio[{][.\\s\t\n]*[}]|"
+        "[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+"
+        "))(.*)"
+    );
+
 #endif // REGEX_DEFINITIONS_H
