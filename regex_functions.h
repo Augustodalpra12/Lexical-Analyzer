@@ -43,11 +43,11 @@ bool get_braces(string token, map<int, tuple<string, string, int>> &lex, int lin
     return false;
 }
 
-bool get_aspas(string token, map<int, tuple<string, string, int>> &lex, int linha_atual) {
+bool get_quotes(string token, map<int, tuple<string, string, int>> &lex, int linha_atual) {
     int lastIndex = get_index(lex);
-    if (regex_match(token, aspas))
+    if (regex_match(token, quotes))
     {
-        lex[lastIndex] = make_tuple("aspas", token, linha_atual);
+        lex[lastIndex] = make_tuple("quotes", token, linha_atual);
         return true;
     } 
     return false;
@@ -275,13 +275,13 @@ bool get_dot(string token, map<int, tuple<string, string, int>> &lex, int linha_
     return false;
 }
 
-bool get_text_between_aspas(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
+bool get_text_between_quotes(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
     int lastIndex = get_index(lex);
     // cout << "entrou na funcao" << endl;
-    if (regex_match(token, all_except_aspas) || regex_match(token, portuguese)|| regex_match(token, space))
+    if (regex_match(token, all_except_quotes) || regex_match(token, portuguese)|| regex_match(token, space))
     {
-        lex[lastIndex] = make_tuple("text_between_aspas", token, linha_atual);
+        lex[lastIndex] = make_tuple("text_between_quotes", token, linha_atual);
         return true;
     }
     return false;

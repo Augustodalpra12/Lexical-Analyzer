@@ -76,7 +76,7 @@ int main()
                 } else if(regex_match(string(1, c), end_line)) {
                     current_state = 18;
                     token += c;
-                } else if (regex_match(string(1, c), aspas)) {
+                } else if (regex_match(string(1, c), quotes)) {
                     current_state = 19;
                     token = token + c;
                 } else if (regex_match(string(1, c), op_log_e)) {
@@ -326,7 +326,7 @@ int main()
                  file.putback(c); //{
                 decrease_line(current_line, c);
                 
-                if (get_aspas(token, lex, current_line)) {
+                if (get_quotes(token, lex, current_line)) {
                     current_state = 20;
                     token.clear();
                 } else {
@@ -338,14 +338,14 @@ int main()
             case 20:
                 // file.putback(c); //{
                 decrease_line(current_line, c);
-                if(regex_match(string(1, c), all_except_aspas)){
+                if(regex_match(string(1, c), all_except_quotes)){
                     current_state = 20;
                     token += c;
-                } else if (regex_match(string(1, c), aspas)){
-                    // cout << "aspas" << endl;
+                } else if (regex_match(string(1, c), quotes)){
+                    // cout << "quotes" << endl;
                     current_state = 21;
-                    if(get_text_between_aspas(token, lex, current_line)) {
-                        // cout << "get_text_between_aspas"  << endl;
+                    if(get_text_between_quotes(token, lex, current_line)) {
+                        // cout << "get_text_between_quotes"  << endl;
                     }
                     token.clear();
                     file.putback(c);
@@ -359,7 +359,7 @@ int main()
                 // file.putback(c); //{
                 decrease_line(current_line, c);
                 token = c;
-                if (get_aspas(token, lex, current_line)) {
+                if (get_quotes(token, lex, current_line)) {
                     current_state = 1;
                     token.clear();
                 }  else {
@@ -401,7 +401,7 @@ int main()
         //         if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
         //             current_line--;
         //         }
-        //         if (get_aspas(token, lex, current_line)) {
+        //         if (get_quotes(token, lex, current_line)) {
         //             current_state = 21;
         //             token.clear();
         //         } else {
@@ -464,7 +464,7 @@ int main()
                 break;
             case 14:
                 // fazer o case 14 nao está identificando o erro
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
+                if(regex_match(string(1, c), restricted_symbols )|| regex_match(string(1, c), restricted_symbols)) {
                     cout << "Erro na linha " << error_line << ": " << token << endl;
                 }
                 break;
@@ -476,7 +476,7 @@ int main()
                 }
                 break;
             case 19:
-                if (!get_aspas(token, lex, current_line))
+                if (!get_quotes(token, lex, current_line))
                 {
                     cout << "Erro na linha " << error_line << ": " << token << endl;
                 }

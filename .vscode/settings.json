@@ -2,6 +2,7 @@
     "files.associations": {
         "regex": "cpp",
         "*.tcc": "cpp",
-        "tuple": "cpp"
+        "tuple": "cpp",
+        "string": "cpp"
     }
 }

@@ -62,11 +62,11 @@ regex space("[\\s\t]+");
 regex all_symbols("[\\p{L}\\p{M}\\s]+");
 regex comment("Radio[{][.\\s\t\n]*[}]");
 regex portuguese("/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]+$/");
-regex aspas(R"(\")");
+regex quotes(R"(\")");
 
 regex all_except_close_brace("[^}]");
 
-regex all_except_aspas(R"([^"]+)");
+regex all_except_quotes(R"([^"]+)");
 
 
 
