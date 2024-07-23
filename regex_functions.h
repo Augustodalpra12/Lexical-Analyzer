@@ -6,7 +6,14 @@
 #include "regex_definitions.h"
 using namespace std;
 
-bool get_braces(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
+void decrease_line(int &line, char c) {
+    if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
+        line--;
+    }
+    
+}
+
+int get_index(map<int, tuple<string, string, int>> &lex)
 {
     int lastIndex;
     if (!lex.empty())
@@ -19,6 +26,12 @@ bool get_braces(string token, map<int, tuple<string, string, int>> &lex, int lin
     {
         lastIndex = 0;
     }
+    return lastIndex;
+}
+
+bool get_braces(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
+{
+    int lastIndex = get_index(lex);
     if (regex_match(token, symbol_op_init))
     {
         lex[lastIndex] = make_tuple("symbol_op_init", token, linha_atual);
@@ -31,17 +44,7 @@ bool get_braces(string token, map<int, tuple<string, string, int>> &lex, int lin
 }
 
 bool get_aspas(string token, map<int, tuple<string, string, int>> &lex, int linha_atual) {
-    int lastIndex;
-    if (!lex.empty())
-    {
-        auto last = lex.rbegin(); // rbegin() aponta para o último elemento
-        lastIndex = last->first;
-        lastIndex++;
-    }
-    else
-    {
-        lastIndex = 0;
-    }
+    int lastIndex = get_index(lex);
     if (regex_match(token, aspas))
     {
         lex[lastIndex] = make_tuple("aspas", token, linha_atual);
@@ -52,17 +55,7 @@ bool get_aspas(string token, map<int, tuple<string, string, int>> &lex, int linh
 
 bool get_parameters(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
-    int lastIndex;
-    if (!lex.empty())
-    {
-        auto last = lex.rbegin(); // rbegin() aponta para o último elemento
-        lastIndex = last->first;
-        lastIndex++;
-    }
-    else
-    {
-        lastIndex = 0;
-    }
+    int lastIndex = get_index(lex);
     if (regex_match(token, symbol_parameter_init))
     {
         lex[lastIndex] = make_tuple("symbol_parameter_init", token, linha_atual);
@@ -79,17 +72,7 @@ bool get_parameters(string token, map<int, tuple<string, string, int>> &lex, int
 
 bool get_arit(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
-    int lastIndex;
-    if (!lex.empty())
-    {
-        auto last = lex.rbegin(); // rbegin() aponta para o último elemento
-        lastIndex = last->first;
-        lastIndex++;
-    }
-    else
-    {
-        lastIndex = 0;
-    }
+    int lastIndex = get_index(lex);
     if (regex_match(token, op_arit_sum))
     {
         lex[lastIndex] = make_tuple("op_arit_sum", token, linha_atual);
@@ -157,17 +140,7 @@ bool get_logic(string token, map<int, tuple<string, string, int>> &lex, int linh
 
 bool get_op_end(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
-    int lastIndex;
-    if (!lex.empty())
-    {
-        auto last = lex.rbegin(); // rbegin() aponta para o último elemento
-        lastIndex = last->first;
-        lastIndex++;
-    }
-    else
-    {
-        lastIndex = 0;
-    }
+    int lastIndex = get_index(lex);
     if (regex_match(token, symbol_op_end))
     {
         lex[lastIndex] = make_tuple("symbol_op_end", token, linha_atual);
@@ -178,17 +151,7 @@ bool get_op_end(string token, map<int, tuple<string, string, int>> &lex, int lin
 
 bool get_op_mid(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
-    int lastIndex;
-    if (!lex.empty())
-    {
-        auto last = lex.rbegin(); // rbegin() aponta para o último elemento
-        lastIndex = last->first;
-        lastIndex++;
-    }
-    else
-    {
-        lastIndex = 0;
-    }
+    int lastIndex = get_index(lex);
     if (regex_match(token, symbol_op_mid))
     {
         lex[lastIndex] = make_tuple("symbol_op_mid", token, linha_atual);
@@ -199,17 +162,7 @@ bool get_op_mid(string token, map<int, tuple<string, string, int>> &lex, int lin
 
 bool get_parameter_init(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
-    int lastIndex;
-    if (!lex.empty())
-    {
-        auto last = lex.rbegin(); // rbegin() aponta para o último elemento
-        lastIndex = last->first;
-        lastIndex++;
-    }
-    else
-    {
-        lastIndex = 0;
-    }
+    int lastIndex = get_index(lex);
     if (regex_match(token, symbol_parameter_init))
     {
         lex[lastIndex] = make_tuple("symbol_parameter_init", token, linha_atual);
@@ -220,17 +173,7 @@ bool get_parameter_init(string token, map<int, tuple<string, string, int>> &lex,
 
 bool get_parameter_end(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
-    int lastIndex;
-    if (!lex.empty())
-    {
-        auto last = lex.rbegin(); // rbegin() aponta para o último elemento
-        lastIndex = last->first;
-        lastIndex++;
-    }
-    else
-    {
-        lastIndex = 0;
-    }
+    int lastIndex = get_index(lex);
     if (regex_match(token, symbol_parameter_end))
     {
         lex[lastIndex] = make_tuple("symbol_parameter_end", token, linha_atual);
@@ -260,17 +203,7 @@ bool get_integer(string token, map<int, tuple<string, string, int>> &lex, int li
 
 bool get_double(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
-    int lastIndex;
-    if (!lex.empty())
-    {
-        auto last = lex.rbegin(); // rbegin() aponta para o último elemento
-        lastIndex = last->first;
-        lastIndex++;
-    }
-    else
-    {
-        lastIndex = 0;
-    }
+    int lastIndex = get_index(lex);
     if (regex_match(token, double_regex))
     {
         lex[lastIndex] = make_tuple("double", token, linha_atual);
@@ -281,17 +214,7 @@ bool get_double(string token, map<int, tuple<string, string, int>> &lex, int lin
 
 bool get_token(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
-    int lastIndex;
-    if (!lex.empty())
-    {
-        auto last = lex.rbegin(); // rbegin() aponta para o último elemento
-        lastIndex = last->first;
-        lastIndex++;
-    }
-    else
-    {
-        lastIndex = 0;
-    }
+    int lastIndex = get_index(lex);
     if (regex_match(token, reserved_loops))
     {
         lex[lastIndex] = make_tuple("reserved_loops", token, linha_atual);
@@ -343,17 +266,7 @@ bool get_token(string token, map<int, tuple<string, string, int>> &lex, int linh
 
 bool get_dot(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
-    int lastIndex;
-    if (!lex.empty())
-    {
-        auto last = lex.rbegin(); // rbegin() aponta para o último elemento
-        lastIndex = last->first;
-        lastIndex++;
-    }
-    else
-    {
-        lastIndex = 0;
-    }
+    int lastIndex = get_index(lex);
     if (regex_match(token, end_line))
     {
         lex[lastIndex] = make_tuple("dot", token, linha_atual);
@@ -364,17 +277,7 @@ bool get_dot(string token, map<int, tuple<string, string, int>> &lex, int linha_
 
 bool get_text_between_aspas(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
-    int lastIndex;
-    if (!lex.empty())
-    {
-        auto last = lex.rbegin(); // rbegin() aponta para o último elemento
-        lastIndex = last->first;
-        lastIndex++;
-    }
-    else
-    {
-        lastIndex = 0;
-    }
+    int lastIndex = get_index(lex);
     // cout << "entrou na funcao" << endl;
     if (regex_match(token, all_except_aspas) || regex_match(token, portuguese)|| regex_match(token, space))
     {
@@ -387,17 +290,7 @@ bool get_text_between_aspas(string token, map<int, tuple<string, string, int>> &
 
 bool get_log_e(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
-    int lastIndex;
-    if (!lex.empty())
-    {
-        auto last = lex.rbegin(); // rbegin() aponta para o último elemento
-        lastIndex = last->first;
-        lastIndex++;
-    }
-    else
-    {
-        lastIndex = 0;
-    }
+    int lastIndex = get_index(lex);
     if (regex_match(token, op_log_e))
     {
         lex[lastIndex] = make_tuple("op_log_e", token, linha_atual);
@@ -408,17 +301,7 @@ bool get_log_e(string token, map<int, tuple<string, string, int>> &lex, int linh
 
 bool get_log_or(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
-    int lastIndex;
-    if (!lex.empty())
-    {
-        auto last = lex.rbegin(); // rbegin() aponta para o último elemento
-        lastIndex = last->first;
-        lastIndex++;
-    }
-    else
-    {
-        lastIndex = 0;
-    }
+    int lastIndex = get_index(lex);
     if (regex_match(token, op_log_or))
     {
         lex[lastIndex] = make_tuple("op_log_or", token, linha_atual);

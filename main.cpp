@@ -12,34 +12,34 @@ map<int, tuple<string, string, int>> lex;
 
 int main()
 {
-    ifstream arquivo("exemploTotal.senna");
+    ifstream file("exemploTotal.senna");
 
-    if (!arquivo)
+    if (!file)
     {
-        cerr << "Erro ao abrir o arquivo!" << endl;
+        cerr << "Erro ao abrir o file!" << endl;
         return 1;
     }
 
     char c;
     string token;
-    int estado_atual = 1;
-    int linha_atual = 1;
-    int erro_linha = 1;
+    int current_state = 1;
+    int current_line = 1;
+    int error_line = 1;
     string red_flag = "\U0001F6A9";
     string line;
 
     while (true)
     { // Loop infinito para permanecer no switch
-        if (!arquivo.get(c))
+        if (!file.get(c))
         {
             break; // Sai do loop se não conseguir ler o caractere
         }
         // if (regex_match(string(1,c), line_feed)) {
-        //     linha_atual++;
+        //     current_line++;
         // }
         if (regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2))
         {
-            linha_atual++;
+            current_line++;
         }
         int ascii_value = static_cast<int>(c);
         // if(ascii_value != 10) {
@@ -47,242 +47,218 @@ int main()
 
         // } // 13 = \r
 
-        //     cout << "estado atual" << estado_atual << endl << endl;
-        switch (estado_atual)
+        //     cout << "estado atual" << current_state << endl << endl;
+        switch (current_state)
         {
 
             case 1:
                 if(regex_match(string(1, c), symbol_op_init) || regex_match(string(1, c), symbol_op_end)) {
-                    estado_atual = 2;
+                    current_state = 2;
                     token += c;
                 } else if(regex_match(string(1, c), symbol_parameter_init) || regex_match(string(1, c), symbol_parameter_end) || regex_match(string(1, c), symbol_op_mid)) {
-                    estado_atual = 3;
+                    current_state = 3;
                     token += c;
                 } else if(regex_match(string(1, c), op_arit_sum) || regex_match(string(1, c), op_arit_sub) || regex_match(string(1, c), op_arit_mult) || regex_match(string(1, c), op_arit_div) || regex_match(string(1, c), op_arit_pow)) {
-                    estado_atual = 4;
+                    current_state = 4;
                     token += c;
                 } else if(regex_match(string(1, c), op_rel_minor) || regex_match(string(1, c), op_rel_bigger) || regex_match(string(1, c), op_rel_equal) || regex_match(string(1, c), op_rel_not)) {
-                    estado_atual = 5;
+                    current_state = 5;
                     token += c;
                 } else if(regex_match(string(1, c), integer)) {
-                    estado_atual = 6;
+                    current_state = 6;
                     token += c;
                 } else if(regex_match(string(1, c), char_regex)){
-                    estado_atual = 11;
+                    current_state = 11;
                     token += c;
                 } else if(regex_match(string(1, c), spaces) || regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    estado_atual = 13;
+                    current_state = 13;
                     token += c;
                 } else if(regex_match(string(1, c), end_line)) {
-                    estado_atual = 18;
+                    current_state = 18;
                     token += c;
                 } else if (regex_match(string(1, c), aspas)) {
-                    estado_atual = 19;
+                    current_state = 19;
                     token = token + c;
                 } else if (regex_match(string(1, c), op_log_e)) {
-                    estado_atual = 22;
+                    current_state = 22;
                     token = token + c;
                 }else if (regex_match(string(1, c), op_log_or)) {
-                    estado_atual = 23;
+                    current_state = 23;
                     token = token + c;
                 } else {
                     
-                    estado_atual = 14;
-                    erro_linha = linha_atual;
+                    current_state = 14;
+                    error_line = current_line;
                     token += c;
 
                 }
                 break;
 
             case 2:
-                arquivo.putback(c); //{
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
+                file.putback(c); //{
+                decrease_line(current_line, c);
                 
-                if (get_braces(token, lex, linha_atual)) {
-                    estado_atual = 1;
+                if (get_braces(token, lex, current_line)) {
+                    current_state = 1;
                     token.clear();
                 } else {
-                    estado_atual = 14;
-                    erro_linha = linha_atual;
+                    current_state = 14;
+                    error_line = current_line;
 
                 }
                 break;
 
             case 3:
-                arquivo.putback(c); //{
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
-                if (get_parameters(token, lex, linha_atual)) {
-                    estado_atual = 1;
+                file.putback(c); //{
+                decrease_line(current_line, c);
+                if (get_parameters(token, lex, current_line)) {
+                    current_state = 1;
                     token.clear();
                 } else {
-                    estado_atual = 14;
-                    erro_linha = linha_atual;
+                    current_state = 14;
+                    error_line = current_line;
 
                 }
                 
                 break;
 
             case 4:
-                arquivo.putback(c);
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
-                if (get_arit(token, lex, linha_atual)) {
-                    estado_atual = 1;
+                file.putback(c);
+                decrease_line(current_line, c);
+                if (get_arit(token, lex, current_line)) {
+                    current_state = 1;
                     token.clear();
                 } else {
-                    estado_atual = 14;
-                    erro_linha = linha_atual;
+                    current_state = 14;
+                    error_line = current_line;
 
                 }
 
                 break;
             case 5:
-                arquivo.putback(c);
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
-                if (get_logic(token, lex, linha_atual)) {
-                    estado_atual = 1;
+                file.putback(c);
+                decrease_line(current_line, c);
+                if (get_logic(token, lex, current_line)) {
+                    current_state = 1;
                     token.clear();
                 } else {
 
-                    estado_atual = 14;
-                    erro_linha = linha_atual;
+                    current_state = 14;
+                    error_line = current_line;
                 }
 
                 break;
             case 6:
                 if (regex_match(string(1, c), integer)) {
-                    estado_atual = 6;
+                    current_state = 6;
                     token += c;
                 } else if(regex_match(string(1, c), comma)) {
-                    estado_atual = 8;
+                    current_state = 8;
                     token += c;
                 } else {
-                    estado_atual = 7;
-                    arquivo.putback(c);
-                    if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
+                    current_state = 7;
+                    file.putback(c);
+                    decrease_line(current_line, c);
                 }
                 break;
             case 7:
-                arquivo.putback(c);
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
-                if (get_integer(token, lex, linha_atual)) {
-                    estado_atual = 1;
+                file.putback(c);
+                decrease_line(current_line, c);
+                if (get_integer(token, lex, current_line)) {
+                    current_state = 1;
                     token.clear();
                 } else {
-                    estado_atual = 14;
-                    erro_linha = linha_atual;
+                    current_state = 14;
+                    error_line = current_line;
 
                 }
 
                 break;
             case 8:
                 if(regex_match(string(1, c), integer)) {
-                    estado_atual = 9;
+                    current_state = 9;
                     token += c;
                 } else {
-                    estado_atual = 14;
-                    erro_linha = linha_atual;
+                    current_state = 14;
+                    error_line = current_line;
 
 
                 }
                 break;
             case 9:
                 if (regex_match(string(1, c), integer)) {
-                    estado_atual = 9;
+                    current_state = 9;
                     token += c;
                 } else {
-                    estado_atual = 10;
-                    arquivo.putback(c);
-                    if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
+                    current_state = 10;
+                    file.putback(c);
+                    decrease_line(current_line, c);
                 }
                 break;
 
             case 10:
-                arquivo.putback(c);
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
-                if (get_double(token, lex, linha_atual)) {
-                    estado_atual = 1;
+                file.putback(c);
+                decrease_line(current_line, c);
+                if (get_double(token, lex, current_line)) {
+                    current_state = 1;
                     token.clear();
                 } else {
-                    estado_atual = 14;
-                    erro_linha = linha_atual;
+                    current_state = 14;
+                    error_line = current_line;
 
                 }
 
                 break;
             case 11:
                 if (regex_match(string(1, c), id) || regex_match(string(1, c), symbol_id)){
-                    estado_atual = 11;
+                    current_state = 11;
                     token += c;
                 } else {
-                    arquivo.putback(c);
-                    estado_atual = 12;
-                    if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
+                    file.putback(c);
+                    current_state = 12;
+                    decrease_line(current_line, c);
                 }
                 break;
 
             case 12:
-                arquivo.putback(c);
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
-                if (get_token(token, lex, linha_atual)){
+                file.putback(c);
+                decrease_line(current_line, c);
+                if (get_token(token, lex, current_line)){
 
                         if (regex_match(token, reserved_comment)){
                             // cout << "fez o regex do token commnent" << endl;
-                            estado_atual = 15;
+                            current_state = 15;
                         } else {
-                            estado_atual = 1;
+                            current_state = 1;
                         }
                         token.clear();
                 } else {
-                    estado_atual = 14;
-                    erro_linha = linha_atual;
+                    current_state = 14;
+                    error_line = current_line;
 
                 }
 
                 break;
 
             case 13:
-                arquivo.putback(c);
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
+                file.putback(c);
+                decrease_line(current_line, c);
                 if (regex_match(token, spaces) || regex_match(token, line_feed) || regex_match(token, line_feed2))
                 {
-                    estado_atual = 1;
+                    current_state = 1;
                 } else {
-                    estado_atual = 14;
-                    erro_linha = linha_atual;
+                    current_state = 14;
+                    error_line = current_line;
                     cout << "token invalido: " << token << endl;
                 }
 
                 token.clear();
                 break;
             case 14:
-                arquivo.putback(c);
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
-                cout << red_flag << " Erro na linha: " << erro_linha << " Caracter Inválido:  " << token << endl;
-                estado_atual = 1;
+                file.putback(c);
+                decrease_line(current_line, c);
+                cout << red_flag << " Erro na linha: " << error_line << " Caracter Inválido:  " << token << endl;
+                current_state = 1;
                 // int lastIndex;
                 //  if (!lex.empty())
                 // {
@@ -295,7 +271,7 @@ int main()
                 //     lastIndex = 0;
                 // }
 
-                // line = "Linha Erro: " + to_string(erro_linha);
+                // line = "Linha Erro: " + to_string(error_line);
                 // lex[lastIndex] = make_tuple(line, token);
                 
                 // }
@@ -304,10 +280,10 @@ int main()
                 break;
             case 15:
                 if(regex_match(string(1, c), symbol_op_init)){
-                    estado_atual = 16;
+                    current_state = 16;
                 } else {
-                    estado_atual = 14;
-                    erro_linha = linha_atual;
+                    current_state = 14;
+                    error_line = current_line;
 
 
                 }
@@ -315,191 +291,201 @@ int main()
 
             case 16:
                 if(regex_match(string(1, c), all_except_close_brace)){
-                    estado_atual = 16;
+                    current_state = 16;
                 } else if (regex_match(string(1, c), symbol_op_end)){
-                    estado_atual = 17;
+                    current_state = 17;
                 } else {
-                    estado_atual = 14;
-                    erro_linha = linha_atual;
+                    current_state = 14;
+                    error_line = current_line;
 
                 }
                 break;
 
             case 17:
-                arquivo.putback(c);
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
-                estado_atual = 1;
+                file.putback(c);
+                decrease_line(current_line, c);
+                current_state = 1;
 
                 break;
 
             case 18:
-                arquivo.putback(c);
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
-                if(get_dot(token, lex, linha_atual)) {
-                    estado_atual = 1;
+                file.putback(c);
+                decrease_line(current_line, c);
+                if(get_dot(token, lex, current_line)) {
+                    current_state = 1;
                 }
                 else{
-                    estado_atual = 14;
-                    erro_linha = linha_atual;
+                    current_state = 14;
+                    error_line = current_line;
                 }
 
                 token.clear();
                 break;
             
             case 19:
-                 arquivo.putback(c); //{
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
+                 file.putback(c); //{
+                decrease_line(current_line, c);
                 
-                if (get_aspas(token, lex, linha_atual)) {
-                    estado_atual = 20;
+                if (get_aspas(token, lex, current_line)) {
+                    current_state = 20;
                     token.clear();
                 } else {
-                    estado_atual = 14;
-                    erro_linha = linha_atual;
+                    current_state = 14;
+                    error_line = current_line;
 
                 }
                 break;
             case 20:
-                // arquivo.putback(c); //{
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
+                // file.putback(c); //{
+                decrease_line(current_line, c);
                 if(regex_match(string(1, c), all_except_aspas)){
-                    estado_atual = 20;
+                    current_state = 20;
                     token += c;
                 } else if (regex_match(string(1, c), aspas)){
                     // cout << "aspas" << endl;
-                    estado_atual = 21;
-                    if(get_text_between_aspas(token, lex, linha_atual)) {
+                    current_state = 21;
+                    if(get_text_between_aspas(token, lex, current_line)) {
                         // cout << "get_text_between_aspas"  << endl;
                     }
                     token.clear();
-                    arquivo.putback(c);
+                    file.putback(c);
                 } else {
-                    estado_atual = 14;
-                    erro_linha = linha_atual;
+                    current_state = 14;
+                    error_line = current_line;
 
                 }
                 break;
             case 21:
-                // arquivo.putback(c); //{
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
+                // file.putback(c); //{
+                decrease_line(current_line, c);
                 token = c;
-                if (get_aspas(token, lex, linha_atual)) {
-                    estado_atual = 1;
+                if (get_aspas(token, lex, current_line)) {
+                    current_state = 1;
                     token.clear();
                 }  else {
-                    estado_atual = 14;
-                    erro_linha = linha_atual;
+                    current_state = 14;
+                    error_line = current_line;
 
                 }
                 break;
 
             case 22:
-                arquivo.putback(c); //{
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
+                file.putback(c); //{
+                decrease_line(current_line, c);
                 
-                if (get_log_e(token, lex, linha_atual)) {
-                    estado_atual = 1;
+                if (get_log_e(token, lex, current_line)) {
+                    current_state = 1;
                     token.clear();
                 } else {
-                    estado_atual = 14;
-                    erro_linha = linha_atual;
+                    current_state = 14;
+                    error_line = current_line;
 
                 }
                 break;
             case 23:
-                arquivo.putback(c); //{
-                if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-                    linha_atual--;
-                }
+                file.putback(c); //{
+                decrease_line(current_line, c);
                 
-                if (get_log_or(token, lex, linha_atual)) {
-                    estado_atual = 1;
+                if (get_log_or(token, lex, current_line)) {
+                    current_state = 1;
                     token.clear();
                 } else {
-                    estado_atual = 14;
-                    erro_linha = linha_atual;
+                    current_state = 14;
+                    error_line = current_line;
 
                 }
                 break;
         }   
         //     case 20:
-        //         arquivo.putback(c);
+        //         file.putback(c);
         //         if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
-        //             linha_atual--;
+        //             current_line--;
         //         }
-        //         if (get_aspas(token, lex, linha_atual)) {
-        //             estado_atual = 21;
+        //         if (get_aspas(token, lex, current_line)) {
+        //             current_state = 21;
         //             token.clear();
         //         } else {
-        //             estado_atual = 14;
-        erro_linha = linha_atual;
+        //             current_state = 14;
+        error_line = current_line;
         // }
     }
 
        if (!token.empty())
     {
-        switch (estado_atual)
+        switch (current_state)
         {
             case 2:
-                if (!get_braces(token, lex, linha_atual))
+                if (!get_braces(token, lex, current_line))
                 {
-                    cout << "Erro na linha " << erro_linha << ": " << token << endl;
+                    cout << "Erro na linha " << error_line << ": " << token << endl;
                 }
                 break;
             case 3:
-                if (!get_parameters(token, lex, linha_atual))
+                if (!get_parameters(token, lex, current_line))
                 {
-                    cout << "Erro na linha " << erro_linha << ": " << token << endl;
+                    cout << "Erro na linha " << error_line << ": " << token << endl;
                 }
                 break;
             case 4:
-                if (!get_arit(token, lex, linha_atual))
+                if (!get_arit(token, lex, current_line))
                 {
-                    cout << "Erro na linha " << erro_linha << ": " << token << endl;
+                    cout << "Erro na linha " << error_line << ": " << token << endl;
                 }
                 break;
             case 5:
-                if (!get_logic(token, lex, linha_atual))
+                if (!get_logic(token, lex, current_line))
                 {
-                    cout << "Erro na linha " << erro_linha << ": " << token << endl;
+                    cout << "Erro na linha " << error_line << ": " << token << endl;
                 }
                 break;
             case 7:
-                if (!get_integer(token, lex, linha_atual))
+                if (!get_integer(token, lex, current_line))
                 {
-                    cout << "Erro na linha " << erro_linha << ": " << token << endl;
+                    cout << "Erro na linha " << error_line << ": " << token << endl;
                 }
                 break;
             case 10:
-                if (!get_double(token, lex, linha_atual))
+                if (!get_double(token, lex, current_line))
                 {
-                    cout << "Erro na linha " << erro_linha << ": " << token << endl;
+                    cout << "Erro na linha " << error_line << ": " << token << endl;
                 }
                 break;
             case 12:
-                if (!get_token(token, lex, linha_atual))
+                if (!get_token(token, lex, current_line))
                 {
-                    cout << "Erro na linha " << erro_linha << ": " << token << endl;
+                    cout << "Erro na linha " << error_line << ": " << token << endl;
                 }
                 break;
             case 13:
                 if (!(regex_match(token, spaces) || regex_match(token, line_feed) || regex_match(token, line_feed2)))
                 {
-                    cout << "Erro na linha " << erro_linha << ": " << token << endl;
+                    cout << "Erro na linha " << error_line << ": " << token << endl;
                 }
                 break;
+            case 18:
+                if (!get_dot(token, lex, current_line))
+                {
+                    cout << "Erro na linha " << error_line << ": " << token << endl;
+                }
+                break;
+            case 19:
+                if (!get_aspas(token, lex, current_line))
+                {
+                    cout << "Erro na linha " << error_line << ": " << token << endl;
+                }
+                break;
+            case 22:
+                if (!get_log_e(token, lex, current_line))
+                {
+                    cout << "Erro na linha " << error_line << ": " << token << endl;
+                }
+                break;
+            case 23:
+                if (!get_log_or(token, lex, current_line)) {
+                    cout << "Erro na linha " << error_line << ": " << token << endl;
+                }
+                break;
+                
         }
     }
 
