@@ -85,6 +85,9 @@ int main()
                 }else if (regex_match(string(1, c), op_log_or)) {
                     current_state = 23;
                     token = token + c;
+                }else if (regex_match(string(1, c), reserved_comment)) {
+                    current_state = 24;
+                    token = token + c;
                 } else {
                     
                     current_state = 14;
@@ -225,12 +228,13 @@ int main()
                 decrease_line(current_line, c);
                 if (get_token(token, lex, current_line)){
 
-                        if (regex_match(token, reserved_comment)){
-                            // cout << "fez o regex do token commnent" << endl;
-                            current_state = 15;
-                        } else {
-                            current_state = 1;
-                        }
+                        // if (regex_match(token, reserved_comment)){
+                        //     // cout << "fez o regex do token commnent" << endl;
+                        //     current_state = 15;
+                        // } else {
+                        //     current_state = 1;
+                        // }
+                        current_state = 1;
                         token.clear();
                 } else {
                     current_state = 14;
@@ -394,6 +398,46 @@ int main()
                     error_line = current_line;
 
                 }
+                break;
+            case 24:
+                file.putback(c); //{
+                decrease_line(current_line, c);
+                
+                if (regex_match(token, reserved_comment)) {
+                    current_state = 25;
+                    token.clear();
+                } else {
+                    current_state = 14;
+                    error_line = current_line;
+
+                }
+                break;
+                // if(regex_match(string(1, c), symbol_op_init)){
+                //     current_state = 16;
+                // } else {
+                //     current_state = 14;
+                //     error_line = current_line;
+
+
+                // }
+                // break;
+                // file.putback(c); //{
+            case 25:
+                if(regex_match(string(1, c), all_except_at) || regex_match(string(1, c), portuguese)){
+                    current_state = 25;
+                } else if (regex_match(string(1, c), reserved_comment)){
+                    current_state = 26;
+                } else {
+                    current_state = 14; 
+                    error_line = current_line;
+
+                }
+                break;
+            case 26:
+                file.putback(c);
+                decrease_line(current_line, c);
+                current_state = 1;
+
                 break;
         }   
         //     case 20:

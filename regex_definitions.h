@@ -26,7 +26,8 @@ regex reserved_loops("(laps|circuit)");
 regex reserved_condition("(pitEntry|pitExit)");
 regex reserved_arit("(overtake|brake)");
 regex reserved_main("(race)");
-regex reserved_comment("(Radio)");
+// regex reserved_comment("(Radio)");
+regex reserved_comment("\\@");
 regex reserved_types("(int|double|char|boolean|str)");
 regex reserved_prt("(prt)");
 regex reserved_scn("(scn)");  
@@ -65,6 +66,8 @@ regex portuguese("/^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔ�
 regex quotes(R"(\")");
 
 regex all_except_close_brace("[^}]");
+regex all_except_at("[^@]");
+
 
 regex all_except_quotes(R"([^"]+)");
 
