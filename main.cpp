@@ -52,11 +52,20 @@ int main()
         {
 
             case 1:
-                if(regex_match(string(1, c), symbol_op_init) || regex_match(string(1, c), symbol_op_end)) {
+                if(regex_match(string(1, c), symbol_op_init)) {
                     current_state = 2;
                     token += c;
-                } else if(regex_match(string(1, c), symbol_parameter_init) || regex_match(string(1, c), symbol_parameter_end) || regex_match(string(1, c), symbol_op_mid)) {
+                } else if(regex_match(string(1, c), symbol_op_end)) {
+                    current_state = 27;
+                    token += c;
+                }else if(regex_match(string(1, c), symbol_parameter_init)) {
                     current_state = 3;
+                    token += c;
+                }else if( regex_match(string(1, c), symbol_parameter_end)) {
+                    current_state = 28;
+                    token += c;
+                }else if(regex_match(string(1, c), symbol_op_mid)) {
+                    current_state = 29;
                     token += c;
                 } else if(regex_match(string(1, c), op_arit_sum) || regex_match(string(1, c), op_arit_sub) || regex_match(string(1, c), op_arit_mult) || regex_match(string(1, c), op_arit_div) || regex_match(string(1, c), op_arit_pow)) {
                     current_state = 4;
@@ -101,7 +110,7 @@ int main()
                 file.putback(c); //{
                 decrease_line(current_line, c);
                 
-                if (get_braces(token, lex, current_line)) {
+                if (get_braces_init(token, lex, current_line)) {
                     current_state = 1;
                     token.clear();
                 } else {
@@ -114,7 +123,7 @@ int main()
             case 3:
                 file.putback(c); //{
                 decrease_line(current_line, c);
-                if (get_parameters(token, lex, current_line)) {
+                if (get_parameters_init(token, lex, current_line)) {
                     current_state = 1;
                     token.clear();
                 } else {
@@ -439,7 +448,47 @@ int main()
                 current_state = 1;
 
                 break;
+            case 27:
+                file.putback(c); //{
+                decrease_line(current_line, c);
+                
+                if (get_braces_end(token, lex, current_line)) {
+                    current_state = 1;
+                    token.clear();
+                } else {
+                    current_state = 14;
+                    error_line = current_line;
+
+                }
+                break;
+            case 28:
+                file.putback(c); //{
+                decrease_line(current_line, c);
+                if (get_parameters_end(token, lex, current_line)) {
+                    current_state = 1;
+                    token.clear();
+                } else {
+                    current_state = 14;
+                    error_line = current_line;
+
+                }
+                
+                break;
+            case 29:
+                file.putback(c); //{
+                decrease_line(current_line, c);
+                if (get_parameters_mid(token, lex, current_line)) {
+                    current_state = 1;
+                    token.clear();
+                } else {
+                    current_state = 14;
+                    error_line = current_line;
+
+                }
+                
+                break;
         }   
+
         //     case 20:
         //         file.putback(c);
         //         if(regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
@@ -450,7 +499,7 @@ int main()
         //             token.clear();
         //         } else {
         //             current_state = 14;
-        error_line = current_line;
+        // error_line = current_line;
         // }
     }
 
@@ -459,13 +508,13 @@ int main()
         switch (current_state)
         {
             case 2:
-                if (!get_braces(token, lex, current_line))
+                if (!get_braces_init(token, lex, current_line))
                 {
                     cout << "Erro na linha " << error_line << ": " << token << endl;
                 }
                 break;
             case 3:
-                if (!get_parameters(token, lex, current_line))
+                if (!get_parameters_init(token, lex, current_line))
                 {
                     cout << "Erro na linha " << error_line << ": " << token << endl;
                 }
@@ -533,6 +582,21 @@ int main()
                 break;
             case 23:
                 if (!get_log_or(token, lex, current_line)) {
+                    cout << "Erro na linha " << error_line << ": " << token << endl;
+                }
+                break;
+            case 27:
+                if (!get_braces_end(token, lex, current_line)) {
+                    cout << "Erro na linha " << error_line << ": " << token << endl;
+                }
+                break;
+            case 28:
+                if (!get_parameters_end(token, lex, current_line)) {
+                    cout << "Erro na linha " << error_line << ": " << token << endl;
+                }
+                break;
+            case 29:
+                if (!get_parameters_mid(token, lex, current_line)) {
                     cout << "Erro na linha " << error_line << ": " << token << endl;
                 }
                 break;

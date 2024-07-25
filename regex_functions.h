@@ -29,14 +29,21 @@ int get_index(map<int, tuple<string, string, int>> &lex)
     return lastIndex;
 }
 
-bool get_braces(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
+bool get_braces_init(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
     int lastIndex = get_index(lex);
     if (regex_match(token, symbol_op_init))
     {
         lex[lastIndex] = make_tuple("symbol_op_init", token, linha_atual);
         return true;
-    } else if(regex_match(token, symbol_op_end)) {
+    } 
+    return false;
+}
+
+bool get_braces_end(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
+{
+    int lastIndex = get_index(lex);
+    if(regex_match(token, symbol_op_end)) {
         lex[lastIndex] = make_tuple("symbol_op_end", token, linha_atual);
         return true;
     }
@@ -53,20 +60,33 @@ bool get_quotes(string token, map<int, tuple<string, string, int>> &lex, int lin
     return false;
 }
 
-bool get_parameters(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
+bool get_parameters_init(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
     int lastIndex = get_index(lex);
     if (regex_match(token, symbol_parameter_init))
     {
         lex[lastIndex] = make_tuple("symbol_parameter_init", token, linha_atual);
         return true;
-    } else if(regex_match(token, symbol_parameter_end)) {
-        lex[lastIndex] = make_tuple("symbol_parameter_end", token, linha_atual);
-        return true;
-    } else if(regex_match(token, symbol_op_mid)) {
+    } 
+    return false;
+}
+
+bool get_parameters_mid(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
+{
+    int lastIndex = get_index(lex);
+    if(regex_match(token, symbol_op_mid)) {
         lex[lastIndex] = make_tuple("symbol_parameter_end", token, linha_atual);
         return true;
     }
+    return false;
+}
+bool get_parameters_end(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
+{
+    int lastIndex = get_index(lex);
+    if(regex_match(token, symbol_parameter_end)) {
+        lex[lastIndex] = make_tuple("symbol_parameter_end", token, linha_atual);
+        return true;
+    } 
     return false;
 }
 

@@ -22,7 +22,7 @@ int race() {
         prt("Hino da holanda :" + "p1")
     }
 
-    Radio{Exemplo de operacões aritméticas}
+    @Exemplo de operacões aritméticas@
     int a = 10.
     int b = 5.
     int soma = a + b.
@@ -35,7 +35,7 @@ int race() {
     prt("Multiplicacao: " + multiplicacao).
     prt("Divisao: " + divisao).
 
-    Radio{Exemplo de operacões lógicas}
+    @Exemplo de operacões lógicas@
     bool x = true.
     bool y = false.
     bool and_op = x && y.
