@@ -3,6 +3,7 @@
         "regex": "cpp",
         "*.tcc": "cpp",
         "tuple": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "ostream": "cpp"
     }
 }

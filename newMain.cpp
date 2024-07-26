@@ -204,7 +204,7 @@ int main()
                 
                 if (regex_match(token, quotes)) {
                     current_state = 10;
-                    token.clear();
+                    // token.clear();
                 } else {
                     current_state = 26;
                     error_line = current_line;
@@ -234,6 +234,8 @@ int main()
                 // file.putback(c); //{
                 decrease_line(current_line, c);
                 token += c;
+                cout << "entrou case 11" << endl;
+                cout << "token: " << token << endl;
                 if(get_text_between_quotes(token, lex, current_line)) {
                         // cout << "get_text_between_quotes"  << endl;
                     current_state = 1;
@@ -386,7 +388,7 @@ int main()
                 } else {
                     current_state = 26;
                     error_line = current_line;
-                    cout << "token invalido: " << token << endl;
+                    // cout << "token invalido: " << token << endl;
                 }
 
                 token.clear();
