@@ -67,11 +67,11 @@ regex quotes(R"(\")");
 
 regex all_except_close_brace("[^}]");
 regex all_except_at("[^@]");
+// regex all_except_@("[^}]");
 
 
 regex all_except_quotes(R"([^"]+)");
-
-
+regex quotes_regex("\".*\"");
 
 
 regex restricted_symbols(

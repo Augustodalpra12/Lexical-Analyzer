@@ -234,8 +234,8 @@ int main()
                 // file.putback(c); //{
                 decrease_line(current_line, c);
                 token += c;
-                cout << "entrou case 11" << endl;
-                cout << "token: " << token << endl;
+                // cout << "entrou case 11" << endl;
+                // cout << "token: " << token << endl;
                 if(get_text_between_quotes(token, lex, current_line)) {
                         // cout << "get_text_between_quotes"  << endl;
                     current_state = 1;
@@ -283,6 +283,7 @@ int main()
             case 14:
                 file.putback(c);
                 decrease_line(current_line, c);
+                token.clear();
                 current_state = 1;
 
                 break;

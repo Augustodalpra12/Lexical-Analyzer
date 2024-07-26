@@ -8,12 +8,12 @@ int race() {
         Radio{ tlg ne fio }
         prt(exemplo).
     }
-    
+    ^
     Radio{Exemplo de condicional if-else}
-    int velocidade = 120.
-    
+    int velocidade = 120.300.
+    é á ã õ
     pitEntry (velocidade > 100) {
-        prt("Velocidade alta, reduza!")..
+        prt("Velocidade alta, reduza éã!")..
     } pitExit {
         prt("Velocidade segura.")..
     }
