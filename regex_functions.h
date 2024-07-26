@@ -278,8 +278,7 @@ bool get_token(string token, map<int, tuple<string, string, int>> &lex, int linh
     {
         lex[lastIndex] = make_tuple("id", token, linha_atual);
         return true;
-        // cout << "Token encontrado: " << token << endl;
-        return true;
+
     }
     return false;
 }
@@ -341,107 +340,5 @@ bool get_error(string token, map<int, tuple<string, string, int>> &lex, int linh
     }
     return false;
 }
-// bool get_special_char(string token, map<int, tuple<string, string, int>> &lex)
-// {
-//     int lastIndex;
-//     if (!lex.empty())
-//     {
-//         auto last = lex.rbegin(); // rbegin() aponta para o último elemento
-//         lastIndex = last->first;
-//         lastIndex++;
-//     }
-//     else
-//     {
-//         lastIndex = 0;
-//     }
-//     if (regex_match(token, symbol_op_init))
-//     {
-//         lex[lastIndex] = make_tuple("symbol_op_init", token);
-//         return true;
-//     }
-//     else if (regex_match(token, symbol_op_end))
-//     {
-//         lex[lastIndex] = make_tuple("symbol_op_end", token);
-//         return true;
-//     }
-//     else if (regex_match(token, symbol_parameter_init))
-//     {
-//         lex[lastIndex] = make_tuple("symbol_parameter_init", token);
-//         return true;
-//     }
-//     else if (regex_match(token, symbol_parameter_end))
-//     {
-//         lex[lastIndex] = make_tuple("symbol_parameter_end", token);
-//         return true;
-//     }
-//     else if (regex_match(token, symbol_op_mid))
-//     {
-//         lex[lastIndex] = make_tuple("symbol_op_mid", token);
-//         return true;
-//     }
-//     return false;
-// }
-
-// bool get_init_comment(string token, map<int, tuple<string, string, int>> &lex)
-// {
-//     int lastIndex;
-//     if (!lex.empty())
-//     {
-//         auto last = lex.rbegin(); // rbegin() aponta para o último elemento
-//         lastIndex = last->first;
-//         lastIndex++;
-//     }
-//     else
-//     {
-//         lastIndex = 0;
-//     }
-//     if (regex_match(token, symbol_op_init))
-//     {
-//         lex[lastIndex] = make_tuple("symbol_op_init", token);
-//         return true;
-//     }
-//     return false;
-// }
-
-// bool get_end_comment(string token, map<int, tuple<string, string, int>> &lex)
-// {
-//     int lastIndex;
-//     if (!lex.empty())
-//     {
-//         auto last = lex.rbegin(); // rbegin() aponta para o último elemento
-//         lastIndex = last->first;
-//         lastIndex++;
-//     }
-//     else
-//     {
-//         lastIndex = 0;
-//     }
-//     if (regex_match(token, symbol_op_end))
-//     {
-//         lex[lastIndex] = make_tuple("symbol_op_end", token);
-//         return true;
-//     }
-//     return false;
-// }
-
-
-
-
-// bool get_comment_token(string token, map<int, tuple<string, string, int>>& lex) {
-//         int lastIndex;
-//     if (!lex.empty()) {
-//         auto last = lex.rbegin(); // rbegin() aponta para o último elemento
-//         lastIndex = last->first;
-//         lastIndex++;
-//     } else {
-//         lastIndex = 0;
-//     }
-//     if(regex_match(token, reserved_comment)) {
-//         lex[lastIndex] = make_tuple("reserved_comment", token);
-
-//         return true;
-//     }
-//     return false;
-// }
 
 #endif // REGEX_FUNCTIONS_H
