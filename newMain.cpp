@@ -62,7 +62,7 @@ int main()
                     current_state = 9;
                     token = token + c;
                 } else if (regex_match(string(1, c), reserved_comment)) {
-                    current_state = 12;
+                    current_state = 13;
                     token = token + c;
                 } else if(regex_match(string(1, c), symbol_op_init)) {
                     current_state = 15;
@@ -202,7 +202,7 @@ int main()
                 file.putback(c); //{
                 decrease_line(current_line, c);
                 
-                if (get_quotes(token, lex, current_line)) {
+                if (regex_match(token, quotes)) {
                     current_state = 10;
                     token.clear();
                 } else {
@@ -220,10 +220,8 @@ int main()
                 } else if (regex_match(string(1, c), quotes)){
                     // cout << "quotes" << endl;
                     current_state = 11;
-                    if(get_text_between_quotes(token, lex, current_line)) {
-                        // cout << "get_text_between_quotes"  << endl;
-                    }
-                    token.clear();
+                    
+                    // token.clear();
                     file.putback(c);
                 } else {
                     current_state = 26;
@@ -235,8 +233,9 @@ int main()
             case 11:
                 // file.putback(c); //{
                 decrease_line(current_line, c);
-                token = c;
-                if (get_quotes(token, lex, current_line)) {
+                token += c;
+                if(get_text_between_quotes(token, lex, current_line)) {
+                        // cout << "get_text_between_quotes"  << endl;
                     current_state = 1;
                     token.clear();
                 }  else {
@@ -245,19 +244,19 @@ int main()
 
                 }
                 break;
-            case 12:
-                file.putback(c); //{
-                decrease_line(current_line, c);
+            // case 12:
+            //     file.putback(c); //{
+            //     decrease_line(current_line, c);
                 
-                if (regex_match(token, reserved_comment)) {
-                    current_state = 13;
-                    token.clear();
-                } else {
-                    current_state = 26;
-                    error_line = current_line;
+            //     if (regex_match(token, reserved_comment)) {
+            //         current_state = 13;
+            //         token.clear();
+            //     } else {
+            //         current_state = 26;
+            //         error_line = current_line;
 
-                }
-                break;
+            //     }
+            //     break;
                 // if(regex_match(string(1, c), symbol_op_init)){
                 //     current_state = 16;
                 // } else {

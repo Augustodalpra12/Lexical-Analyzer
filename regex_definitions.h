@@ -73,6 +73,7 @@ regex all_except_quotes(R"([^"]+)");
 
 
 
+
 regex restricted_symbols(
         "(?!("
         "[0-9]+|"

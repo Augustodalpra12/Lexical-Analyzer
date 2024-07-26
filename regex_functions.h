@@ -299,7 +299,7 @@ bool get_text_between_quotes(string token, map<int, tuple<string, string, int>> 
 {
     int lastIndex = get_index(lex);
     // cout << "entrou na funcao" << endl;
-    if (regex_match(token, all_except_quotes) || regex_match(token, portuguese)|| regex_match(token, space))
+    if (regex_match(token, all_except_quotes) || regex_match(token, portuguese)|| regex_match(token, space)|| regex_match(token, quotes)) //testar all symbols
     {
         lex[lastIndex] = make_tuple("text_between_quotes", token, linha_atual);
         return true;
