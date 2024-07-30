@@ -18,7 +18,7 @@ int get_index(map<int, tuple<string, string, int>> &lex)
     int lastIndex;
     if (!lex.empty())
     {
-        auto last = lex.rbegin(); // rbegin() aponta para o último elemento
+        auto last = lex.rbegin(); // 
         lastIndex = last->first;
         lastIndex++;
     }
@@ -126,7 +126,7 @@ bool get_logic(string token, map<int, tuple<string, string, int>> &lex, int linh
     int lastIndex;
     if (!lex.empty())
     {
-        auto last = lex.rbegin(); // rbegin() a ponta para o último elemento
+        auto last = lex.rbegin();
         lastIndex = last->first;
         lastIndex++;
     }
@@ -207,7 +207,7 @@ bool get_integer(string token, map<int, tuple<string, string, int>> &lex, int li
     int lastIndex;
     if (!lex.empty())
     {
-        auto last = lex.rbegin(); // rbegin() aponta para o último elemento
+        auto last = lex.rbegin(); 
         lastIndex = last->first;
         lastIndex++;
     }  else  {
@@ -297,10 +297,8 @@ bool get_dot(string token, map<int, tuple<string, string, int>> &lex, int linha_
 bool get_text_between_quotes(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
     int lastIndex = get_index(lex);
-    // cout << "entrou na funcao" << endl;
-    if (regex_match(token, quotes_regex) ) //testar all symbols
+    if (regex_match(token, quotes_regex) ) 
     {
-        // cout << "entrou no if" << endl;
         lex[lastIndex] = make_tuple("text_between_quotes", token, linha_atual);
         return true;
     }
