@@ -90,11 +90,9 @@ int main()
                     current_state = 25;
                     token = token + c;
                 } else {
-                    
                     current_state = 26;
                     error_line = current_line;
                     token += c;
-
                 }
                 break;
                 case 2:
@@ -118,7 +116,6 @@ int main()
                     current_state = 26;
                     error_line = current_line;
                 }
-
                 break;
 
             case 4:
@@ -144,7 +141,6 @@ int main()
                 } else {
                     current_state = 26;
                     error_line = current_line;
-
                 }
                 break;
 
@@ -178,7 +174,6 @@ int main()
                 } else {
                     current_state = 26;
                     error_line = current_line;
-
                 }
                 break;
             
@@ -204,7 +199,6 @@ int main()
                 } else {
                     current_state = 26;
                     error_line = current_line;
-
                 }
                 break;
 
@@ -217,7 +211,6 @@ int main()
                 }  else {
                     current_state = 26;
                     error_line = current_line;
-
                 }
                 break;
             
@@ -240,9 +233,8 @@ int main()
                 break;
             
             case 15:
-                file.putback(c); //{
+                file.putback(c); 
                 decrease_line(current_line, c);
-                
                 if (get_braces_init(token, lex, current_line)) {
                     current_state = 1;
                     token.clear();
@@ -253,7 +245,7 @@ int main()
                 break;
 
             case 16:
-                file.putback(c); //{
+                file.putback(c); 
                 decrease_line(current_line, c);
                 if (get_braces_end(token, lex, current_line)) {
                     current_state = 1;
@@ -261,11 +253,11 @@ int main()
                 } else {
                     current_state = 26;
                     error_line = current_line;
-
                 }
                 break;
+
             case 17:
-                file.putback(c); //{
+                file.putback(c); 
                 decrease_line(current_line, c);
                 if (get_parameters_init(token, lex, current_line)) {
                     current_state = 1;
@@ -277,7 +269,7 @@ int main()
                 break;
 
             case 18:
-                file.putback(c); //{
+                file.putback(c); 
                 decrease_line(current_line, c);
                 if (get_parameters_end(token, lex, current_line)) {
                     current_state = 1;
@@ -289,7 +281,7 @@ int main()
                 break;
             
             case 19:
-                file.putback(c); //{
+                file.putback(c); 
                 decrease_line(current_line, c);
                 if (get_parameters_mid(token, lex, current_line)) {
                     current_state = 1;
@@ -338,7 +330,6 @@ int main()
                 token.clear();
                 break;
 
-
             case 23:
                 file.putback(c);
                 decrease_line(current_line, c);
@@ -352,9 +343,8 @@ int main()
                 break;
 
             case 24:
-                file.putback(c); //{
+                file.putback(c); 
                 decrease_line(current_line, c);
-                
                 if (get_log_e(token, lex, current_line)) {
                     current_state = 1;
                     token.clear();
@@ -365,7 +355,7 @@ int main()
                 break;
 
             case 25:
-                file.putback(c); //{
+                file.putback(c); 
                 decrease_line(current_line, c);
                 if (get_log_or(token, lex, current_line)) {
                     current_state = 1;
@@ -381,7 +371,6 @@ int main()
                 decrease_line(current_line, c);
                 cout << red_flag << " Erro na linha: " << error_line << " Caracter Inválido:  " << token << endl;
                 current_state = 1;
-
                 token.clear();
                 break;
         }   
@@ -486,8 +475,8 @@ int main()
     for (const auto &pair : lex)
     {
         int key = pair.first;
-        string id = get<0>(pair.second);    // Acessa o primeiro elemento da tupla
-        string token = get<1>(pair.second); // Acessa o segundo elemento da tupla
+        string id = get<0>(pair.second); 
+        string token = get<1>(pair.second); 
         int line = get<2>(pair.second);
         cout << key << ": [" << id << ", '" << token << "', '" << line << "']" << endl;
     }
