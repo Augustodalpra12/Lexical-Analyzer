@@ -13,6 +13,8 @@ regex char_regex("[a-zA-Z]");
 regex digit("[0-9]");
 
 regex quotes_regex("\".*\"");
+regex at_regex(R"(@\s*(.*?)\s*@)");
+
 
 regex symbol_id("[\\_]");
 regex symbol_parameter_init("[(]");

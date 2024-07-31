@@ -11,7 +11,7 @@ int race() {
     ^
     Radio{Exemplo de condicional if-else}
     int velocidade = 120.300.
-    é á ã õ
+    "é á ã õ"
     pitEntry (velocidade > 100) {
         prt("Velocidade alta, reduza éã!")..
     } pitExit {
@@ -49,6 +49,7 @@ int race() {
     prt("NOT: " + not_op)
 
     return 0.
+ @ dasdasdas@
 }
 
 $
