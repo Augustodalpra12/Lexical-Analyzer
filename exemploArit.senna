@@ -3,19 +3,19 @@ int pitStop(int a, int b) {
 int resultado = 0.
 
 resultado = a + b.
-prt("Soma: ", resultado).
+prt("Soma: " + resultado).
 
 resultado = a - b.
-prt("Subtração: ", resultado).
+prt("Subtração: " + resultado).
 
 resultado = a * b.
-prt("Multiplicação: ", resultado).
+prt("Multiplicação: " + resultado).
 
 resultado = a / b.
-prt("Divisão: ", resultado).
+prt("Divisão: " + resultado).
 
 resultado = a ^ b.
-prt("Potência: ", resultado).
+prt("Potência: " + resultado).
 
 return resultado.
 }
