@@ -25,6 +25,7 @@ int main()
     int current_state = 1;
     int current_line = 1;
     int error_line = 1;
+    int comment_line = 0;
     string red_flag = "\U0001F6A9";
     string line;
 
@@ -54,6 +55,7 @@ int main()
                     current_state = 9;
                     token = token + c;
                 } else if (regex_match(string(1, c), reserved_comment)) {
+                    comment_line = current_line;
                     current_state = 13;
                     token = token + c;
                 } else if(regex_match(string(1, c), symbol_op_init)) {
@@ -378,6 +380,7 @@ int main()
 
        if (!token.empty())
     {
+        // error_line = current_line;
         switch (current_state)
         {
             case 3:
@@ -414,6 +417,13 @@ int main()
             case 11:
                 if(!get_quotes(token, lex, current_line)) {
                     cout << red_flag << " Erro na linha: " << error_line << " Caracter Inválido:  " << token << endl;
+                }
+                break;
+            case 13:
+                if(!(regex_match(token, at_regex))) {
+                    cout << red_flag << " Erro na linha: " << comment_line << " Faltou fechar o comentário com o caracter @:  " << endl;
+                } else  {
+                    cout << red_flag << " Erro na linha: " << comment_line << " Caracter Inválido:  " << token << endl;
                 }
                 break;
             case 15:
@@ -466,8 +476,11 @@ int main()
                     cout << red_flag << " Erro na linha: " << error_line << " Caracter Inválido:  " << token << endl;
                 }
                 break;
-            default:
+            case 26:    
                 cout << red_flag << " Erro na linha: " << error_line << " Caracter Inválido:  " << token << endl;
+
+            // default:
+            //     cout << red_flag << " Erro na linha: " << error_line << " Caracter Inválido:  " << token << endl;
 
         }
     }
