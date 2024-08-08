@@ -26,6 +26,7 @@ int main()
     int current_line = 1;
     int error_line = 1;
     int comment_line = 0;
+    int string_line = 0;
     string red_flag = "\U0001F6A9";
     string line;
 
@@ -54,6 +55,7 @@ int main()
                 } else if (regex_match(string(1, c), quotes)) {
                     current_state = 9;
                     token = token + c;
+                    string_line = current_line;
                 } else if (regex_match(string(1, c), reserved_comment)) {
                     comment_line = current_line;
                     current_state = 13;
@@ -182,10 +184,11 @@ int main()
             case 9:
                 file.putback(c);
                 decrease_line(current_line, c);
+                string_line = current_line;
                 if (regex_match(token, quotes)) {
                     current_state = 10;
                 } else {
-                    current_state = 26;
+                    current_state = 12;
                     error_line = current_line;
                 }
                 break;
@@ -199,7 +202,7 @@ int main()
                     current_state = 11;
                     file.putback(c);
                 } else {
-                    current_state = 26;
+                    current_state = 12;
                     error_line = current_line;
                 }
                 break;
@@ -211,9 +214,16 @@ int main()
                     current_state = 1;
                     token.clear();
                 }  else {
-                    current_state = 26;
+                    current_state = 12;
                     error_line = current_line;
                 }
+                break;
+            case 12:
+                file.putback(c);
+                decrease_line(current_line, c);
+                cout << red_flag << " Erro na linha: " << string_line << " Caracter Inválido:  " << token << endl;
+                current_state = 1;
+                token.clear();
                 break;
             
             case 13:
@@ -318,6 +328,8 @@ int main()
                     error_line = current_line;
                 }
                 break;
+
+            
                 
             case 22:
                 file.putback(c);
@@ -375,6 +387,9 @@ int main()
                 current_state = 1;
                 token.clear();
                 break;
+            
+            case 27:
+                
         }   
     }
 
@@ -403,20 +418,24 @@ int main()
                 }
                 break;
             case 9:
-                if(!get_quotes(token, lex, current_line)) {
-                    cout << red_flag << " Erro na linha: " << error_line << " Caracter Inválido:  " << token << endl;
-
+                if(!(get_text_between_quotes(token, lex, current_line))) {
+                    cout << red_flag << " Erro na linha: " << string_line << " Faltou fechar o comentário com o caracter \"  " << endl;
+                } else  {
+                    cout << red_flag << " Erro na linha: " << string_line << " Caracter Inválido:  " << token << endl;
                 }
                 break;
             case 10:
-                if(!get_text_between_quotes(token, lex, current_line)) {
-                    cout << red_flag << " Erro na linha: " << error_line << " Caracter Inválido:  " << token << endl;
-
+                if(!(get_text_between_quotes(token, lex, current_line))) {
+                    cout << red_flag << " Erro na linha: " << string_line << " Faltou fechar o comentário com o caracter \"  " << endl;
+                } else  {
+                    cout << red_flag << " Erro na linha: " << string_line << " Caracter Inválido:  " << token << endl;
                 }
                 break;
             case 11:
-                if(!get_quotes(token, lex, current_line)) {
-                    cout << red_flag << " Erro na linha: " << error_line << " Caracter Inválido:  " << token << endl;
+                if(!(get_text_between_quotes(token, lex, current_line))) {
+                    cout << red_flag << " Erro na linha: " << string_line << " Faltou fechar o comentário com o caracter \"  " << endl;
+                } else  {
+                    cout << red_flag << " Erro na linha: " << string_line << " Caracter Inválido:  " << token << endl;
                 }
                 break;
             case 13:
