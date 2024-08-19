@@ -329,4 +329,4 @@ bool get_log_or(string token, map<int, tuple<string, string, int>> &lex, int lin
 }
 
 
-#endif // REGEX_FUNCTIONS_H
+#endif // REGEX_FUNCTIONS_H 
