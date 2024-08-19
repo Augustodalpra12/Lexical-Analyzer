@@ -37,8 +37,8 @@ regex reserved_prt("(prt)");
 regex reserved_scn("(scn)");  
 
 
-regex op_log_e("&");
-regex op_log_or("\\|");
+regex op_log_e("&&");
+regex op_log_or("\\||"); // ou ("\\|\\|")
 
 regex end_line("\\.");
 
@@ -52,6 +52,12 @@ regex op_rel_minor("<");
 regex op_rel_bigger(">");
 regex op_rel_equal("=");
 regex op_rel_not("\\!");
+
+regex op_rel_double_equal("==");
+regex op_rel_minor_equal("<=");
+regex op_rel_bigger_equal(">=");
+regex op_rel_not_equal("!=");
+
 
 regex line_feed("(\r\n|\n)");
 regex line_feed2("[\r\n]+");

@@ -532,7 +532,7 @@ int main()
                 }
                 break;
             case 21:
-                if(!get_logic(token, lex, current_line)) {
+                if(!get_single_symbol(token, lex, current_line)) {
                     cout << red_flag << " Erro na linha: " << error_line << " Caracter Inválido:  " << token << endl;
                 }
                 break;
