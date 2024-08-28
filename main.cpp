@@ -78,7 +78,7 @@ int main()
                 } else if(regex_match(string(1, c), end_line)) {
                     current_state = 20;
                     token += c;
-                } else if(regex_match(string(1, c), op_rel_minor) || regex_match(string(1, c), op_rel_bigger) || regex_match(string(1, c), op_rel_equal) || regex_match(string(1, c), op_rel_not)) {
+                } else if(regex_match(string(1, c), op_rel_minor) || regex_match(string(1, c), op_rel_bigger) || regex_match(string(1, c), op_rel_not)) {
                     current_state = 21;
                     token += c;
                 } else if(regex_match(string(1, c), spaces) || regex_match(string(1, c), line_feed) || regex_match(string(1, c), line_feed2)) {
@@ -93,13 +93,16 @@ int main()
                 } else if (regex_match(string(1, c), op_log_or)) {
                     current_state = 25;
                     token = token + c;
+                } else if(regex_match(string(1, c), op_rel_equal)) {
+                    current_state = 31;
+                    token = token + c;
                 } else {
                     current_state = 26;
                     error_line = current_line;
                     token += c;
                 }
                 break;
-                case 2:
+            case 2:
                 if (regex_match(string(1, c), id) || regex_match(string(1, c), symbol_id)){
                     current_state = 2;
                     token += c;
@@ -318,14 +321,15 @@ int main()
                 break;
 
             case 21:
-                file.putback(c);
-                decrease_line(current_line, c);
-                if (get_logic(token, lex, current_line)) {
-                    current_state = 1;
+                if(regex_match(string(1, c), op_rel_equal)) {
+                    current_state = 30;
+                    token += c;
+                }
+                else {
+                    file.putback(c);
+                    decrease_line(current_line, c);
+                    current_state = 29;
                     token.clear();
-                } else {
-                    current_state = 26;
-                    error_line = current_line;
                 }
                 break;
 
@@ -357,11 +361,9 @@ int main()
                 break;
 
             case 24:
-                file.putback(c); 
-                decrease_line(current_line, c);
-                if (get_log_e(token, lex, current_line)) {
-                    current_state = 1;
-                    token.clear();
+                if (regex_match(string(1, c), op_log_e)) {
+                    current_state = 27;
+                    token +=c;
                 } else {
                     current_state = 26;
                     error_line = current_line;
@@ -369,11 +371,9 @@ int main()
                 break;
 
             case 25:
-                file.putback(c); 
-                decrease_line(current_line, c);
-                if (get_log_or(token, lex, current_line)) {
-                    current_state = 1;
-                    token.clear();
+                if (regex_match(string(1, c), op_log_or)) {
+                    current_state = 28;
+                    token +=c;
                 } else {
                     current_state = 26;
                     error_line = current_line;
@@ -387,8 +387,64 @@ int main()
                 current_state = 1;
                 token.clear();
                 break;
-            
+
             case 27:
+                file.putback(c);
+                decrease_line(current_line, c);
+                if (get_log_e(token, lex, current_line)) {
+                    current_state = 1;
+                    token.clear();
+                } else {
+                    current_state = 26;
+                    error_line = current_line;
+                }
+                break;
+            case 28:
+                file.putback(c);
+                decrease_line(current_line, c);
+                if (get_log_or(token, lex, current_line)) {
+                    current_state = 1;
+                    token.clear();
+                } else {
+                    current_state = 26;
+                    error_line = current_line;
+                }
+                break;
+            case 29:
+                file.putback(c);
+                decrease_line(current_line, c);
+                if (get_single_symbol(token, lex, current_line)) {
+                    current_state = 1;
+                    token.clear();
+                } else {
+                    current_state = 26;
+                    error_line = current_line;
+                }
+                break;          
+
+            case 30:
+                file.putback(c);
+                decrease_line(current_line, c);
+                if (get_double_symbol(token, lex, current_line)) {
+                    current_state = 1;
+                    token.clear();
+                } else {
+                    current_state = 26;
+                    error_line = current_line;
+                }
+                break;
+            case 31:
+                if(regex_match(string(1, c), op_rel_equal)) {
+                    current_state = 30;
+                    token += c;
+                }
+                else {
+                    file.putback(c);
+                    decrease_line(current_line, c);
+                    current_state = 29;
+                    token.clear();
+                }
+                break;
                 
         }   
     }
@@ -476,7 +532,7 @@ int main()
                 }
                 break;
             case 21:
-                if(!get_logic(token, lex, current_line)) {
+                if(!get_single_symbol(token, lex, current_line)) {
                     cout << red_flag << " Erro na linha: " << error_line << " Caracter Inválido:  " << token << endl;
                 }
                 break;

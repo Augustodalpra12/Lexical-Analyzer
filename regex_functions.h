@@ -121,7 +121,7 @@ bool get_arit(string token, map<int, tuple<string, string, int>> &lex, int linha
     return false;
 }
 
-bool get_logic(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
+bool get_single_symbol(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
     int lastIndex;
     if (!lex.empty())
@@ -156,7 +156,41 @@ bool get_logic(string token, map<int, tuple<string, string, int>> &lex, int linh
     }
     return false;
 }
-
+bool get_double_symbol(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
+{
+    int lastIndex;
+    if (!lex.empty())
+    {
+        auto last = lex.rbegin();
+        lastIndex = last->first;
+        lastIndex++;
+    }
+    else
+    {
+        lastIndex = 0;
+    }
+    if (regex_match(token, op_rel_double_equal))
+    {
+        lex[lastIndex] = make_tuple("op_rel_double_equal", token, linha_atual);
+        return true;
+    }
+    else if (regex_match(token, op_rel_minor_equal))
+    {
+        lex[lastIndex] = make_tuple("op_rel_minor_equal", token, linha_atual);
+        return true;
+    }
+    else if (regex_match(token, op_rel_bigger_equal))
+    {
+        lex[lastIndex] = make_tuple("op_rel_bigger_equal", token, linha_atual);
+        return true;
+    }
+    else if (regex_match(token, op_rel_not_equal))
+    {
+        lex[lastIndex] = make_tuple("op_rel_not_equal", token, linha_atual);
+        return true;
+    }
+    return false;
+}
 
 bool get_op_end(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
@@ -329,4 +363,4 @@ bool get_log_or(string token, map<int, tuple<string, string, int>> &lex, int lin
 }
 
 
-#endif // REGEX_FUNCTIONS_H
+#endif // REGEX_FUNCTIONS_H 
