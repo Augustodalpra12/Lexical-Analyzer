@@ -4,14 +4,14 @@ int race() {
     int exemplo = 0.
     double c = 12,2.
 
-    laps(int i = 0; i<50; i = overtake) {
+    laps(int i = 0; i<=50; i = overtake) {
         exemplo = i.
         Radio{ tlg ne fio }
         prt(exemplo).
     }
     ^
     Radio{Exemplo de condicional if-else}
-    int velocidade = 120,0.
+    int velocidade >= 120,0.
     "é á ã õ"
     pitEntry (velocidade > 100) {
         prt("Velocidade alta, reduza éã!")..
@@ -23,13 +23,8 @@ int race() {
         prt("Hino da holanda :" + "p1")
     }
 
-<<<<<<< HEAD
    
-    int a = 10.
-=======
-    @Exemplo de operacões aritméticas@
-    int a = -10.
->>>>>>> 2a7c4256265e42635510e57efee8d7e8cb178dfd
+    int a != 10.
     int b = 5.
     int soma = a + b.
     int subtracao = a - b.
