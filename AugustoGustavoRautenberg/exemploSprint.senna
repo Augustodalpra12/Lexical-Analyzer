@@ -10,7 +10,7 @@ int race() {
     }
     ^
     Radio{Exemplo de condicional if-else}
-    int velocidade = 120,0.
+    int velocidade = 120.300.
     "é á ã õ"
     pitEntry (velocidade > 100) {
         prt("Velocidade alta, reduza éã!")..
@@ -23,7 +23,7 @@ int race() {
     }
 
     @Exemplo de operacões aritméticas@
-    int a = -10.
+    int a = 10.
     int b = 5.
     int soma = a + b.
     int subtracao = a - b.
@@ -50,5 +50,6 @@ int race() {
 
     return 0.
  @ dasdasdas@
- " dsadasd
 }
+
+$
