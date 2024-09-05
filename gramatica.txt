@@ -1,0 +1,40 @@
+Gramática
+
+S -> <BEGIN>
+
+BEGIN -> reserved_types reserved_main symbol_parameter_init 
+symbol_parameter_end symbol_op_end <CODE_BLOCK> symbol_op_end
+
+CODE_BLOCK -> <EXPRESSION> | <ATTRIBUTION> | <PRINT> | <SCAN> | 
+<LAPS> | <CIRCUIT> | <PIT> | <COMMENTS> | ε
+
+EXPRESSION -> <ARIT> | <LOGICAL> | <REL> | <OVERTAKE> | <BRAKE>
+
+<OVERTAKE> -> id overtake | integer overtake | double incremento
+<BRAKE> -> id brake | integer brake | double brake
+
+ARIT -> id <ARIT'> | integer <ARIT'> | double <ARIT'>
+
+ARIT' -> <ARIT_SYMBOLS> <ARIT''> | ε
+
+ARIT'' -> id ARIT' | integer ARIT' |
+ double ARIT' | ε
+
+<ARIT_SYMBOLS> + | - | / | * | ^
+
+LOGICAL -> id <LOGICAL'>
+
+LOGICAL' -> <LOG_SYMBOLS> id LOGICAL' | ε
+
+LOG_SYMBOLS -> op_log_e_function | op_log_or_function
+
+REL -> id REL <REL'> | integer <REL'> | double <REL'>
+
+REL' -> <REL_SYMBOLS> id | <REL_SYMBOLS> integer | <REL_SYMBOLS> double 
+
+ATTRIBUTION -> reserved_types <ATTRIBUTION'>
+ATTRIBUTION' ->  op_rel_equal <EXPRESSION> | id end_line
+
+
+
+incremento na EXPRESSION? arit pode ir pro vazio
