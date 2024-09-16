@@ -5,36 +5,84 @@ S -> <BEGIN>
 BEGIN -> reserved_types reserved_main symbol_parameter_init 
 symbol_parameter_end symbol_op_end <CODE_BLOCK> symbol_op_end
 
-CODE_BLOCK -> <EXPRESSION> | <ATTRIBUTION> | <PRINT> | <SCAN> | 
-<LAPS> | <CIRCUIT> | <PIT> | <COMMENTS> | ε
+CODE_BLOCK -> <EXPRESSION> <CODE_BLOCK> | <ATTRIBUTION> <CODE_BLOCK> | <PRINT> <CODE_BLOCK> | <SCAN> <CODE_BLOCK> | 
+<LAPS> <CODE_BLOCK> | <CIRCUIT> <CODE_BLOCK> | <PIT> <CODE_BLOCK> | <COMMENTS> <CODE_BLOCK> | ε
 
-EXPRESSION -> <ARIT> | <LOGICAL> | <REL> | <OVERTAKE> | <BRAKE>
+# EXPRESSÃO
 
-<OVERTAKE> -> id overtake | integer overtake | double incremento
-<BRAKE> -> id brake | integer brake | double brake
+EXPRESSION -> <ARIT> | <LOGICAL> | <REL> | <OVERTAKE> | symbol_parameter_init <EXPRESSION> symbol_parameter_end
 
-ARIT -> id <ARIT'> | integer <ARIT'> | double <ARIT'>
+<OVERTAKE> -> id reserved_arit
+
+ARIT -> id <ARIT'> | integer <ARIT'> | double <ARIT'> | symbol_parameter_init <ARIT> symbol_parameter_end
 
 ARIT' -> <ARIT_SYMBOLS> <ARIT''> | ε
 
-ARIT'' -> id ARIT' | integer ARIT' |
- double ARIT' | ε
+ARIT'' -> id ARIT' | integer ARIT' | double ARIT' | symbol_parameter_init <ARIT> symbol_parameter_end | ε
 
-<ARIT_SYMBOLS> + | - | / | * | ^
+<ARIT_SYMBOLS> -> + | - | / | * | ^
 
-LOGICAL -> id <LOGICAL'>
+LOGICAL -> id <LOGICAL'> | symbol_parameter_init <LOGICAL> symbol_parameter_end
 
 LOGICAL' -> <LOG_SYMBOLS> id LOGICAL' | ε
 
 LOG_SYMBOLS -> op_log_e_function | op_log_or_function
 
-REL -> id REL <REL'> | integer <REL'> | double <REL'>
+REL -> id REL <REL'> | integer <REL'> | double <REL'> | symbol_parameter_init <REL> symbol_parameter_end
 
 REL' -> <REL_SYMBOLS> id | <REL_SYMBOLS> integer | <REL_SYMBOLS> double 
+
+<REL_SYMBOLS> -> < | > | <= | >= | == | != 
+
+# EXPRESSÃO
+
+# ATRIBUIÇÃO
 
 ATTRIBUTION -> reserved_types <ATTRIBUTION'>
 ATTRIBUTION' ->  op_rel_equal <EXPRESSION> | id end_line
 
+# ATRIBUIÇÃO
+
+# PRINT
+
+PRINT -> reserved_prt symbol_parameter_init <ID_OR_STRING> symbol_parameter_end
+ID_OR_STRING -> quotes all_except_quotes quotes <ID_OR_STRING'> | id <ID_OR_STRING'> | integer <ID_OR_STRING'> | double <ID_OR_STRING'>
+D_OR_STRING' -> op_arit_sum <ID_OR_STRING''> <ID_OR_STRING'> | ε
+ID_OR_STRING'' -> quotes all_except_quotes quotes | id | integer | double
+
+# PRINT
+
+# SCAN
+
+SCAN -> reserved_scn symbol_parameter_init <ID_OR_STRING> symbol_parameter_end
+
+# SCAN
+
+# LAPS
+for(int i =0; i<sla; i = overtake)
+for(int i =0; i<sla; i = i + id)
+for(int i =0; i<sla; i = id + 1)
 
 
-incremento na EXPRESSION? arit pode ir pro vazio
+
+LAPS -> reserved_loops symbol_parameter_init <INIT_LAPS>  op_rel_equal  integer symbol_op_mid id <REL_SYMBOLS> <ID_OR_VALUE> symbol_op_mid id op_rel_equal <LAPS_INC> symbol_parameter_end symbol_op_init <CODE_BLOCK> symbol_op_end
+INIT_LAPS -> reserved_types id | id
+LAPS_INC -> reserved_arit | id <PLUS_MINUS> <ID_OR_VALUE>
+PLUS_MINUS -> + | -
+<ID_OR_VALUE> -> id | integer | double     
+
+# LAPS
+
+# CIRCUIT
+
+CIRCUIT -> reserved_loops symbol_parameter_init <CIRCUIT_LOG> symbol_parameter_end symbol_op_init <CODE_BLOCK> symbol_op_end
+CIRCUIT_LOG -> id <CIRCUIT_LOG'> | integer <CIRCUIT_LOG'> | double <CIRCUIT_LOG'> 
+CIRCUIT_LOG' -> <LOOPS_SYMBOLS> id <CIRCUIT_LOG'> | <LOOPS_SYMBOLS> integer <CIRCUIT_LOG'> | <LOOPS_SYMBOLS> double <CIRCUIT_LOG'> | ε
+LOOPS_SYMBOLS -> <REL_SYMBOLS> | <LOG_SYMBOLS> |  <ARIT_SYMBOLS>
+
+# PIT
+
+PIT-> reserved_condition symbol_parameter_init <PIT_LOG> symbol_parameter_end symbol_block_init <CODE_BLOCK> symbol_block_end <PIT_EXIT>
+PIT_LOG-> id <PIT_LOG'> | integer <PIT_LOG'> | double <PIT_LOG'> 
+PIT_LOG'-> <LOOPS_SYMBOLS> id <PIT_LOG'> | <LOOPS_SYMBOLS> integer <PIT_LOG'> | <LOOPS_SYMBOLS> double <PIT_LOG'> | ε
+PIT_EXIT -> reserved_condition symbol_parameter_init CODE_BLOCK symbol_block_end | ε
