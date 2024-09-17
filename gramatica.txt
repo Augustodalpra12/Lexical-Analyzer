@@ -10,9 +10,9 @@ CODE_BLOCK -> <EXPRESSION> <CODE_BLOCK> | <ATTRIBUTION> <CODE_BLOCK> | <PRINT> <
 
 # EXPRESSÃO
 
-EXPRESSION -> <ARIT> | <LOGICAL> | <REL> | <OVERTAKE> | symbol_parameter_init <EXPRESSION> symbol_parameter_end
+EXPRESSION -> <ARIT> <OPTIONAL_ENDLINE> | <LOGICAL> <OPTIONAL_ENDLINE>| <REL> <OPTIONAL_ENDLINE>| <OVERTAKE> <OPTIONAL_ENDLINE>| symbol_parameter_init <EXPRESSION> symbol_parameter_end <OPTIONAL_ENDLINE> //mudei
 
-<OVERTAKE> -> id reserved_arit
+<OVERTAKE> -> id op_rel_equal reserved_arit //MUDEI
 
 ARIT -> id <ARIT'> | integer <ARIT'> | double <ARIT'> | symbol_parameter_init <ARIT> symbol_parameter_end
 
@@ -39,7 +39,8 @@ REL' -> <REL_SYMBOLS> id | <REL_SYMBOLS> integer | <REL_SYMBOLS> double
 # ATRIBUIÇÃO
 
 ATTRIBUTION -> reserved_types <ATTRIBUTION'>
-ATTRIBUTION' ->  op_rel_equal <EXPRESSION> | id end_line
+ATTRIBUTION' -> id <ATTRIBUTION''>
+ATTRIBUTION'' -> op_rel_equal <EXPRESSION> | end_line
 
 # ATRIBUIÇÃO
 
@@ -82,3 +83,9 @@ PIT-> reserved_condition symbol_parameter_init <PIT_LOG> symbol_parameter_end sy
 PIT_LOG-> id <PIT_LOG'> | integer <PIT_LOG'> | double <PIT_LOG'> 
 PIT_LOG'-> <LOOPS_SYMBOLS> id <PIT_LOG'> | <LOOPS_SYMBOLS> integer <PIT_LOG'> | <LOOPS_SYMBOLS> double <PIT_LOG'> | ε
 PIT_EXIT -> reserved_condition symbol_parameter_init CODE_BLOCK symbol_block_end | ε
+
+
+
+
+OPTIONAL_ENDLINE -> end_line | ε
+
