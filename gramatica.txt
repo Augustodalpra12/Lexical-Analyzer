@@ -6,7 +6,7 @@ BEGIN -> reserved_types reserved_main symbol_parameter_init
 symbol_parameter_end symbol_op_end <CODE_BLOCK> symbol_op_end
 
 CODE_BLOCK -> <EXPRESSION> <CODE_BLOCK> | <ATTRIBUTION> <CODE_BLOCK> | <PRINT> <CODE_BLOCK> | <SCAN> <CODE_BLOCK> | 
-<LAPS> <CODE_BLOCK> | <CIRCUIT> <CODE_BLOCK> | <PIT> <CODE_BLOCK> | <COMMENTS> <CODE_BLOCK> | ε
+<LAPS> <CODE_BLOCK> | <CIRCUIT> <CODE_BLOCK> | <PIT> <CODE_BLOCK> | ε
 
 # EXPRESSÃO
 
