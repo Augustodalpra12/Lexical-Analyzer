@@ -60,10 +60,6 @@ SCAN -> reserved_scn symbol_parameter_init <ID_OR_STRING> symbol_parameter_end
 # SCAN
 
 # LAPS
-for(int i =0; i<sla; i = overtake)
-for(int i =0; i<sla; i = i + id)
-for(int i =0; i<sla; i = id + 1)
-
 
 
 LAPS -> reserved_loops symbol_parameter_init <INIT_LAPS>  op_rel_equal  integer symbol_op_mid id <REL_SYMBOLS> <ID_OR_VALUE> symbol_op_mid id op_rel_equal <LAPS_INC> symbol_parameter_end symbol_op_init <CODE_BLOCK> symbol_op_end
