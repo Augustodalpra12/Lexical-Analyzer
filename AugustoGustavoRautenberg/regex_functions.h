@@ -121,7 +121,7 @@ bool get_arit(string token, map<int, tuple<string, string, int>> &lex, int linha
     return false;
 }
 
-bool get_single_symbol(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
+bool get_logic(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
     int lastIndex;
     if (!lex.empty())
@@ -129,10 +129,11 @@ bool get_single_symbol(string token, map<int, tuple<string, string, int>> &lex, 
         auto last = lex.rbegin();
         lastIndex = last->first;
         lastIndex++;
-    } else {
+    }
+    else
+    {
         lastIndex = 0;
     }
-    
     if (regex_match(token, op_rel_minor))
     {
         lex[lastIndex] = make_tuple("op_rel_minor", token, linha_atual);
@@ -155,41 +156,7 @@ bool get_single_symbol(string token, map<int, tuple<string, string, int>> &lex, 
     }
     return false;
 }
-bool get_double_symbol(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
-{
-    int lastIndex;
-    if (!lex.empty())
-    {
-        auto last = lex.rbegin();
-        lastIndex = last->first;
-        lastIndex++;
-    }
-    else
-    {
-        lastIndex = 0;
-    }
-    if (regex_match(token, op_rel_double_equal))
-    {
-        lex[lastIndex] = make_tuple("op_rel_double_equal", token, linha_atual);
-        return true;
-    }
-    else if (regex_match(token, op_rel_minor_equal))
-    {
-        lex[lastIndex] = make_tuple("op_rel_minor_equal", token, linha_atual);
-        return true;
-    }
-    else if (regex_match(token, op_rel_bigger_equal))
-    {
-        lex[lastIndex] = make_tuple("op_rel_bigger_equal", token, linha_atual);
-        return true;
-    }
-    else if (regex_match(token, op_rel_not_equal))
-    {
-        lex[lastIndex] = make_tuple("op_rel_not_equal", token, linha_atual);
-        return true;
-    }
-    return false;
-}
+
 
 bool get_op_end(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
@@ -342,7 +309,7 @@ bool get_text_between_quotes(string token, map<int, tuple<string, string, int>> 
 bool get_log_e(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
     int lastIndex = get_index(lex);
-    if (regex_match(token, op_log_e_function))
+    if (regex_match(token, op_log_e))
     {
         lex[lastIndex] = make_tuple("op_log_e", token, linha_atual);
         return true;
@@ -353,7 +320,7 @@ bool get_log_e(string token, map<int, tuple<string, string, int>> &lex, int linh
 bool get_log_or(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
     int lastIndex = get_index(lex);
-    if (regex_match(token, op_log_or_function))
+    if (regex_match(token, op_log_or))
     {
         lex[lastIndex] = make_tuple("op_log_or", token, linha_atual);
         return true;
@@ -362,4 +329,4 @@ bool get_log_or(string token, map<int, tuple<string, string, int>> &lex, int lin
 }
 
 
-#endif // REGEX_FUNCTIONS_H 
+#endif // REGEX_FUNCTIONS_H

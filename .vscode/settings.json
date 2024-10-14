@@ -5,6 +5,10 @@
         "tuple": "cpp",
         "string": "cpp",
         "ostream": "cpp",
+<<<<<<< HEAD
         "xstring": "cpp"
+=======
+        "iostream": "cpp"
+>>>>>>> afbef25510757d428d17fa5b5b2a5f784b33a0ab
     }
 }

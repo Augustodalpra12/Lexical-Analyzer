@@ -1,10 +1,7 @@
-'int race() {
+int race() {
 
-    Exemplo de loop
+    @Exemplo de loop@
     int exemplo = 0.
-    double c = 12,2.
-
-    
 
     laps(int i = 0; i<50; i = overtake) {
         exemplo = i.
@@ -12,8 +9,9 @@
         prt(exemplo).
     }
     ^
-    @Exemplo de condicional if-else@
-    int velocidade = 120,0.
+    Radio{Exemplo de condicional if-else}
+    int velocidade = 120.300.
+    "é á ã õ"
     pitEntry (velocidade > 100) {
         prt("Velocidade alta, reduza éã!")..
     } pitExit {
@@ -24,7 +22,7 @@
         prt("Hino da holanda :" + "p1")
     }
 
-   
+    @Exemplo de operacões aritméticas@
     int a = 10.
     int b = 5.
     int soma = a + b.
@@ -37,7 +35,7 @@
     prt("Multiplicacao: " + multiplicacao).
     prt("Divisao: " + divisao).
 
-    
+    @Exemplo de operacões lógicas@
     bool x = true.
     bool y = false.
     bool and_op = x && y.
@@ -53,3 +51,5 @@
     return 0.
  @ dasdasdas@
 }
+
+$
