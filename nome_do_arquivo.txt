@@ -1,5 +1,0 @@
-int race() { 
-    abc jiji.
-    hihi 12.
-
-}

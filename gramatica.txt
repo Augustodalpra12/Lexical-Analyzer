@@ -89,3 +89,10 @@ PIT_EXIT -> reserved_condition symbol_parameter_init CODE_BLOCK symbol_block_end
 
 OPTIONAL_ENDLINE -> end_line | ε
 
+
+
+Code_BLOCK separar declaracoes
+
+arit_symbols precedencia de operadores
+
+laps EXPRESSION

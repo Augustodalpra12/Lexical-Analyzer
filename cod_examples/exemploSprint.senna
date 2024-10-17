@@ -1,6 +1,6 @@
-'int race() {
+int race() {
 
-    Exemplo de loop
+
     int exemplo = 0.
     double c = 12,2.
 
@@ -11,13 +11,13 @@
         Radio{ tlg ne fio }
         prt(exemplo).
     }
-    ^
+    
     @Exemplo de condicional if-else@
     int velocidade = 120,0.
     pitEntry (velocidade > 100) {
-        prt("Velocidade alta, reduza éã!")..
+        prt("Velocidade alta, reduza éã!").
     } pitExit {
-        prt("Velocidade segura.")..
+        prt("Velocidade segura.").
     }
 
     void sprintRace(driver maxVerstappen) {
@@ -31,13 +31,14 @@
     int subtracao = a - b.
     int multiplicacao = a * b.
     int divisao = a / b.
+    str string1 = "opa".
 
     prt("Soma: " + soma).
     prt("Subtracao: " + subtracao).
     prt("Multiplicacao: " + multiplicacao).
     prt("Divisao: " + divisao).
 
-    
+    print("TESTE " + string1)
     bool x = true.
     bool y = false.
     bool and_op = x && y.
@@ -51,5 +52,5 @@
     prt("NOT: " + not_op)
 
     return 0.
- @ dasdasdas@
+    @ dasdasdas@
 }

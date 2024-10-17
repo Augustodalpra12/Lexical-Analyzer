@@ -268,19 +268,32 @@ bool get_double(string token, map<int, tuple<string, string, int>> &lex, int lin
 bool get_token(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
     int lastIndex = get_index(lex);
-    if (regex_match(token, reserved_loops))
+    if (regex_match(token, laps))
     {
-        lex[lastIndex] = make_tuple("reserved_loops", token, linha_atual);
+        lex[lastIndex] = make_tuple("laps", token, linha_atual);
+        return true;
+    } else if(regex_match(token, circuit)) {
+        lex[lastIndex] = make_tuple("circuit", token, linha_atual);
         return true;
     }
-    else if (regex_match(token, reserved_condition))
+    else if (regex_match(token, pitEntry))
     {
-        lex[lastIndex] = make_tuple("reserved_condition", token, linha_atual);
+        lex[lastIndex] = make_tuple("pitEntry", token, linha_atual);
+        return true;
+    } 
+    else if (regex_match(token, pitExit))
+    {
+        lex[lastIndex] = make_tuple("pitExit", token, linha_atual);
         return true;
     }
-    else if (regex_match(token, reserved_arit))
+    else if (regex_match(token, overtake))
     {
-        lex[lastIndex] = make_tuple("reserved_arit", token, linha_atual);
+        lex[lastIndex] = make_tuple("overtake", token, linha_atual);
+        return true;
+    }
+    else if (regex_match(token, brake))
+    {
+        lex[lastIndex] = make_tuple("brake", token, linha_atual);
         return true;
     }
     else if (regex_match(token, reserved_main))
@@ -288,9 +301,29 @@ bool get_token(string token, map<int, tuple<string, string, int>> &lex, int linh
         lex[lastIndex] = make_tuple("reserved_main", token, linha_atual);
         return true;
     }
-    else if (regex_match(token, reserved_types))
+    else if (regex_match(token, typeInt))
     {
-        lex[lastIndex] = make_tuple("reserved_types", token, linha_atual);
+        lex[lastIndex] = make_tuple("typeInt", token, linha_atual);
+        return true;
+    }
+        else if (regex_match(token, typeDouble))
+    {
+        lex[lastIndex] = make_tuple("typeDouble", token, linha_atual);
+        return true;
+    }
+        else if (regex_match(token, typeChar))
+    {
+        lex[lastIndex] = make_tuple("typeChar", token, linha_atual);
+        return true;
+    }
+        else if (regex_match(token, typeBoolean))
+    {
+        lex[lastIndex] = make_tuple("typeBoolean", token, linha_atual);
+        return true;
+    }
+        else if (regex_match(token, typeStr))
+    {
+        lex[lastIndex] = make_tuple("typeStr", token, linha_atual);
         return true;
     }
     else if (regex_match(token, reserved_comment))
@@ -307,12 +340,25 @@ bool get_token(string token, map<int, tuple<string, string, int>> &lex, int linh
         lex[lastIndex] = make_tuple("reserved_scn", token, linha_atual);
         return true;
     }
+    else if (regex_match(token, bool_false))
+    {
+        lex[lastIndex] = make_tuple("bool_false", token, linha_atual);
+        return true;
+
+    }
+    else if (regex_match(token, bool_true))
+    {
+        lex[lastIndex] = make_tuple("bool_true", token, linha_atual);
+        return true;
+
+    }
     else if (regex_match(token, id))
     {
         lex[lastIndex] = make_tuple("id", token, linha_atual);
         return true;
 
     }
+    
     return false;
 }
 
@@ -342,7 +388,7 @@ bool get_text_between_quotes(string token, map<int, tuple<string, string, int>> 
 bool get_log_e(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
     int lastIndex = get_index(lex);
-    if (regex_match(token, op_log_e_function))
+    if (regex_match(token, op_log_e))
     {
         lex[lastIndex] = make_tuple("op_log_e", token, linha_atual);
         return true;
@@ -353,7 +399,7 @@ bool get_log_e(string token, map<int, tuple<string, string, int>> &lex, int linh
 bool get_log_or(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
     int lastIndex = get_index(lex);
-    if (regex_match(token, op_log_or_function))
+    if (regex_match(token, op_log_or))
     {
         lex[lastIndex] = make_tuple("op_log_or", token, linha_atual);
         return true;

@@ -1,12 +1,12 @@
 S -> <BEGIN>
 
-RESERVED_TYPES -> typeInt | typeDouble | typeChar | typeStr
+RESERVED_TYPES -> typeInt | typeDouble 
 
 BEGIN -> typeInt reserved_main symbol_parameter_init 
 symbol_parameter_end symbol_op_end <CODE_BLOCK> symbol_op_end
 
-CODE_BLOCK -> <EXPRESSION> <CODE_BLOCK> | <ATTRIBUTION> <CODE_BLOCK> | <ATRIBUTION_BOOL> <CODE_BLOCK | <PRINT> <CODE_BLOCK> | <SCAN> <CODE_BLOCK> | 
-<LAPS> <CODE_BLOCK> | <CIRCUIT> <CODE_BLOCK> | <PIT> <CODE_BLOCK> | ε
+CODE_BLOCK -> <EXPRESSION> <CODE_BLOCK> | <ATTRIBUTION> <CODE_BLOCK> | <ATRIBUTION_BOOL> <CODE_BLOCK> | <PRINT> <CODE_BLOCK> | <SCAN> <CODE_BLOCK> | 
+<LAPS> <CODE_BLOCK> | <CIRCUIT> <CODE_BLOCK> | <PIT> <CODE_BLOCK> | <ATTRIBUTION_STR> <CODE_BLOCK> | <ATTRIBUTION_CHAR> <CODE_BLOCK> | <REL> <CODE_BLOCK> | <LOGIC> <CODE_BLOCK> | ε
 
 # EXPRESSÃO
 
@@ -36,7 +36,14 @@ ATTRIBUTION' -> id <ATTRIBUTION''>
 ATTRIBUTION'' -> op_rel_equal <EXPRESSION> | end_line
 
 ATRIBUTION_BOOL -> typeBoolean id <ATRIBUTION_BOOL'>
-ATRIBUTION_BOOL' -> op_rel_equal bool_false end_line | op_rel_equal bool_true end_line | end_line
+ATRIBUTION_BOOL' -> op_rel_equal <ATTRIBUTION_BOOL''> | end_line
+ATRIBUTION_BOOL'' -> bool_false end_line | bool_true end_line
+
+ATTRIBUTION_STR -> typeStr id <ATTRIBUTION_STR'>
+ATTRIBUTION_STR' -> op_rel_equal quotes all_except_quotes quotes end_line | end_line
+
+ATTRIBUTION_CHAR -> typeChar id <ATTRIBUTION_CHAR'>
+ATTRIBUTION_CHAR' -> op_rel_equal quotes char_regex quotes end_line
 
 # ATRIBUIÇÃO
 
@@ -51,7 +58,7 @@ ID_OR_STRING'' -> quotes all_except_quotes quotes | id | integer | double
 
 # SCAN
 
-SCAN -> reserved_scn symbol_parameter_init <ID_OR_STRING> symbol_parameter_end end_line
+SCAN -> reserved_scn symbol_parameter_init id symbol_parameter_end end_line
 
 # SCAN
 
@@ -72,10 +79,14 @@ CIRCUIT_LOG -> id <CIRCUIT_LOG'> | integer <CIRCUIT_LOG'> | double <CIRCUIT_LOG'
 CIRCUIT_LOG' -> <LOOPS_SYMBOLS> id <CIRCUIT_LOG'> | <LOOPS_SYMBOLS> integer <CIRCUIT_LOG'> | <LOOPS_SYMBOLS> double <CIRCUIT_LOG'> | ε
 LOOPS_SYMBOLS -> <REL_SYMBOLS> | <LOG_SYMBOLS> |  <ARIT_SYMBOLS>
 
+
+<ARIT_SYMBOLS> -> op_arit_sum | op_arit_sub | op_arit_div | op_arit_mult | op_arit_pow
+LOG_SYMBOLS -> op_log_e | op_log_or
+<REL_SYMBOLS> -> op_rel_minor | op_rel_bigger | op_rel_minor_equal | op_rel_bigger_equal | op_rel_double_equal | op_rel_not_equal
+
 # PIT
 
-PIT-> reserved_condition symbol_parameter_init <PIT_LOG> symbol_parameter_end symbol_block_init <CODE_BLOCK> symbol_block_end <PIT_EXIT>
+PIT-> pitEntry symbol_parameter_init <PIT_LOG> symbol_parameter_end symbol_block_init <CODE_BLOCK> symbol_block_end <PIT_EXIT>
 PIT_LOG-> id <PIT_LOG'> | integer <PIT_LOG'> | double <PIT_LOG'> 
 PIT_LOG'-> <LOOPS_SYMBOLS> id <PIT_LOG'> | <LOOPS_SYMBOLS> integer <PIT_LOG'> | <LOOPS_SYMBOLS> double <PIT_LOG'> | ε
-PIT_EXIT -> reserved_condition symbol_parameter_init CODE_BLOCK symbol_block_end | ε
-
+PIT_EXIT -> pitExit symbol_parameter_init CODE_BLOCK symbol_block_end | ε

@@ -7,12 +7,12 @@
 #include "regex_definitions.h"
 #include "regex_functions.h"
 using namespace std;
-
+// g++ -o main main.cpp regex_definitionsv2.cpp regex_functionsv2.cpp
 map<int, tuple<string, string, int>> lex;
 
 int main()
 {
-    ifstream file("exemploSprint.senna");
+    ifstream file("./cod_examples/exemploSprint.senna");
 
     if (!file)
     {
