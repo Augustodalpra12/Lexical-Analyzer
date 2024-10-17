@@ -43,7 +43,7 @@ ATTRIBUTION_STR -> typeStr id <ATTRIBUTION_STR'>
 ATTRIBUTION_STR' -> op_rel_equal quotes all_except_quotes quotes end_line | end_line
 
 ATTRIBUTION_CHAR -> typeChar id <ATTRIBUTION_CHAR'>
-ATTRIBUTION_CHAR' -> op_rel_equal quotes char_regex quotes end_line
+ATTRIBUTION_CHAR' -> op_rel_equal quotes char_regex quotes end_line | end_line
 
 # ATRIBUIÇÃO
 
