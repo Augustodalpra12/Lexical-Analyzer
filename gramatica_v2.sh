@@ -76,7 +76,7 @@ LAPS_INC -> overtake | brake | id <LAPS_SYMBOLS> <ID_OR_VALUE>
 
 CIRCUIT -> circuit symbol_parameter_init <CIRCUIT_LOG> symbol_parameter_end symbol_op_init <CODE_BLOCK> symbol_op_end
 CIRCUIT_LOG -> id <CIRCUIT_LOG'> | integer <CIRCUIT_LOG'> | double <CIRCUIT_LOG'> 
-CIRCUIT_LOG' -> <LOOPS_SYMBOLS> id <CIRCUIT_LOG'> | <LOOPS_SYMBOLS> integer <CIRCUIT_LOG'> | <LOOPS_SYMBOLS> double <CIRCUIT_LOG'> | ε
+CIRCUIT_LOG' -> <LOOPS_SYMBOLS> <CIRCUIT_LOG> | ε
 LOOPS_SYMBOLS -> <REL_SYMBOLS> | <LOG_SYMBOLS> |  <ARIT_SYMBOLS>
 
 
@@ -88,5 +88,5 @@ LOG_SYMBOLS -> op_log_e | op_log_or
 
 PIT-> pitEntry symbol_parameter_init <PIT_LOG> symbol_parameter_end symbol_block_init <CODE_BLOCK> symbol_block_end <PIT_EXIT>
 PIT_LOG-> id <PIT_LOG'> | integer <PIT_LOG'> | double <PIT_LOG'> 
-PIT_LOG'-> <LOOPS_SYMBOLS> id <PIT_LOG'> | <LOOPS_SYMBOLS> integer <PIT_LOG'> | <LOOPS_SYMBOLS> double <PIT_LOG'> | ε
+PIT_LOG'-> <LOOPS_SYMBOLS> <PIT_LOG> | ε
 PIT_EXIT -> pitExit symbol_parameter_init CODE_BLOCK symbol_block_end | ε
