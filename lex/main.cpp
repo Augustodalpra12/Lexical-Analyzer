@@ -88,10 +88,10 @@ int main()
                 } else if(regex_match(string(1, c), op_arit_sum) || regex_match(string(1, c), op_arit_sub) || regex_match(string(1, c), op_arit_mult) || regex_match(string(1, c), op_arit_div) || regex_match(string(1, c), op_arit_pow)) {
                     current_state = 23;
                     token += c;
-                } else if (regex_match(string(1, c), op_log_e)) {
+                } else if (regex_match(string(1, c), single_op_log_e)) {
                     current_state = 24;
                     token = token + c;
-                } else if (regex_match(string(1, c), op_log_or)) {
+                } else if (regex_match(string(1, c), single_op_log_or)) {
                     current_state = 25;
                     token = token + c;
                 } else if(regex_match(string(1, c), op_rel_equal)) {
@@ -368,7 +368,7 @@ int main()
                 break;
 
             case 24:
-                if (regex_match(string(1, c), op_log_e)) {
+                if (regex_match(string(1, c), single_op_log_e)) {
                     current_state = 27;
                     token +=c;
                 } else {
@@ -379,7 +379,7 @@ int main()
                 break;
 
             case 25:
-                if (regex_match(string(1, c), op_log_or)) {
+                if (regex_match(string(1, c), single_op_log_or)) {
                     current_state = 28;
                     token +=c;
                 } else {
@@ -631,6 +631,6 @@ int main()
 
     // Fecha o arquivo
     outputFile.close();
-    cout << "Conteúdo salvo em 'outputLex.txt'" << endl;
+    cout << "Conteúdo salvo em 'output.txt'" << endl;
     return 0;
 }

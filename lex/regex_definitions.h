@@ -65,9 +65,10 @@ regex bool_true("true");
 regex reserved_prt("(prt)");
 regex reserved_scn("(scn)");  
 
-
+regex single_op_log_e("&");
 regex op_log_e("&&");
-regex op_log_or("\\||"); // ou ("\\|\\|")
+regex single_op_log_or("\\|"); // ou ("\\|\\|")
+regex op_log_or("\\|\\|"); // ou ("\\|\\|")
 
 regex end_line("\\.");
 
