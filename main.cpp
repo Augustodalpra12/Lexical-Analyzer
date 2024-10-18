@@ -606,14 +606,31 @@ int main()
         }
     }
 
-    for (const auto &pair : lex)
-    {
+    // for (const auto &pair : lex)
+    // {
+    //     int key = pair.first;
+    //     string id = get<0>(pair.second); 
+    //     string token = get<1>(pair.second); 
+    //     int line = get<2>(pair.second);
+    //     cout << key << ": [" << id << ", '" << token << "', '" << line << "']" << endl;
+    // }
+    ofstream outputFile("outputLex.txt");
+    if (!outputFile.is_open()) {
+        cerr << "Erro ao abrir o arquivo!" << endl;
+        return 1;
+    }
+
+    // Itera sobre o mapa e grava no arquivo
+    for (const auto &pair : lex) {
         int key = pair.first;
         string id = get<0>(pair.second); 
         string token = get<1>(pair.second); 
         int line = get<2>(pair.second);
-        cout << key << ": [" << id << ", '" << token << "', '" << line << "']" << endl;
+        outputFile << key << ": [" << id << ", '" << token << "', '" << line << "']" << endl;
     }
 
+    // Fecha o arquivo
+    outputFile.close();
+    cout << "Conteúdo salvo em 'outputLex.txt'" << endl;
     return 0;
 }
