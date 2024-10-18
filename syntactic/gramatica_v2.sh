@@ -3,7 +3,7 @@ S -> <BEGIN>
 RESERVED_TYPES -> typeInt | typeDouble 
 
 BEGIN -> typeInt reserved_main symbol_parameter_init 
-symbol_parameter_end symbol_op_end <CODE_BLOCK> symbol_op_end
+symbol_parameter_end symbol_op_init <CODE_BLOCK> symbol_op_end
 
 CODE_BLOCK -> <EXPRESSION> <CODE_BLOCK> | <ATTRIBUTION> <CODE_BLOCK> | <ATRIBUTION_BOOL> <CODE_BLOCK> | <PRINT> <CODE_BLOCK> | <SCAN> <CODE_BLOCK> | 
 <LAPS> <CODE_BLOCK> | <CIRCUIT> <CODE_BLOCK> | <PIT> <CODE_BLOCK> | <ATTRIBUTION_STR> <CODE_BLOCK> | <ATTRIBUTION_CHAR> <CODE_BLOCK> | <REL> <CODE_BLOCK> | <LOGIC> <CODE_BLOCK> | ε

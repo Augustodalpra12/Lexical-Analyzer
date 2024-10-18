@@ -626,7 +626,7 @@ int main()
         string id = get<0>(pair.second); 
         string token = get<1>(pair.second); 
         int line = get<2>(pair.second);
-        outputFile << key << ": [" << id << ", '" << token << "', '" << line << "']" << endl;
+        outputFile << "[" << id << ", '" << token << "', '" << line << "']" << endl;
     }
 
     // Fecha o arquivo
