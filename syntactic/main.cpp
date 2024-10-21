@@ -7,6 +7,7 @@
 #include <vector>
 #include <queue>
 #include <stack>
+#include "grammar.cpp"
 using namespace std;
 
 int main() {
@@ -43,21 +44,31 @@ int main() {
     }
     file.close(); // Fecha o arquivo
 
-    while (!entrada.empty()) {
+    // while (!entrada.empty()) {
+    //     vector<string> item = entrada.front();
+    //     entrada.pop();
+
+    //     // Imprime o vetor
+    //     cout << "[";
+    //     for (size_t i = 0; i < item.size(); i++) {
+    //         cout << item[i];
+    //         if (i < item.size() - 1) {
+    //             cout << ", ";
+    //         }
+    //     }
+    //     cout << "]" << endl;
+    // }
+    stack <string> pilha;
+    pilha.push("S");
+    unordered_map<string, vector<string>> grammar = getGrammar();
+    unordered_map <string, vector<string>> table = getTable();
+    bool error = false;
+    while(!entrada.empty() || error) {
         vector<string> item = entrada.front();
-        entrada.pop();
-
-        // Imprime o vetor
-        cout << "[";
-        for (size_t i = 0; i < item.size(); i++) {
-            cout << item[i];
-            if (i < item.size() - 1) {
-                cout << ", ";
-            }
+        if(table.find(pilha.top())) {
+            
         }
-        cout << "]" << endl;
     }
-
 
 
 

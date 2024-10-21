@@ -1,4 +1,4 @@
-,typeInt,typeDouble,symbol_parameter_init,id,double,typeBoolean,reserved_prt,reserved_scn,laps,circuit,pitEntry,typeStr,typeChar,op_arit_sum,op_arit_sub,integer,op_arit_mult,op_arit_div,op_arit_pow,op_rel_minor,op_rel_bigger,op_rel_equal,op_rel_not,op_rel_double_equal,op_rel_minor_equal,op_rel_bigger_equal,op_rel_not_equal,op_log_e,op_log_or,end_line,bool_false,pitExit,brake,overtake,quotes,$
+não_terminais,typeInt,typeDouble,symbol_parameter_init,id,double,typeBoolean,reserved_prt,reserved_scn,laps,circuit,pitEntry,typeStr,typeChar,op_arit_sum,op_arit_sub,integer,op_arit_mult,op_arit_div,op_arit_pow,op_rel_minor,op_rel_bigger,op_rel_equal,op_rel_not,op_rel_double_equal,op_rel_minor_equal,op_rel_bigger_equal,op_rel_not_equal,op_log_e,op_log_or,end_line,bool_false,pitExit,brake,overtake,quotes,$
 S,S -> <BEGIN>,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 RESERVED_TYPES,RESERVED_TYPES -> typeInt,RESERVED_TYPES -> typeDouble,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 BEGIN,BEGIN -> typeInt reserved_main symbol_parameter_init symbol_parameter_end symbol_op_end <CODE_BLOCK> symbol_op_end,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
