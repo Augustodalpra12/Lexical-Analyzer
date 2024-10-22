@@ -10,6 +10,35 @@
 #include "grammar.cpp"
 using namespace std;
 
+// Função para remover '<' e '>' de uma string
+string removeSymbols(const string& str) {
+    string result;
+    for (char ch : str) {
+        if (ch != '<' && ch != '>') {
+            result += ch;
+        }
+    }
+    return result;
+}
+
+// Função para inverter a ordem dos tokens em uma string
+vector<string> reverseTokens(const string& str) {
+    istringstream iss(str);
+    vector<string> tokens;
+    string token;
+
+    // Tokenizar a string por espaços
+    while (iss >> token) {
+        // Remover os símbolos < e >
+        token = removeSymbols(token);
+        tokens.push_back(token);
+    }
+
+    // Inverter a ordem dos tokens
+    reverse(tokens.begin(), tokens.end());
+
+    return tokens;  // Retorna o vetor de tokens invertidos
+}
 int main() {
     ifstream file("../lex/outputLex.txt");
 
@@ -58,16 +87,69 @@ int main() {
     //     }
     //     cout << "]" << endl;
     // }
-    stack <string> pilha;
+    stack<string> pilha;
+    pilha.push("$");
     pilha.push("S");
     unordered_map<string, vector<string>> grammar = getGrammar();
-    unordered_map <string, vector<string>> table = getTable();
+    unordered_map <string, unordered_map<string, string>> table = getTable();
     bool error = false;
-    while(!entrada.empty() || error) {
+    entrada.push({"$", "$", "$"});
+    bool teste = true;
+    int count = 0;
+    // while(!entrada.empty() || error) {
+    while (teste){
+
+    
         vector<string> item = entrada.front();
-        if(table.find(pilha.top())) {
-            
+        
+        auto it = table.find(pilha.top());
+        if (it != table.end()) {
+             // pilha.top() is a key in the table
+            auto it2 = it->second.find(item[0]);
+            if (it2 != it->second.end()) {
+                // item[0] is a key in the table[pilha.top()]
+                pilha.pop();
+                // antes de realizar o pilha.push abaixo
+                // inverta a ordem do it2 -> second e retire todos oos < e >, tem que fazer e retirar <>
+                // por exemplo se tiver "<ATTRIBUTION> <CODE_BLOCK>" no it2->second, ele deve ficar "CODE_BLOCK ATTRIBUTION"
+                vector<string> invertedTokens = reverseTokens(it2->second);
+
+                // Empilhar a string invertida e limpa
+                 for (const auto& token : invertedTokens) {
+                    pilha.push(token);
+                }
+                // pilha.push(invertedAndCleaned);
+                // pilha.push(it2->second); 
+                
+            } else {
+                // erro
+                error = true;
+            }
+            // do something with values
+
+
+        } else {
+            error = true;
+            // erro
         }
+        cout << "---------------------------------------------------" << endl;
+        cout << "Pilha: " << pilha.top() << endl;
+        cout << "Entrada: " << item[0] << endl;
+        if(pilha.top() == item[0]) {
+            entrada.pop();
+            pilha.pop();
+        }
+        item = entrada.front();
+        cout << "Pilha atual: " << pilha.top() << endl;
+        cout << "Entrada atual: " << item[0] << endl;
+        
+        count++;
+        if(count == 15){
+            break;
+        }
+        // teste = false;
+        
+
     }
 
 
