@@ -418,12 +418,20 @@ unordered_map <string, unordered_map<string, string>> getTable() {
         {"LAPS_INC", {{"id", "LAPS_INC -> id"},
                        {"brake", "LAPS_INC -> brake"},
                        {"overtake", "LAPS_INC -> overtake"}}},
+
+        {"LAPS_SYMBOLS", {{"op_arit_sum", "LAPS_SYMBOLS -> op_arit_sum"},
+                       {"op_arit_sub", "LAPS_SYMBOLS -> op_arit_sub"},
+                       {"op_arit_mult", "LAPS_SYMBOLS -> op_arit_mult"},
+                       {"op_arit_div", "LAPS_SYMBOLS -> op_arit_div"}}},
+
+        {"INIT_LAPS", {{"id", "ID_OR_VALUE -> id"},
+                       {"integer", "ID_OR_VALUE -> integer"}}},
          
         {"CIRCUIT", {{"circuit", "CIRCUIT -> circuit symbol_parameter_init <CIRCUIT_LOG> symbol_parameter_end symbol_op_init <CODE_BLOCK> symbol_op_end"}}},
 
         {"CIRCUIT_LOG", {{"id", "CIRCUIT_LOG -> id <CIRCUIT_LOG'>"},
                          {"integer", "CIRCUIT_LOG -> integer <CIRCUIT_LOG'>"},
-                         {"double", "CIRCUIT_LOG -> double <CIRCUIT_LOG'>"}}},  //ta certo?
+                         {"double", "CIRCUIT_LOG -> double <CIRCUIT_LOG'>"}}},
 
         {"CIRCUIT_LOG'", {{"op_arit_sum", "CIRCUIT_LOG' -> <LOOPS_SYMBOLS> <CIRCUIT_LOG>"},
                            {"op_arit_sub", "CIRCUIT_LOG' -> <LOOPS_SYMBOLS> <CIRCUIT_LOG>"},
@@ -439,7 +447,7 @@ unordered_map <string, unordered_map<string, string>> getTable() {
                            {"op_rel_not_equal", "CIRCUIT_LOG' -> <LOOPS_SYMBOLS> <CIRCUIT_LOG>"},
                            {"op_rel_and", "CIRCUIT_LOG' -> <LOOPS_SYMBOLS> <CIRCUIT_LOG>"},
                            {"op_rel_or", "CIRCUIT_LOG' -> <LOOPS_SYMBOLS> <CIRCUIT_LOG>"},
-                           {"end_line", "CIRCUIT_LOG' -> end_line"}}},
+                           {"$", "CIRCUIT_LOG' -> ε"}}},
 
         {"LOOPS_SYMBOLS", {{"op_arit_sum", "LOOPS_SYMBOLS -> <ARIT_SYMBOLS>"},
                            {"op_arit_sub", "LOOPS_SYMBOLS -> <ARIT_SYMBOLS>"},
@@ -453,8 +461,8 @@ unordered_map <string, unordered_map<string, string>> getTable() {
                            {"op_rel_minor_equal", "LOOPS_SYMBOLS -> <REL_SYMBOLS>"},
                            {"op_rel_bigger_equal", "LOOPS_SYMBOLS -> <REL_SYMBOLS>"},
                            {"op_rel_not_equal", "LOOPS_SYMBOLS -> <REL_SYMBOLS>"},
-                           {"op_rel_and", "LOOPS_SYMBOLS -> <ARIT_SYMBOLS>"}, //arit?
-                           {"op_rel_or", "LOOPS_SYMBOLS -> <ARIT_SYMBOLS>"}}},  //arit? na tabela ta arit
+                           {"op_rel_and", "LOOPS_SYMBOLS -> <LOG_SYMBOLS>"}, //arit?
+                           {"op_rel_or", "LOOPS_SYMBOLS -> <LOG_SYMBOLS>"}}},  //arit? na tabela ta arit
 
         {"ARIT_SYMBOLS", {{"op_arit_sum", "ARIT_SYMBOLS -> op_arit_sum"},
                            {"op_arit_sub", "ARIT_SYMBOLS -> op_arit_sub"},
@@ -464,11 +472,13 @@ unordered_map <string, unordered_map<string, string>> getTable() {
 
         {"REL_SYMBOLS", {{"op_rel_minor", "REL_SYMBOLS -> op_rel_minor"},
                          {"op_rel_bigger", "REL_SYMBOLS -> op_rel_bigger"},
-                         {"op_rel_equal", "REL_SYMBOLS -> op_rel_equal"},
                          {"op_rel_double_equal", "REL_SYMBOLS -> op_rel_double_equal"},
                          {"op_rel_minor_equal", "REL_SYMBOLS -> op_rel_minor_equal"},
                          {"op_rel_bigger_equal", "REL_SYMBOLS -> op_rel_bigger_equal"},
                          {"op_rel_not_equal", "REL_SYMBOLS -> op_rel_not_equal"}}},
+
+        {"LOG_SYMBOLS", {{"op_log_e", "LOG_SYMBOLS -> op_log_e"},
+                 {"op_log_or", "LOG_SYMBOLS -> op_log_or"}}},
 
         {"PIT", {{"pitEntry", "PIT -> pitEntry symbol_parameter_init <PIT_LOG> symbol_parameter_end symbol_block_init <CODE_BLOCK> symbol_block_end <PIT_EXIT>"}}},
         
