@@ -5,22 +5,13 @@ RESERVED_TYPES -> typeInt | typeDouble
 BEGIN -> typeInt reserved_main symbol_parameter_init 
 symbol_parameter_end symbol_op_init <CODE_BLOCK> symbol_op_end
 
-CODE_BLOCK -> id <TWO_WAYS> <CODE_BLOCK> | <EXPRESSION> <CODE_BLOCK> | <ATTRIBUTION> <CODE_BLOCK> |  | <ATRIBUTION_BOOL> <CODE_BLOCK> | <PRINT> <CODE_BLOCK> | <SCAN> <CODE_BLOCK> | 
+CODE_BLOCK -> <ATTRIBUTION> <CODE_BLOCK> | <ATRIBUTION_BOOL> <CODE_BLOCK> | <PRINT> <CODE_BLOCK> | <SCAN> <CODE_BLOCK> | 
 <LAPS> <CODE_BLOCK> | <CIRCUIT> <CODE_BLOCK> | <PIT> <CODE_BLOCK> | <ATTRIBUTION_STR> <CODE_BLOCK> | <ATTRIBUTION_CHAR> <CODE_BLOCK> | <REL> <CODE_BLOCK> | <LOGIC> <CODE_BLOCK> | ε
 
-TWO_WAYS -> <EXPRESSION> | <ATTRIBUTION''>  
 # EXPRESSÃO
 
-# CODE_BLOCK -> <EXPRESSION> <CODE_BLOCK> | <ATTRIBUTION> <CODE_BLOCK> | <ATRIBUTION_BOOL> <CODE_BLOCK> | <PRINT> <CODE_BLOCK> | <SCAN> <CODE_BLOCK> | 
-# <LAPS> <CODE_BLOCK> | <CIRCUIT> <CODE_BLOCK> | <PIT> <CODE_BLOCK> | <ATTRIBUTION_STR> <CODE_BLOCK> | <ATTRIBUTION_CHAR> <CODE_BLOCK> | <REL> <CODE_BLOCK> | <LOGIC> <CODE_BLOCK> | ε
-
-# # EXPRESSÃO
-
-# EXPRESSION -> <MULT_DIV> <EXPRESSION'> end_line | <ATTRIBUTION'> //teste
-# EXPRESSION' -> op_arit_sum <MULT_DIV> <EXPRESSION'> | op_arit_sub <MULT_DIV> <EXPRESSION'> | ε 
-
 EXPRESSION -> <MULT_DIV> <EXPRESSION'> end_line 
-EXPRESSION' -> op_arit_sum <MULT_DIV_AUX> <EXPRESSION'> | op_arit_sub <MULT_DIV> <EXPRESSION'> | ε 
+EXPRESSION' -> op_arit_sum <MULT_DIV> <EXPRESSION'> | op_arit_sub <MULT_DIV> <EXPRESSION'> | ε 
 
 MULT_DIV -> <POW> <MULT_DIV'>
 MULT_DIV' -> op_arit_mult <POW> <MULT_DIV'> | op_arit_div <POW> <MULT_DIV'> | ε
@@ -28,15 +19,7 @@ MULT_DIV' -> op_arit_mult <POW> <MULT_DIV'> | op_arit_div <POW> <MULT_DIV'> | ε
 POW -> <VAR> <POW'>
 POW' -> op_arit_pow <VAR> <POW'> | ε
 
-VAR -> symbol_parameter_init <EXPRESSION> symbol_parameter_end | integer | double
-
-MULT_DIV_AUX -> <POW> <MULT_DIV'>
-MULT_DIV_AUX' -> op_arit_mult <POW> <MULT_DIV'> | op_arit_div <POW> <MULT_DIV'> | ε
-
-POW_AUX -> <VAR> <POW'>
-POW_AUX' -> op_arit_pow <VAR> <POW'> | ε
-
-VAR_AUX' -> symbol_parameter_init <EXPRESSION> symbol_parameter_end | id | integer | double
+VAR -> symbol_parameter_init <EXPRESSION> symbol_parameter_end | id | integer | double
 
 REL -> <EXPRESSION> <REL_OP> <EXPRESSION>
 REL_OP -> op_rel_minor | op_rel_bigger | op_rel_equal | op_rel_not | op_rel_double_equal | op_rel_minor_equal | op_rel_bigger_equal | op_rel_not_equal
@@ -48,7 +31,7 @@ LOGIC_OP -> op_log_e_function | op_log_or_function
 
 # ATRIBUIÇÃO
 
-ATTRIBUTION -> <RESERVED_TYPES> <ATTRIBUTION'>
+ATTRIBUTION -> <RESERVED_TYPES> <ATTRIBUTION'> | <ATTRIBUTION'>
 ATTRIBUTION' -> id <ATTRIBUTION''>
 ATTRIBUTION'' -> op_rel_equal <EXPRESSION> | end_line
 
