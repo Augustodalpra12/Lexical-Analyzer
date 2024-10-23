@@ -167,7 +167,7 @@ int main() {
         cout << "Entrada atual: " << item[0] << endl;
         
         count++;
-        if(count == 60){
+        if(count == 150){
             break;
         }
         // teste = false;

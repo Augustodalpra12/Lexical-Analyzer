@@ -75,7 +75,7 @@ bool get_parameters_mid(string token, map<int, tuple<string, string, int>> &lex,
 {
     int lastIndex = get_index(lex);
     if(regex_match(token, symbol_op_mid)) {
-        lex[lastIndex] = make_tuple("symbol_parameter_end", token, linha_atual);
+        lex[lastIndex] = make_tuple("symbol_op_mid", token, linha_atual);
         return true;
     }
     return false;
@@ -367,7 +367,7 @@ bool get_dot(string token, map<int, tuple<string, string, int>> &lex, int linha_
     int lastIndex = get_index(lex);
     if (regex_match(token, end_line))
     {
-        lex[lastIndex] = make_tuple("dot", token, linha_atual);
+        lex[lastIndex] = make_tuple("end_line", token, linha_atual);
         return true;
     }
     return false;

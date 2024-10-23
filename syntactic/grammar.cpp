@@ -96,11 +96,11 @@ unordered_map<string, vector<string>> getGrammar() {
 
     // PIT
     grammar["PIT"] = {
-        "pitEntry symbol_parameter_init <PIT_LOG> symbol_parameter_end symbol_block_init <CODE_BLOCK> symbol_block_end <PIT_EXIT>"
+        "pitEntry symbol_parameter_init <PIT_LOG> symbol_parameter_end symbol_op_init <CODE_BLOCK> symbol_op_end <PIT_EXIT>"
     };
     grammar["PIT_LOG"] = {"id <PIT_LOG'>", "integer <PIT_LOG'>", "double <PIT_LOG'>"};
     grammar["PIT_LOG'"] = {"<LOOPS_SYMBOLS> <PIT_LOG>", "ε"};
-    grammar["PIT_EXIT"] = {"pitExit symbol_parameter_init CODE_BLOCK symbol_block_end", "ε"};
+    grammar["PIT_EXIT"] = {"pitExit symbol_op_init CODE_BLOCK symbol_op_end", "ε"};
 
     // Iterar e imprimir o conteúdo do hashmap
     // for (const auto& pair : grammar) {
@@ -319,6 +319,7 @@ unordered_map <string, unordered_map<string, string>> getTable() {
 
         {"EXPRESSION'", {{"op_arit_sum", "op_arit_sum <MULT_DIV> <EXPRESSION'>"},
                         {"op_arit_sub", "op_arit_sub <MULT_DIV> <EXPRESSION'>"},
+                        {"op_rel_equal", "op_rel_equal <MULT_DIV> <EXPRESSION'>"},
                         {"end_line", "ε"}}},
 
         {"MULT_DIV", {{"symbol_parameter_init", "<POW> <MULT_DIV>'"}, 
@@ -508,12 +509,12 @@ unordered_map <string, unordered_map<string, string>> getTable() {
 
         {"ATTRIBUTION_STR", {{"typeStr", "typeStr id <ATTRIBUTION_STR'>"}}},
 
-        {"ATTRIBUTION_STR'", {{"op_rel_equal", "op_rel_equal quotes all_except_quotes quotes end_line"},
+        {"ATTRIBUTION_STR'", {{"op_rel_equal", "op_rel_equal text_between_quotes end_line"},
                               {"end_line", "end_line"}}},
 
         {"ATTRIBUTION_CHAR", {{"typeChar", "typeChar id <ATTRIBUTION_CHAR'>"}}},
 
-        {"ATTRIBUTION_CHAR'", {{"op_rel_equal", "op_rel_equal quotes char_regex quotes end_line"},
+        {"ATTRIBUTION_CHAR'", {{"op_rel_equal", "op_rel_equal text_between_quotes end_line"}, // obs
                               {"end_line", "end_line"}}},  
 
         {"PRINT", {{"reserved_prt", "reserved_prt symbol_parameter_init <ID_OR_STRING> symbol_parameter_end end_line"}}},
@@ -521,7 +522,7 @@ unordered_map <string, unordered_map<string, string>> getTable() {
         {"ID_OR_STRING", {{"id", "id <ID_OR_STRING'>"},
                           {"double", "double <ID_OR_STRING'>"},
                           {"integer", "integer <ID_OR_STRING'>"},
-                          {"quotes", "quotes all_except_quotes quotes <ID_OR_STRING'>"}}},
+                          {"text_between_quotes", "text_between_quotes <ID_OR_STRING'>"}}},
 
         {"ID_OR_STRING'", {{"op_arit_sum", "op_arit_sum <ID_OR_STRING''> <ID_OR_STRING'>"},
                            {"symbol_parameter_end", "ε"}}},   
@@ -529,7 +530,7 @@ unordered_map <string, unordered_map<string, string>> getTable() {
         {"ID_OR_STRING''", {{"id", "id"},
                             {"double", "double"},
                             {"integer", "integer"},
-                            {"quotes", "quotes all_except_quotes quotes"}}},
+                            {"text_between_quotes", "text_between_quotes"}}},
 
 
         {"SCAN", {{"reserved_scn", "reserved_scn symbol_parameter_init id symbol_parameter_end end_line"}}},
@@ -607,7 +608,7 @@ unordered_map <string, unordered_map<string, string>> getTable() {
         {"LOG_SYMBOLS", {{"op_log_e", "op_log_e"},
                  {"op_log_or", "op_log_or"}}},
 
-        {"PIT", {{"pitEntry", "pitEntry symbol_parameter_init <PIT_LOG> symbol_parameter_end symbol_block_init <CODE_BLOCK> symbol_block_end <PIT_EXIT>"}}},
+        {"PIT", {{"pitEntry", "pitEntry symbol_parameter_init <PIT_LOG> symbol_parameter_end symbol_op_init <CODE_BLOCK> symbol_op_end <PIT_EXIT>"}}},
         
         {"PIT_LOG", {{"id", "id <PIT_LOG'>"},
                      {"integer", "integer <PIT_LOG'>"},
@@ -629,7 +630,7 @@ unordered_map <string, unordered_map<string, string>> getTable() {
                       {"op_rel_or", "<LOOPS_SYMBOLS> <PIT_LOG>"},
                       {"symbol_parameter_end", "ε"}}},
 
-        {"PIT_EXIT", {{"pitExit", "pitExit symbol_parameter_init <CODE_BLOCK> symbol_block_end"},
+        {"PIT_EXIT", {{"pitExit", "pitExit symbol_op_init <CODE_BLOCK> symbol_op_end"},
                        {"symbol_parameter_init", "ε"},
                         {"id", "ε"},
                         {"double", "ε"},
@@ -657,102 +658,3 @@ struct GrammarRule {
 };
 
 
-
-vector<GrammarRule> getGrammarRules() {
-    vector<GrammarRule> grammarRules = {
-        {"S", "typeInt", "S -> <BEGIN>"},
-        {"RESERVED_TYPES", "typeInt", "RESERVED_TYPES -> typeInt"},
-        {"RESERVED_TYPES", "typeDouble", "RESERVED_TYPES -> typeDouble"},
-        {"BEGIN", "typeInt", "BEGIN -> typeInt reserved_main symbol_parameter_init symbol_parameter_end symbol_op_init <CODE_BLOCK> symbol_op_end"},
-        {"CODE_BLOCK", "typeInt", "CODE_BLOCK -> <ATTRIBUTION> <CODE_BLOCK>"},
-        {"CODE_BLOCK", "typeDouble", "CODE_BLOCK -> <ATTRIBUTION> <CODE_BLOCK>"},
-        {"CODE_BLOCK", "symbol_parameter_init", "CODE_BLOCK -> <EXPRESSION> <CODE_BLOCK>"},
-        {"CODE_BLOCK", "id", "CODE_BLOCK -> <EXPRESSION> <CODE_BLOCK>"},
-        {"CODE_BLOCK", "double", "CODE_BLOCK -> <EXPRESSION> <CODE_BLOCK>"},
-        {"CODE_BLOCK", "typeInt", "CODE_BLOCK -> <ATRIBUTION_BOOL> <CODE_BLOCK>"},
-        {"CODE_BLOCK", "reserved_prt", "CODE_BLOCK -> <PRINT> <CODE_BLOCK>"},
-        {"CODE_BLOCK", "reserved_scn", "CODE_BLOCK -> <SCAN> <CODE_BLOCK>"},
-        {"CODE_BLOCK", "laps", "CODE_BLOCK -> <LAPS> <CODE_BLOCK>"},
-        {"CODE_BLOCK", "circuit", "CODE_BLOCK -> <CIRCUIT> <CODE_BLOCK>"},
-        {"CODE_BLOCK", "pitEntry", "CODE_BLOCK -> <PIT> <CODE_BLOCK>"},
-        {"CODE_BLOCK", "typeStr", "CODE_BLOCK -> <ATTRIBUTION_STR> <CODE_BLOCK>"},
-        {"CODE_BLOCK", "typeChar", "CODE_BLOCK -> <ATTRIBUTION_CHAR> <CODE_BLOCK>"},
-        {"CODE_BLOCK", "integer", "CODE_BLOCK -> <EXPRESSION> <CODE_BLOCK>"},
-        {"CODE_BLOCK", "$", "CODE_BLOCK -> ε"},
-        {"EXPRESSION", "symbol_parameter_init", "EXPRESSION -> <MULT_DIV> <EXPRESSION>' end_line"},
-        {"EXPRESSION", "id", "EXPRESSION -> <MULT_DIV> <EXPRESSION>' end_line"},
-        {"EXPRESSION", "double", "EXPRESSION -> <MULT_DIV> <EXPRESSION>' end_line"},
-        {"EXPRESSION'", "op_arit_sum", "EXPRESSION' -> op_arit_sum <MULT_DIV> <EXPRESSION'>"},
-        {"EXPRESSION'", "op_arit_sub", "EXPRESSION' -> op_arit_sub <MULT_DIV> <EXPRESSION'>"},
-        {"EXPRESSION'", "$", "EXPRESSION' -> ε"},
-        {"MULT_DIV", "symbol_parameter_init", "MULT_DIV -> <POW> <MULT_DIV>'"},
-        {"MULT_DIV", "id", "MULT_DIV -> <POW> <MULT_DIV>'"},
-        {"MULT_DIV", "double", "MULT_DIV -> <POW> <MULT_DIV>'"},
-        {"MULT_DIV", "integer", "MULT_DIV -> <POW> <MULT_DIV>'"},
-        {"MULT_DIV'", "op_arit_mult", "MULT_DIV' -> op_arit_mult <POW> <MULT_DIV'>"},
-        {"MULT_DIV'", "op_arit_div", "MULT_DIV' -> op_arit_div <POW> <MULT_DIV'>"},
-        {"MULT_DIV'", "$", "MULT_DIV' -> ε"},
-        {"POW", "symbol_parameter_init", "POW -> <VAR> <POW>'"},
-        {"POW", "id", "POW -> <VAR> <POW>'"},
-        {"POW", "double", "POW -> <VAR> <POW>'"},
-        {"POW", "integer", "POW -> <VAR> <POW>'"},
-        {"POW'", "op_arit_pow", "POW' -> op_arit_pow <VAR> <POW'>"},
-        {"POW'", "$", "POW' -> ε"},
-        {"VAR", "symbol_parameter_init", "VAR -> symbol_parameter_init <EXPRESSION> symbol_parameter_end"},
-        {"VAR", "id", "VAR -> id"},
-        {"VAR", "double", "VAR -> double"},
-        {"VAR", "integer", "VAR -> integer"},
-        {"REL", "symbol_parameter_init", "REL -> <EXPRESSION> <REL_OP> <EXPRESSION>"},
-        {"REL", "id", "REL -> <EXPRESSION> <REL_OP> <EXPRESSION>"},
-        {"REL", "double", "REL -> <EXPRESSION> <REL_OP> <EXPRESSION>"},
-        {"REL", "integer", "REL -> <EXPRESSION> <REL_OP> <EXPRESSION>"},
-        {"REL_OP", "op_rel_minor", "REL_OP -> op_rel_minor"},
-        {"REL_OP", "op_rel_bigger", "REL_OP -> op_rel_bigger"},
-        {"REL_OP", "op_rel_equal", "REL_OP -> op_rel_equal"},
-        {"REL_OP", "op_rel_not", "REL_OP -> op_rel_not"},
-        {"REL_OP", "op_rel_double_equal", "REL_OP -> op_rel_double_equal"},
-        {"REL_OP", "op_rel_minor_equal", "REL_OP -> op_rel_minor_equal"},
-        {"REL_OP", "op_rel_bigger_equal", "REL_OP -> op_rel_bigger_equal"},
-        {"REL_OP", "op_rel_not_equal", "REL_OP -> op_rel_not_equal"},
-        {"LOGIC", "symbol_parameter_init", "LOGIC -> <EXPRESSION> <LOGIC_OP> <EXPRESSION>"},
-        {"LOGIC", "id", "LOGIC -> <EXPRESSION> <LOGIC_OP> <EXPRESSION>"},
-        {"LOGIC", "double", "LOGIC -> <EXPRESSION> <LOGIC_OP> <EXPRESSION>"},
-        {"LOGIC", "integer", "LOGIC -> <EXPRESSION> <LOGIC_OP> <EXPRESSION>"},
-        {"LOGIC_OP", "op_log_e", "LOGIC_OP -> op_log_e"},
-        {"LOGIC_OP", "op_log_or", "LOGIC_OP -> op_log_or"},
-        {"ATTRIBUTION", "typeInt", "ATTRIBUTION -> <RESERVED_TYPES> <ATTRIBUTION>'"},
-        {"ATTRIBUTION", "typeDouble", "ATTRIBUTION -> <RESERVED_TYPES> <ATTRIBUTION>'"},
-        {"ATTRIBUTION'", "id", "ATTRIBUTION' -> id <ATTRIBUTION''>"},
-        {"ATTRIBUTION''", "op_rel_equal", "ATTRIBUTION'' -> op_rel_equal <EXPRESSION>"},
-        {"ATTRIBUTION''", "end_line", "ATTRIBUTION'' -> end_line"},
-        {"ATRIBUTION_BOOL", "typeBoolean", "ATRIBUTION_BOOL -> typeBoolean id <ATRIBUTION_BOOL'>"},
-        {"ATRIBUTION_BOOL'", "op_rel_equal", "ATRIBUTION_BOOL' -> op_rel_equal <ATTRIBUTION_BOOL''> "},
-        {"ATRIBUTION_BOOL'", "end_line", "ATRIBUTION_BOOL' -> endline"},
-        {"ATRIBUTION_BOOL''", "bool_false", "ATRIBUTION_BOOL'' -> bool_false end_line"},
-        {"ATRIBUTION_BOOL''", "bool_true", "ATRIBUTION_BOOL'' -> bool_true end_line"},
-        {"ATTRIBUTION_STR", "typeStr", "ATTRIBUTION_STR -> typeStr id <ATTRIBUTION_STR'>"},
-        {"ATTRIBUTION_STR'", "op_rel_equal", "ATTRIBUTION_STR' -> op_rel_equal quotes all_except_quotes quotes end_line"},
-        {"ATTRIBUTION_STR'", "end_line", "ATTRIBUTION_STR' -> end_line"},
-        {"ATTRIBUTION_CHAR", "typeChar", "ATTRIBUTION_CHAR -> typeChar id <ATTRIBUTION_CHAR'>"},
-        {"ATTRIBUTION_CHAR'", "op_rel_equal", "ATTRIBUTION_CHAR' -> op_rel_equal quotes char_regex quotes end_line"},
-        {"ATTRIBUTION_CHAR'", "end_line", "ATTRIBUTION_CHAR' -> end_line"},
-        {"PRINT", "reserved_prt", "PRINT -> reserved_prt symbol_parameter_init <ID_OR_STRING> symbol_parameter_end end_line"},
-        {"ID_OR_STRING", "id", "ID_OR_STRING -> id <ID_OR_STRING'>"},
-        {"ID_OR_STRING", "double", "ID_OR_STRING -> double <ID_OR_STRING'>"},
-        {"ID_OR_STRING", "integer", "ID_OR_STRING -> integer <ID_OR_STRING'>"},
-        {"ID_OR_STRING", "quotes", "ID_OR_STRING -> quotes all_except_quotes quotes <ID_OR_STRING'>"},
-        {"ID_OR_STRING'", "op_arit_sum", "ID_OR_STRING' -> op_arit_sum <ID_OR_STRING''> <ID_OR_STRING'>"},
-        {"ID_OR_STRING'", "ε", "ID_OR_STRING' -> ε"},
-        {"ID_OR_STRING''", "id", "ID_OR_STRING'' -> id"},
-        {"ID_OR_STRING''", "double", "ID_OR_STRING'' -> double"},
-        {"ID_OR_STRING''", "integer", "ID_OR_STRING'' -> integer"},
-        {"ID_OR_STRING''", "quotes", "ID_OR_STRING'' -> quotes all_except_quotes quotes"},
-        {"SCAN", "reserved_scn", "SCAN -> reserved_scn symbol_parameter_init id symbol_parameter_end end_line"},
-        {"LAPS", "laps", "LAPS -> laps symbol_parameter_init <INIT_LAPS> symbol_parameter_end end_line"},
-        {"INIT_LAPS", "integer", "INIT_LAPS -> integer"},
-        {"CIRCUIT", "circuit", "CIRCUIT -> circuit symbol_parameter_init quotes all_except_quotes quotes symbol_parameter_end end_line"},
-        {"PIT", "pitEntry", "PIT -> pitEntry symbol_parameter_init id symbol_parameter_end end_line"}
-    };
-
-    return grammarRules;
-}
