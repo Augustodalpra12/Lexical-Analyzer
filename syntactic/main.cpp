@@ -39,6 +39,25 @@ vector<string> reverseTokens(const string& str) {
 
     return tokens;  // Retorna o vetor de tokens invertidos
 }
+
+void printStackWithoutLosingElements(std::stack<std::string> &pilha) {
+    // Copia a pilha para um vetor
+    std::vector<std::string> temp;
+
+    // Transferir elementos da pilha para o vetor sem perder dados
+    std::stack<std::string> copy = pilha; // Fazer uma cópia da pilha original
+    while (!copy.empty()) {
+        temp.push_back(copy.top()); // Adiciona ao vetor
+        copy.pop(); // Remove o elemento do topo da cópia
+    }
+
+    // Imprimir os elementos da pilha na ordem original (reverso do vetor)
+    for (int i = temp.size() - 1; i >= 0; --i) {
+        std::cout << temp[i] << " "; // Acessa os elementos do vetor pelo índice
+    }
+    std::cout << std::endl;
+}
+
 int main() {
     ifstream file("../lex/outputLex.txt");
 
@@ -101,7 +120,7 @@ int main() {
 
     
         vector<string> item = entrada.front();
-        
+        bool emptyRule = false;
         auto it = table.find(pilha.top());
         if (it != table.end()) {
              // pilha.top() is a key in the table
@@ -114,10 +133,13 @@ int main() {
                 // por exemplo se tiver "<ATTRIBUTION> <CODE_BLOCK>" no it2->second, ele deve ficar "CODE_BLOCK ATTRIBUTION"
                 vector<string> invertedTokens = reverseTokens(it2->second);
 
-                // Empilhar a string invertida e limpa
-                 for (const auto& token : invertedTokens) {
-                    pilha.push(token);
+                if(!(invertedTokens[0] == "ε")){
+                    for (const auto& token : invertedTokens) {
+                        pilha.push(token);
+                    }
                 }
+                // Empilhar a string invertida e limpa
+
                 // pilha.push(invertedAndCleaned);
                 // pilha.push(it2->second); 
                 
@@ -140,11 +162,12 @@ int main() {
             pilha.pop();
         }
         item = entrada.front();
-        cout << "Pilha atual: " << pilha.top() << endl;
+        printStackWithoutLosingElements(pilha);
+        // cout << "Pilha atual: " << pilha. << endl;
         cout << "Entrada atual: " << item[0] << endl;
         
         count++;
-        if(count == 15){
+        if(count == 60){
             break;
         }
         // teste = false;
