@@ -7,7 +7,7 @@
 #include "regex_definitions.h"
 #include "regex_functions.h"
 using namespace std;
-// g++ -o main main.cpp regex_definitionsv2.cpp regex_functionsv2.cpp
+// g++ -o main main.cpp regex_definitions.h regex_functions.h
 map<int, tuple<string, string, int>> lex;
 
 int main()
