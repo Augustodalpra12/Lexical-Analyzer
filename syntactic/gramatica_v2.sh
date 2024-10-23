@@ -6,9 +6,15 @@ BEGIN -> typeInt reserved_main symbol_parameter_init
 symbol_parameter_end symbol_op_init <CODE_BLOCK> symbol_op_end
 
 CODE_BLOCK -> <ATTRIBUTION> <CODE_BLOCK> | <ATRIBUTION_BOOL> <CODE_BLOCK> | <PRINT> <CODE_BLOCK> | <SCAN> <CODE_BLOCK> | 
-<LAPS> <CODE_BLOCK> | <CIRCUIT> <CODE_BLOCK> | <PIT> <CODE_BLOCK> | <ATTRIBUTION_STR> <CODE_BLOCK> | <ATTRIBUTION_CHAR> <CODE_BLOCK> | <REL> <CODE_BLOCK> | <LOGIC> <CODE_BLOCK> | ε
+<LAPS> <CODE_BLOCK> | <CIRCUIT> <CODE_BLOCK> | <PIT> <CODE_BLOCK> | <ATTRIBUTION_STR> <CODE_BLOCK> | <ATTRIBUTION_CHAR> <CODE_BLOCK> | ε
 
 # EXPRESSÃO
+#  <REL> <CODE_BLOCK> | <LOGIC> <CODE_BLOCK>
+# REL -> <EXPRESSION> <REL_OP> <EXPRESSION>
+# REL_OP -> op_rel_minor | op_rel_bigger | op_rel_equal | op_rel_not | op_rel_double_equal | op_rel_minor_equal | op_rel_bigger_equal | op_rel_not_equal
+
+# LOGIC -> <EXPRESSION> <LOGIC_OP> <EXPRESSION>
+# LOGIC_OP -> op_log_e_function | op_log_or_function
 
 EXPRESSION -> <MULT_DIV> <EXPRESSION'> end_line 
 EXPRESSION' -> op_arit_sum <MULT_DIV> <EXPRESSION'> | op_arit_sub <MULT_DIV> <EXPRESSION'> | ε 
@@ -21,11 +27,6 @@ POW' -> op_arit_pow <VAR> <POW'> | ε
 
 VAR -> symbol_parameter_init <EXPRESSION> symbol_parameter_end | id | integer | double
 
-REL -> <EXPRESSION> <REL_OP> <EXPRESSION>
-REL_OP -> op_rel_minor | op_rel_bigger | op_rel_equal | op_rel_not | op_rel_double_equal | op_rel_minor_equal | op_rel_bigger_equal | op_rel_not_equal
-
-LOGIC -> <EXPRESSION> <LOGIC_OP> <EXPRESSION>
-LOGIC_OP -> op_log_e_function | op_log_or_function
 
 # EXPRESSÃO
 
