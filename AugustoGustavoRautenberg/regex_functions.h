@@ -29,6 +29,7 @@ int get_index(map<int, tuple<string, string, int>> &lex)
     return lastIndex;
 }
 
+
 bool get_braces_init(string token, map<int, tuple<string, string, int>> &lex, int linha_atual)
 {
     int lastIndex = get_index(lex);

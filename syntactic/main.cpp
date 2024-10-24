@@ -10,6 +10,8 @@
 #include "grammar.cpp"
 using namespace std;
 
+// g++ -o main main.cpp grammar.cpp
+
 // Função para remover '<' e '>' de uma string
 string removeSymbols(const string& str) {
     string result;
