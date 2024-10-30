@@ -24,7 +24,7 @@ EXPRESSION -> <BOOL_EXPR> <EXPRESSION'> end_line
 EXPRESSION' -> op_arit_sum <MULT_DIV> <EXPRESSION'> | op_arit_sub <MULT_DIV> <EXPRESSION'> | ε 
 
 BOOL_EXPR -> <MULT_DIV> <BOOL_EXPR'>
-BOOL_EXPR' -> op_bool_and <MULT_DIV> <BOOL_EXPR'> | op_bool_or <MULT_DIV> <BOOL_EXPR'> | ε
+BOOL_EXPR' -> op_log_e <MULT_DIV> <BOOL_EXPR'> | op_log_or <MULT_DIV> <BOOL_EXPR'> | ε
 
 MULT_DIV -> <POW> <MULT_DIV'>
 MULT_DIV' -> op_arit_mult <POW> <MULT_DIV'> | op_arit_div <POW> <MULT_DIV'> | ε
