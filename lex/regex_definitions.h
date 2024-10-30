@@ -53,7 +53,6 @@ regex reserved_types("(int|double|char|boolean|str)");
 //nova
 regex typeInt("int");
 regex typeDouble("double");
-regex typeChar("char");
 regex typeBoolean("bool");
 regex typeStr("str");
 

@@ -9,8 +9,22 @@ CODE_BLOCK -> <ATTRIBUTION> <CODE_BLOCK> | <ATRIBUTION_BOOL> <CODE_BLOCK> | <PRI
 <LAPS> <CODE_BLOCK> | <CIRCUIT> <CODE_BLOCK> | <PIT> <CODE_BLOCK> | <ATTRIBUTION_STR> <CODE_BLOCK> | <ATTRIBUTION_CHAR> <CODE_BLOCK> | ε
 
 
-EXPRESSION -> <MULT_DIV> <EXPRESSION'> end_line 
+# EXPRESSION -> <MULT_DIV> <EXPRESSION'> end_line 
+# EXPRESSION' -> op_arit_sum <MULT_DIV> <EXPRESSION'> | op_arit_sub <MULT_DIV> <EXPRESSION'> | ε 
+
+# MULT_DIV -> <POW> <MULT_DIV'>
+# MULT_DIV' -> op_arit_mult <POW> <MULT_DIV'> | op_arit_div <POW> <MULT_DIV'> | ε
+
+# POW -> <VAR> <POW'>
+# POW' -> op_arit_pow <VAR> <POW'> | ε
+
+# VAR -> symbol_parameter_init <EXPRESSION> symbol_parameter_end | id | integer | double
+
+EXPRESSION -> <BOOL_EXPR> <EXPRESSION'> end_line 
 EXPRESSION' -> op_arit_sum <MULT_DIV> <EXPRESSION'> | op_arit_sub <MULT_DIV> <EXPRESSION'> | ε 
+
+BOOL_EXPR -> <MULT_DIV> <BOOL_EXPR'>
+BOOL_EXPR' -> op_bool_and <MULT_DIV> <BOOL_EXPR'> | op_bool_or <MULT_DIV> <BOOL_EXPR'> | ε
 
 MULT_DIV -> <POW> <MULT_DIV'>
 MULT_DIV' -> op_arit_mult <POW> <MULT_DIV'> | op_arit_div <POW> <MULT_DIV'> | ε
@@ -18,26 +32,27 @@ MULT_DIV' -> op_arit_mult <POW> <MULT_DIV'> | op_arit_div <POW> <MULT_DIV'> | ε
 POW -> <VAR> <POW'>
 POW' -> op_arit_pow <VAR> <POW'> | ε
 
-VAR -> symbol_parameter_init <EXPRESSION> symbol_parameter_end | id | integer | double
-
+VAR -> symbol_parameter_init <EXPRESSION> symbol_parameter_end | id | integer | double | bool_false | bool_true
 
 # EXPRESSÃO
 
 # ATRIBUIÇÃO
 
 ATTRIBUTION -> <RESERVED_TYPES> <ATTRIBUTION'> | <ATTRIBUTION'>
-ATTRIBUTION' -> id <ATTRIBUTION''>
-ATTRIBUTION'' -> op_rel_equal <EXPRESSION> | end_line
+ATTRIBUTION' -> id op_rel_equal <ATTRIBUTION_VALUE> end_line | id end_line
 
-ATRIBUTION_BOOL -> typeBoolean id <ATRIBUTION_BOOL'>
+ATTRIBUTION_VALUE -> <EXPRESSION>          # Para expressões aritméticas
+                  | bool_false             # Valor booleano falso
+                  | bool_true              # Valor booleano verdadeiro
+                  | quotes all_except_quotes quotes  # Para strings
+
+ATRIBUTION_BOOL -> typeBoolean id <ATRIBUTION_BOOL'> 
 ATRIBUTION_BOOL' -> op_rel_equal <ATTRIBUTION_BOOL''> | end_line
 ATRIBUTION_BOOL'' -> bool_false end_line | bool_true end_line
 
 ATTRIBUTION_STR -> typeStr id <ATTRIBUTION_STR'>
 ATTRIBUTION_STR' -> op_rel_equal quotes all_except_quotes quotes end_line | end_line
 
-ATTRIBUTION_CHAR -> typeChar id <ATTRIBUTION_CHAR'>
-ATTRIBUTION_CHAR' -> op_rel_equal quotes char_regex quotes end_line | end_line
 
 # ATRIBUIÇÃO
 

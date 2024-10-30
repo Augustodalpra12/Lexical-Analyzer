@@ -20,7 +20,6 @@ unordered_map <string, unordered_map<string, string>> getTable() {
                         {"circuit", "<CIRCUIT> <CODE_BLOCK>"},
                         {"pitEntry", "<PIT> <CODE_BLOCK>"},
                         {"typeStr", "<ATTRIBUTION_STR> <CODE_BLOCK>"},
-                        {"typeChar", "<ATTRIBUTION_CHAR> <CODE_BLOCK>"},
                         {"symbol_op_end", "ε"}}},
                     
         {"EXPRESSION", {{"symbol_parameter_init", "<MULT_DIV> <EXPRESSION>' end_line"},
@@ -72,8 +71,7 @@ unordered_map <string, unordered_map<string, string>> getTable() {
                  {"laps", "ε"},
                  {"circuit", "ε"},
                  {"pitEntry", "ε"},
-                 {"typeStr", "ε"},
-                 {"typeChar", "ε"}}},
+                 {"typeStr", "ε"}}},
 
         {"ATTRIBUTION'", {{"id", "id <ATTRIBUTION''>"},
         {"symbol_parameter_end", "ε"},
@@ -85,8 +83,7 @@ unordered_map <string, unordered_map<string, string>> getTable() {
                  {"laps", "ε"},
                  {"circuit", "ε"},
                  {"pitEntry", "ε"},
-                 {"typeStr", "ε"},
-                 {"typeChar", "ε"}}},
+                 {"typeStr", "ε"}}},
 
         {"ATTRIBUTION''", {{"op_rel_equal", "op_rel_equal <EXPRESSION>"},
                  {"end_line", "end_line"},
@@ -100,7 +97,6 @@ unordered_map <string, unordered_map<string, string>> getTable() {
                  {"circuit", "ε"},
                  {"pitEntry", "ε"},
                  {"typeStr", "ε"},
-                 {"typeChar", "ε"},
                  {"id", "ε"}}},
 
         {"ATTRIBUTION_BOOL", {{"typeBoolean", "typeBoolean id <ATTRIBUTION_BOOL'>"},
@@ -113,7 +109,6 @@ unordered_map <string, unordered_map<string, string>> getTable() {
                  {"circuit", "ε"},
                  {"pitEntry", "ε"},
                  {"typeStr", "ε"},
-                 {"typeChar", "ε"},
                  {"id", "ε"}}},
 
         {"ATTRIBUTION_BOOL'", {{"op_rel_equal", "op_rel_equal <ATTRIBUTION_BOOL''> "},
@@ -128,7 +123,6 @@ unordered_map <string, unordered_map<string, string>> getTable() {
                  {"circuit", "ε"},
                  {"pitEntry", "ε"},
                  {"typeStr", "ε"},
-                 {"typeChar", "ε"},
                  {"id", "ε"}}},
 
 
@@ -144,7 +138,6 @@ unordered_map <string, unordered_map<string, string>> getTable() {
                  {"circuit", "ε"},
                  {"pitEntry", "ε"},
                  {"typeStr", "ε"},
-                 {"typeChar", "ε"},
                  {"id", "ε"}}},
 
         {"ATTRIBUTION_STR", {{"typeStr", "typeStr id <ATTRIBUTION_STR'>"},
@@ -157,7 +150,6 @@ unordered_map <string, unordered_map<string, string>> getTable() {
                  {"laps", "ε"},
                  {"circuit", "ε"},
                  {"pitEntry", "ε"},
-                 {"typeChar", "ε"},
                  {"id", "ε"}}},
 
         {"ATTRIBUTION_STR'", {{"op_rel_equal", "op_rel_equal text_between_quotes end_line"},
@@ -172,36 +164,7 @@ unordered_map <string, unordered_map<string, string>> getTable() {
                  {"circuit", "ε"},
                  {"pitEntry", "ε"},
                  {"typeStr", "ε"},
-                 {"typeChar", "ε"},
                  {"id", "ε"}}},
-
-        {"ATTRIBUTION_CHAR", {{"typeChar", "typeChar id <ATTRIBUTION_CHAR'>"},
-                         {"symbol_parameter_end", "ε"},
-                 {"typeInt", "ε"},
-                 {"typeDouble", "ε"},
-                 {"typeBoolean", "ε"},
-                 {"reserved_prt", "ε"},
-                 {"reserved_scn", "ε"},
-                 {"laps", "ε"},
-                 {"circuit", "ε"},
-                 {"pitEntry", "ε"},
-                 {"typeStr", "ε"},
-                 {"id", "ε"}}},
-
-        {"ATTRIBUTION_CHAR'", {{"op_rel_equal", "op_rel_equal text_between_quotes end_line"}, // obs
-                              {"end_line", "end_line"},
-                                               {"symbol_parameter_end", "ε"},
-                 {"typeInt", "ε"},
-                 {"typeDouble", "ε"},
-                 {"typeBoolean", "ε"},
-                 {"reserved_prt", "ε"},
-                 {"reserved_scn", "ε"},
-                 {"laps", "ε"},
-                 {"circuit", "ε"},
-                 {"pitEntry", "ε"},
-                 {"typeStr", "ε"},
-                 {"typeChar", "ε"},
-                 {"id", "ε"}}},  
 
         {"PRINT", {{"reserved_prt", "reserved_prt symbol_parameter_init <ID_OR_STRING> symbol_parameter_end end_line"}}},
 
