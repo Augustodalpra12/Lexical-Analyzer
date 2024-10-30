@@ -24,7 +24,7 @@ regex symbol_op_init("[{]");
 regex symbol_op_end("[}]");
 regex symbol_op_mid("[;]");
 
-regex id("[a-zA-Z]([a-zA-Z0-9]|[_])*");
+regex id("([a-zA-Z0-9]|[_])*");
 regex comma(",");
 
 // antigo

@@ -111,7 +111,7 @@ int main() {
     stack<string> pilha;
     pilha.push("$");
     pilha.push("S");
-    unordered_map<string, vector<string>> grammar = getGrammar();
+    // unordered_map<string, vector<string>> grammar = getGrammar();
     unordered_map <string, unordered_map<string, string>> table = getTable();
     bool error = false;
     entrada.push({"$", "$", "$"});
@@ -167,9 +167,10 @@ int main() {
         printStackWithoutLosingElements(pilha);
         // cout << "Pilha atual: " << pilha. << endl;
         cout << "Entrada atual: " << item[0] << endl;
+        cout << "Linha atual: " << item[2] << endl;
         
         count++;
-        if(count == 150){
+        if(count == 300){
             break;
         }
         // teste = false;

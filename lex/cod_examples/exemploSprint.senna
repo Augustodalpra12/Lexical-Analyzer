@@ -34,7 +34,6 @@ int race() {
     prt("Multiplicacao: " + multiplicacao).
     prt("Divisao: " + divisao).
 
-    print("TESTE " + string1)
     bool x = true.
     bool y = false.
     bool and_op = x && y.
