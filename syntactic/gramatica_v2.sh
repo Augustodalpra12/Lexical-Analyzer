@@ -39,7 +39,8 @@ VAR -> symbol_parameter_init <EXPRESSION> symbol_parameter_end | id | integer | 
 # ATRIBUIÇÃO
 
 ATTRIBUTION -> <RESERVED_TYPES> <ATTRIBUTION'> | <ATTRIBUTION'>
-ATTRIBUTION' -> id op_rel_equal <ATTRIBUTION_VALUE> end_line | id end_line
+ATTRIBUTION' -> id <ATTRIBUTION''>
+ATTRIBUTION'' -> op_rel_equal <ATTRIBUTION_VALUE> end_line | end_line
 
 ATTRIBUTION_VALUE -> <EXPRESSION>          # Para expressões aritméticas
                   | bool_false             # Valor booleano falso
