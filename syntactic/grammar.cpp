@@ -220,7 +220,7 @@ unordered_map <string, unordered_map<string, string>> getTable() {
 
         {"ATTRIBUTION_BOOL'''", {{"op_log_e", "<LOG_SYMBOLS> <ID_OR_VALUE> <ATTRIBUTION_BOOL'''>"},
                                 {"op_log_or", "<LOG_SYMBOLS> <ID_OR_VALUE> <ATTRIBUTION_BOOL'''>"},
-                                {"end_line", " sinc"}}},
+                                {"end_line", " ε"}}},
 
         {"ATTRIBUTION_STR", {{"typeStr", "typeStr id <ATTRIBUTION_STR'>"},
                 {"symbol_op_end", "sinc"},

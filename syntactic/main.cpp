@@ -127,6 +127,7 @@ int main() {
         if (it != table.end()) {
              // pilha.top() is a key in the table
             auto it2 = it->second.find(item[0]);
+            // cout << "item: " << item[0] << endl;
             if (it2 != it->second.end()) {
                 // item[0] is a key in the table[pilha.top()]
                 pilha.pop();
@@ -135,10 +136,14 @@ int main() {
                 // por exemplo se tiver "<ATTRIBUTION> <CODE_BLOCK>" no it2->second, ele deve ficar "CODE_BLOCK ATTRIBUTION"
                 vector<string> invertedTokens = reverseTokens(it2->second);
 
-                if(!(invertedTokens[0] == "ε")){
+                if(!(invertedTokens[0] == "ε") && !(invertedTokens[0] == "sinc")){
                     for (const auto& token : invertedTokens) {
                         pilha.push(token);
                     }
+                } if (invertedTokens[0] == "sinc"){
+                    cout << "SINC: Erro de Sincronização" << endl;
+                    cout <<"TESTE: " << it->first << " " << it2->first << endl;
+                    pilha.pop();
                 }
                 // Empilhar a string invertida e limpa
 
@@ -147,32 +152,45 @@ int main() {
                 
             } else {
                 // erro
+                vector<string> item1 = entrada.front();
+                cout << "VAZIO --> " << item1[0] << " " << item1[1] << " " << item1[2] << endl;
+                entrada.pop();
                 error = true;
             }
             // do something with values
 
 
         } else {
-            error = true;
+            // cout << "---------------------------------------------------" << endl;
+            // cout << "Pilha: " << pilha.top() << endl;
+            // cout << "Entrada: " << item[0] << endl;
+            if(pilha.top() == item[0]) {
+                entrada.pop();
+                pilha.pop();
+            } else {
+                error = true;
+                vector<string> item1 = entrada.front();
+                cout << "Token não esperado: " << item1[0] << ", correspondente ao caracter: " << item1[1] << ", presente na linha: " << item1[2] << endl;
+                cout << "Esperava o token: " << pilha.top() << endl; 
+                cout << "PROSSEGUINDO" << endl;
+                entrada.pop();
+            }
+            item = entrada.front();
+            // printStackWithoutLosingElements(pilha);
+            // // cout << "Pilha atual: " << pilha. << endl;
+            // cout << "Entrada atual: " << item[0] << endl;
+            // cout << "Linha atual: " << item[2] << endl;
+            
             // erro
         }
-        cout << "---------------------------------------------------" << endl;
-        cout << "Pilha: " << pilha.top() << endl;
-        cout << "Entrada: " << item[0] << endl;
-        if(pilha.top() == item[0]) {
-            entrada.pop();
-            pilha.pop();
-        }
-        item = entrada.front();
-        printStackWithoutLosingElements(pilha);
-        // cout << "Pilha atual: " << pilha. << endl;
-        cout << "Entrada atual: " << item[0] << endl;
-        cout << "Linha atual: " << item[2] << endl;
+
+
+
         
         count++;
-        if(count == 350){
-            break;
-        }
+        // if(count == 350){
+        //     break;
+        // }
         // teste = false;
         
 
