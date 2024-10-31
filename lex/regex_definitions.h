@@ -39,6 +39,8 @@ regex reserved_condition("(pitEntry|pitExit)");
 regex pitEntry("pitEntry");
 regex pitExit("pitExit");
 
+regex returnRegex("return");
+
 // antigo
 regex reserved_arit("(overtake|brake)"); 
 //nova
@@ -53,7 +55,6 @@ regex reserved_types("(int|double|char|boolean|str)");
 //nova
 regex typeInt("int");
 regex typeDouble("double");
-regex typeChar("char");
 regex typeBoolean("bool");
 regex typeStr("str");
 

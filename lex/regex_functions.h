@@ -311,11 +311,6 @@ bool get_token(string token, map<int, tuple<string, string, int>> &lex, int linh
         lex[lastIndex] = make_tuple("typeDouble", token, linha_atual);
         return true;
     }
-        else if (regex_match(token, typeChar))
-    {
-        lex[lastIndex] = make_tuple("typeChar", token, linha_atual);
-        return true;
-    }
         else if (regex_match(token, typeBoolean))
     {
         lex[lastIndex] = make_tuple("typeBoolean", token, linha_atual);
