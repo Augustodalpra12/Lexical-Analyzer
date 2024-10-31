@@ -38,14 +38,13 @@ int race() {
     bool y = false.
     bool and_op = x && y.
     bool or_op = x || y.
-    bool not_op  =!x.
+    bool not_op  = !x.
 
     prt("AND: " + and_op).
     prt("OR: " + or_op).
     prt("NOT: " + not_op).
 
-    prt("NOT: " + not_op)
+    prt("NOT: " + not_op).
 
-    return 0.
     @ dasdasdas@
 }

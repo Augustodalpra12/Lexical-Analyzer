@@ -39,6 +39,8 @@ regex reserved_condition("(pitEntry|pitExit)");
 regex pitEntry("pitEntry");
 regex pitExit("pitExit");
 
+regex returnRegex("return");
+
 // antigo
 regex reserved_arit("(overtake|brake)"); 
 //nova

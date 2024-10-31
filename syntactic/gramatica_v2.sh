@@ -5,7 +5,7 @@ RESERVED_TYPES -> typeInt | typeDouble
 BEGIN -> typeInt reserved_main symbol_parameter_init 
 symbol_parameter_end symbol_op_init <CODE_BLOCK> symbol_op_end
 
-CODE_BLOCK -> <ATTRIBUTION> <CODE_BLOCK> | <ATRIBUTION_BOOL> <CODE_BLOCK> | <PRINT> <CODE_BLOCK> | <SCAN> <CODE_BLOCK> | 
+CODE_BLOCK -> <ATTRIBUTION> <CODE_BLOCK> | <ATTRIBUTION_BOOL> <CODE_BLOCK> | <PRINT> <CODE_BLOCK> | <SCAN> <CODE_BLOCK> | 
 <LAPS> <CODE_BLOCK> | <CIRCUIT> <CODE_BLOCK> | <PIT> <CODE_BLOCK> | <ATTRIBUTION_STR> <CODE_BLOCK> | <ATTRIBUTION_CHAR> <CODE_BLOCK> | ε
 
 
@@ -40,16 +40,17 @@ VAR -> symbol_parameter_init <EXPRESSION> symbol_parameter_end | id | integer | 
 
 ATTRIBUTION -> <RESERVED_TYPES> <ATTRIBUTION'> | <ATTRIBUTION'>
 ATTRIBUTION' -> id <ATTRIBUTION''>
-ATTRIBUTION'' -> op_rel_equal <ATTRIBUTION_VALUE> end_line | end_line
+ATTRIBUTION'' -> op_rel_equal <ATTRIBUTION_VALUE> 
 
 ATTRIBUTION_VALUE -> <EXPRESSION>          # Para expressões aritméticas
-                  | bool_false             # Valor booleano falso
-                  | bool_true              # Valor booleano verdadeiro
-                  | quotes all_except_quotes quotes  # Para strings
+                  | bool_false end_line             # Valor booleano falso
+                  | bool_true end_line              # Valor booleano verdadeiro
+                  | quotes all_except_quotes quotes end_line  # Para strings
 
-ATRIBUTION_BOOL -> typeBoolean id <ATRIBUTION_BOOL'> 
-ATRIBUTION_BOOL' -> op_rel_equal <ATTRIBUTION_BOOL''> | end_line
-ATRIBUTION_BOOL'' -> bool_false end_line | bool_true end_line
+ATTRIBUTION_BOOL -> typeBoolean id <ATTRIBUTION_BOOL'>  
+ATTRIBUTION_BOOL' -> op_rel_equal <ATTRIBUTION_BOOL''> | end_line
+ATTRIBUTION_BOOL'' -> bool_false end_line | bool_true end_line | <ID_OR_VALUE> <ATTRIBUTION_BOOL'''> end_line | op_rel_not <ID_OR_VALUE> <ATTRIBUTION_BOOL'''> end_line 
+ATTRIBUTION_BOOL''' -> <LOG_SYMBOLS> <ID_OR_VALUE> <ATTRIBUTION_BOOL'''>  | ε 
 
 ATTRIBUTION_STR -> typeStr id <ATTRIBUTION_STR'>
 ATTRIBUTION_STR' -> op_rel_equal quotes all_except_quotes quotes end_line | end_line
@@ -91,7 +92,7 @@ LOOPS_SYMBOLS -> <REL_SYMBOLS> | <LOG_SYMBOLS> |  <ARIT_SYMBOLS>
 
 
 <ARIT_SYMBOLS> -> op_arit_sum | op_arit_sub | op_arit_div | op_arit_mult | op_arit_pow
-LOG_SYMBOLS -> op_log_e | op_log_or
+LOG_SYMBOLS -> op_log_e | op_log_or 
 <REL_SYMBOLS> -> op_rel_minor | op_rel_bigger | op_rel_minor_equal | op_rel_bigger_equal | op_rel_double_equal | op_rel_not_equal
 
 # PIT

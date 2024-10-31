@@ -170,7 +170,7 @@ int main() {
         cout << "Linha atual: " << item[2] << endl;
         
         count++;
-        if(count == 300){
+        if(count == 350){
             break;
         }
         // teste = false;
