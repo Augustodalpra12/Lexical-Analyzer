@@ -27,11 +27,12 @@ VAR -> symbol_parameter_init <EXPRESSION> symbol_parameter_end | id | integer | 
 
 ATTRIBUTION -> <RESERVED_TYPES> <ATTRIBUTION'> | <ATTRIBUTION'>
 ATTRIBUTION' -> id <ATTRIBUTION''>
-ATTRIBUTION'' -> op_rel_equal <EXPRESSION> | end_line
+ATTRIBUTION'' -> op_rel_equal <EXPRESSION> | end_line # aqui vai ter que ser a logica para as outras atribuições
 
 ATRIBUTION_BOOL -> typeBoolean id <ATRIBUTION_BOOL'>
 ATRIBUTION_BOOL' -> op_rel_equal <ATTRIBUTION_BOOL''> | end_line
-ATRIBUTION_BOOL'' -> bool_false end_line | bool_true end_line
+ATRIBUTION_BOOL'' -> bool_false end_line | bool_true end_line | id <ATRIBUTION_BOOL'''> end_line
+ATRIBUTION_BOOL''' -> <REL_SYMBOLS> id <ATRIBUTION_BOOL'''> | ε
 
 ATTRIBUTION_STR -> typeStr id <ATTRIBUTION_STR'>
 ATTRIBUTION_STR' -> op_rel_equal quotes all_except_quotes quotes end_line | end_line
