@@ -42,12 +42,12 @@ vector<string> reverseTokens(const string& str) {
     return tokens;  // Retorna o vetor de tokens invertidos
 }
 
-void printStackWithoutLosingElements(std::stack<std::string> &pilha) {
+void printStackWithoutLosingElements(stack<string> &pilha) {
     // Copia a pilha para um vetor
-    std::vector<std::string> temp;
+    vector<string> temp;
 
     // Transferir elementos da pilha para o vetor sem perder dados
-    std::stack<std::string> copy = pilha; // Fazer uma cópia da pilha original
+    stack<string> copy = pilha; // Fazer uma cópia da pilha original
     while (!copy.empty()) {
         temp.push_back(copy.top()); // Adiciona ao vetor
         copy.pop(); // Remove o elemento do topo da cópia
@@ -55,9 +55,9 @@ void printStackWithoutLosingElements(std::stack<std::string> &pilha) {
 
     // Imprimir os elementos da pilha na ordem original (reverso do vetor)
     for (int i = temp.size() - 1; i >= 0; --i) {
-        std::cout << temp[i] << " "; // Acessa os elementos do vetor pelo índice
+        cout << temp[i] << " "; // Acessa os elementos do vetor pelo índice
     }
-    std::cout << std::endl;
+    cout << endl;
 }
 
 int main() {
@@ -118,6 +118,7 @@ int main() {
     bool teste = true;
     int count = 0;
     // while(!entrada.empty() || error) {
+    unordered_map <string, string> terminals = getTerminals();
     while (teste){
 
     
@@ -142,18 +143,35 @@ int main() {
                     }
                 } if (invertedTokens[0] == "sinc"){
                     cout << "SINC: Erro de Sincronização" << endl;
-                    cout <<"TESTE: " << it->first << " " << it2->first << endl;
+                    // cout <<"TESTE: " << it->first << " " << it2->first << endl;
                     pilha.pop();
                 }
                 // Empilhar a string invertida e limpa
 
                 // pilha.push(invertedAndCleaned);
+                
                 // pilha.push(it2->second); 
                 
             } else {
-                // erro
+                // aqui printar os firsts
                 vector<string> item1 = entrada.front();
-                cout << "VAZIO --> " << item1[0] << " " << item1[1] << " " << item1[2] << endl;
+                cout <<"TESTE: " << it->first << " " << endl;
+                cout << "Token não esperado: " << item1[0] << ", correspondente ao caracter: " << item1[1] << ", presente na linha: " << item1[2] << endl;
+                cout << "Esperava os seguintes tokens: ";
+                string result; // firsts do que está na pilha
+                for (const auto& pair : it->second) {
+                    if(pair.second != "ε" && pair.second != "sinc") {
+                        auto terminalPointer = terminals.find(pair.first);
+                        if (terminalPointer != terminals.end()) {
+                            if (!result.empty()) {
+                                result += ", ";  // adiciona a vírgula antes dos elementos a partir do segundo
+                            }
+                            result += terminalPointer->second;
+                        }
+                    }
+                }
+                cout << result << endl;
+                cout << "PROSSEGUINDO!" << endl;
                 entrada.pop();
                 error = true;
             }
@@ -164,6 +182,7 @@ int main() {
             // cout << "---------------------------------------------------" << endl;
             // cout << "Pilha: " << pilha.top() << endl;
             // cout << "Entrada: " << item[0] << endl;
+            // printStackWithoutLosingElements(pilha);
             if(pilha.top() == item[0]) {
                 entrada.pop();
                 pilha.pop();
@@ -171,7 +190,7 @@ int main() {
                 error = true;
                 vector<string> item1 = entrada.front();
                 cout << "Token não esperado: " << item1[0] << ", correspondente ao caracter: " << item1[1] << ", presente na linha: " << item1[2] << endl;
-                cout << "Esperava o token: " << pilha.top() << endl; 
+                cout << "Esperava o seguinte token: " << pilha.top() << endl; // firsts do que está na pilha
                 cout << "PROSSEGUINDO" << endl;
                 entrada.pop();
             }

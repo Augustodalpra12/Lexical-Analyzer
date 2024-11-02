@@ -134,7 +134,7 @@ unordered_map <string, unordered_map<string, string>> getTable() {
                  {"pitEntry", "sinc"},
                  {"typeStr", "sinc"},
                  {"id", "sinc"}}},
-
+                // id <ATTRIBUTION''>
         {"ATTRIBUTION'", {{"id", "id <ATTRIBUTION''>"},
                  {"symbol_op_end", "sinc"},
                  {"typeInt", "sinc"},
@@ -435,6 +435,54 @@ unordered_map <string, unordered_map<string, string>> getTable() {
 
     };
     return grammarRules;
+}
+
+unordered_map <string, string> getTerminals() {
+    unordered_map<string, string> terminals = {
+        {"symbol_op_init", "{"},
+        {"symbol_op_end", "}"},
+        {"quotes", "\""},
+        {"symbol_parameter_init", "("},
+        {"symbol_parameter_end", ")"},
+        {"symbol_op_mid", ";"},
+        {"op_arit_sum", "+"},
+        {"op_arit_sub", "-"},
+        {"op_arit_mult", "*"},
+        {"op_arit_div", "/"},
+        {"op_arit_pow", "^"},
+        {"op_rel_minor", "<"},
+        {"op_rel_bigger", ">"},
+        {"op_rel_equal", "="},
+        {"op_rel_not", "!"},
+        {"op_rel_double_equal", "=="},
+        {"op_rel_minor_equal", "<="},
+        {"op_rel_bigger_equal", ">="},
+        {"op_rel_not_equal", "!="},
+        {"integer", "integer value"},
+        {"double", "double value"},
+        {"laps", "laps"},
+        {"circuit", "circuit"},
+        {"pitEntry", "pitEntry"},
+        {"pitExit", "pitExit"},
+        {"overtake", "overtake"},
+        {"brake", "brake"},
+        {"reserved_main", "race"},
+        {"typeInt", "int"},
+        {"typeDouble", "double"},
+        {"typeBoolean", "bool"}, // checar se é bool ou boolean
+        {"typeStr", "string"},
+        {"reserved_prt", "prt"},
+        {"reserved_scn", "scn"},
+        {"bool_true", "true"},
+        {"bool_false", "false"},
+        {"id", "id"},
+        {"end_line", "."},
+        {"text_between_quotes", "text between quotes, \"Hello World\""},
+        {"op_rel_e", "&&"},
+        {"op_rel_or", "||"},
+    };
+
+    return terminals;
 }
 
 struct GrammarRule {
