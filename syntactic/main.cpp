@@ -42,12 +42,12 @@ vector<string> reverseTokens(const string& str) {
     return tokens;  // Retorna o vetor de tokens invertidos
 }
 
-void printStackWithoutLosingElements(std::stack<std::string> &pilha) {
+void printStackWithoutLosingElements(stack<string> &pilha) {
     // Copia a pilha para um vetor
-    std::vector<std::string> temp;
+    vector<string> temp;
 
     // Transferir elementos da pilha para o vetor sem perder dados
-    std::stack<std::string> copy = pilha; // Fazer uma cópia da pilha original
+    stack<string> copy = pilha; // Fazer uma cópia da pilha original
     while (!copy.empty()) {
         temp.push_back(copy.top()); // Adiciona ao vetor
         copy.pop(); // Remove o elemento do topo da cópia
@@ -55,9 +55,9 @@ void printStackWithoutLosingElements(std::stack<std::string> &pilha) {
 
     // Imprimir os elementos da pilha na ordem original (reverso do vetor)
     for (int i = temp.size() - 1; i >= 0; --i) {
-        std::cout << temp[i] << " "; // Acessa os elementos do vetor pelo índice
+        cout << temp[i] << " "; // Acessa os elementos do vetor pelo índice
     }
-    std::cout << std::endl;
+    cout << endl;
 }
 
 int main() {

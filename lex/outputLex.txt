@@ -109,6 +109,7 @@
 [text_between_quotes, '"opa"', '30']
 [end_line, '.', '30']
 [reserved_prt, 'prt', '32']
+[op_arit_sum, '+', '32']
 [symbol_parameter_init, '(', '32']
 [text_between_quotes, '"Soma: "', '32']
 [op_arit_sum, '+', '32']

@@ -29,7 +29,7 @@ int race() {
     int divisao = a / b.
     str string1 = "opa".
 
-    prt("Soma: " + soma).
+    prt+("Soma: " + soma).
     prt("Subtracao: " + subtracao).
     prt("Multiplicacao: " + multiplicacao).
     prt("Divisao: " + divisao).
