@@ -8,18 +8,6 @@ symbol_parameter_end symbol_op_init <CODE_BLOCK> symbol_op_end
 CODE_BLOCK -> <ATTRIBUTION> <CODE_BLOCK> | <ATTRIBUTION_BOOL> <CODE_BLOCK> | <PRINT> <CODE_BLOCK> | <SCAN> <CODE_BLOCK> | 
 <LAPS> <CODE_BLOCK> | <CIRCUIT> <CODE_BLOCK> | <PIT> <CODE_BLOCK> | <ATTRIBUTION_STR> <CODE_BLOCK> | <ATTRIBUTION_CHAR> <CODE_BLOCK> | ε
 
-
-# EXPRESSION -> <MULT_DIV> <EXPRESSION'> end_line 
-# EXPRESSION' -> op_arit_sum <MULT_DIV> <EXPRESSION'> | op_arit_sub <MULT_DIV> <EXPRESSION'> | ε 
-
-# MULT_DIV -> <POW> <MULT_DIV'>
-# MULT_DIV' -> op_arit_mult <POW> <MULT_DIV'> | op_arit_div <POW> <MULT_DIV'> | ε
-
-# POW -> <VAR> <POW'>
-# POW' -> op_arit_pow <VAR> <POW'> | ε
-
-# VAR -> symbol_parameter_init <EXPRESSION> symbol_parameter_end | id | integer | double
-
 EXPRESSION -> <BOOL_EXPR> <EXPRESSION'> end_line 
 EXPRESSION' -> op_arit_sum <MULT_DIV> <EXPRESSION'> | op_arit_sub <MULT_DIV> <EXPRESSION'> | ε 
 
@@ -42,10 +30,7 @@ ATTRIBUTION -> <RESERVED_TYPES> <ATTRIBUTION'> | <ATTRIBUTION'>
 ATTRIBUTION' -> id <ATTRIBUTION''>
 ATTRIBUTION'' -> op_rel_equal <ATTRIBUTION_VALUE> 
 
-ATTRIBUTION_VALUE -> <EXPRESSION>          # Para expressões aritméticas
-                  | bool_false end_line             # Valor booleano falso
-                  | bool_true end_line              # Valor booleano verdadeiro
-                  | quotes all_except_quotes quotes end_line  # Para strings
+ATTRIBUTION_VALUE -> <EXPRESSION> | bool_false end_line | bool_true end_line | quotes all_except_quotes quotes end_line  
 
 ATTRIBUTION_BOOL -> typeBoolean id <ATTRIBUTION_BOOL'>  
 ATTRIBUTION_BOOL' -> op_rel_equal <ATTRIBUTION_BOOL''> | end_line

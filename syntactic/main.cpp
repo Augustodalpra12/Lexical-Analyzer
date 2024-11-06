@@ -10,7 +10,7 @@
 #include "grammar.cpp"
 using namespace std;
 
-// g++ -o main main.cpp grammar.cpp
+// g++ main -o main.cpp
 
 // Função para remover '<' e '>' de uma string
 string removeSymbols(const string& str) {
@@ -94,20 +94,6 @@ int main() {
     }
     file.close(); // Fecha o arquivo
 
-    // while (!entrada.empty()) {
-    //     vector<string> item = entrada.front();
-    //     entrada.pop();
-
-    //     // Imprime o vetor
-    //     cout << "[";
-    //     for (size_t i = 0; i < item.size(); i++) {
-    //         cout << item[i];
-    //         if (i < item.size() - 1) {
-    //             cout << ", ";
-    //         }
-    //     }
-    //     cout << "]" << endl;
-    // }
     stack<string> pilha;
     pilha.push("$");
     pilha.push("S");
@@ -126,12 +112,12 @@ int main() {
         bool emptyRule = false;
         auto it = table.find(pilha.top());
         if (it != table.end()) {
-             // pilha.top() is a key in the table
             auto it2 = it->second.find(item[0]);
-            // cout << "item: " << item[0] << endl;
             if (it2 != it->second.end()) {
-                // item[0] is a key in the table[pilha.top()]
+                // printStackWithoutLosingElements(pilha);
                 pilha.pop();
+                // printStackWithoutLosingElements(pilha);
+
                 // antes de realizar o pilha.push abaixo
                 // inverta a ordem do it2 -> second e retire todos oos < e >, tem que fazer e retirar <>
                 // por exemplo se tiver "<ATTRIBUTION> <CODE_BLOCK>" no it2->second, ele deve ficar "CODE_BLOCK ATTRIBUTION"
@@ -146,11 +132,6 @@ int main() {
                     // cout <<"TESTE: " << it->first << " " << it2->first << endl;
                     pilha.pop();
                 }
-                // Empilhar a string invertida e limpa
-
-                // pilha.push(invertedAndCleaned);
-                
-                // pilha.push(it2->second); 
                 
             } else {
                 // aqui printar os firsts
@@ -206,12 +187,10 @@ int main() {
 
 
         
-        count++;
-        // if(count == 350){
+        // count++;
+        // if(count == 10){
         //     break;
-        // }
-        // teste = false;
-        
+        // }        
 
     }
 
