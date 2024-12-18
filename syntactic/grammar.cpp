@@ -280,14 +280,167 @@ int main() {
     addRule("ID_OR_STRING", "text_between_quotes", "text_between_quotes <ID_OR_STRING'>");
     addRule("ID_OR_STRING", "symbol_parameter_end", "sinc");
 
+    addRule("ID_OR_STRING'", "op_arit_sum", "op_arit_sum <ID_OR_STRING''> <ID_OR_STRING'>"); // pronto
+    addRule("ID_OR_STRING'", "symbol_parameter_end", "ε");
+
+    addRule("ID_OR_STRING''", "id", "id"); // pronto
+    addRule("ID_OR_STRING''", "integer", "integer");
+    addRule("ID_OR_STRING''", "double", "double");
+    addRule("ID_OR_STRING''", "text_between_quotes", "text_between_quotes");
+    addRule("ID_OR_STRING''", "symbol_parameter_end", "sinc");
+    addRule("ID_OR_STRING''", "op_arit_sum", "sinc");
+
+    addRule("SCAN", "reserved_scn", "reserved_scn symbol_parameter_init id symbol_parameter_end end_line"); // pronto
+    addRule("SCAN", "symbol_op_end", "sinc");
+    addRule("SCAN", "typeInt", "sinc");
+    addRule("SCAN", "typeDouble", "sinc");
+    addRule("SCAN", "typeBoolean", "sinc");
+    addRule("SCAN", "reserved_prt", "sinc");
+    addRule("SCAN", "reserved_scn", "sinc");
+    addRule("SCAN", "laps", "sinc");
+    addRule("SCAN", "circuit", "sinc");
+    addRule("SCAN", "pitEntry", "sinc");
+    addRule("SCAN", "typeStr", "sinc");
+    addRule("SCAN", "id", "sinc");
+
+    addRule("LAPS", "laps", "laps symbol_parameter_init <INIT_LAPS> op_rel_equal <ID_OR_VALUE> symbol_op_mid id <REL_SYMBOLS> <ID_OR_VALUE> symbol_op_mid id op_rel_equal <LAPS_INC> symbol_parameter_end symbol_op_init <CODE_BLOCK> symbol_op_end"); // pronto
+    addRule("LAPS", "symbol_op_end", "sinc");
+    addRule("LAPS", "typeInt", "sinc");
+    addRule("LAPS", "typeDouble", "sinc");
+    addRule("LAPS", "typeBoolean", "sinc");
+    addRule("LAPS", "reserved_prt", "sinc");
+    addRule("LAPS", "reserved_scn", "sinc");
+    addRule("LAPS", "laps", "sinc");
+    addRule("LAPS", "circuit", "sinc");
+    addRule("LAPS", "pitEntry", "sinc");
+    addRule("LAPS", "typeStr", "sinc");
+    addRule("LAPS", "id", "sinc");
+
+    addRule("INIT_LAPS", "typeInt", "typeInt id"); // pronto
+    addRule("INIT_LAPS", "id", "id");
+    addRule("INIT_LAPS", "op_rel_equal", "sinc");
+
+    addRule("LAPS_INC", "overtake", "overtake"); // pronto
+    addRule("LAPS_INC", "brake", "brake");
+    addRule("LAPS_INC", "id", "id");
+    addRule("LAPS_INC", "symbol_parameter_end", "sinc");
+
+    addRule("LAPS_SYMBOLS", "op_arit_sum", "op_arit_sum"); // pronto
+    addRule("LAPS_SYMBOLS", "op_arit_sub", "op_arit_sub");
+    addRule("LAPS_SYMBOLS", "op_arit_mult", "op_arit_mult");
+    addRule("LAPS_SYMBOLS", "op_arit_div", "op_arit_div");
+    addRule("LAPS_SYMBOLS", "id", "sinc");
+    addRule("LAPS_SYMBOLS", "integer", "sinc");
+
+    addRule("ID_OR_VALUE", "id", "id"); // pronto
+    addRule("ID_OR_VALUE", "integer", "integer");
+    addRule("ID_OR_VALUE", "symbol_parameter_end", "sinc");
+    addRule("ID_OR_VALUE", "symbol_op_mid", "sinc");
+
+    addRule("CIRCUIT", "circuit", "circuit symbol_parameter_init <CIRCUIT_LOG> symbol_parameter_end symbol_op_init <CODE_BLOCK> symbol_op_end"); // pronto
+    addRule("CIRCUIT", "symbol_op_end", "sinc");
+    addRule("CIRCUIT", "typeInt", "sinc");
+    addRule("CIRCUIT", "typeDouble", "sinc");
+    addRule("CIRCUIT", "typeBoolean", "sinc");
+    addRule("CIRCUIT", "reserved_prt", "sinc");
+    addRule("CIRCUIT", "reserved_scn", "sinc");
+    addRule("CIRCUIT", "laps", "sinc");
+    addRule("CIRCUIT", "circuit", "sinc");
+    addRule("CIRCUIT", "pitEntry", "sinc");
+    addRule("CIRCUIT", "typeStr", "sinc");
+    addRule("CIRCUIT", "id", "sinc");
+
+    addRule("CIRCUIT_LOG", "id", "id <CIRCUIT_LOG>"); // pronto
+    addRule("CIRCUIT_LOG", "integer", "integer <CIRCUIT_LOG>");
+    addRule("CIRCUIT_LOG", "double", "double <CIRCUIT_LOG>");
+    addRule("CIRCUIT_LOG", "symbol_parameter_end", "sinc");
+
+    addRule("CIRCUIT_LOG'", "op_arit_sum", "<LOOPS_SYMBOLS> <CIRCUIT_LOG>"); // pronto
+    addRule("CIRCUIT_LOG'", "op_arit_sub", "<LOOPS_SYMBOLS> <CIRCUIT_LOG>");
+    addRule("CIRCUIT_LOG'", "op_arit_mult", "<LOOPS_SYMBOLS> <CIRCUIT_LOG>");
+    addRule("CIRCUIT_LOG'", "op_arit_div", "<LOOPS_SYMBOLS> <CIRCUIT_LOG>");
+    addRule("CIRCUIT_LOG'", "op_arit_pow", "<LOOPS_SYMBOLS> <CIRCUIT_LOG>");
+    addRule("CIRCUIT_LOG'", "op_rel_minor", "<LOOPS_SYMBOLS> <CIRCUIT_LOG>");
+    addRule("CIRCUIT_LOG'", "op_rel_bigger", "<LOOPS_SYMBOLS> <CIRCUIT_LOG>");
+    addRule("CIRCUIT_LOG'", "op_rel_minor_equal", "<LOOPS_SYMBOLS> <CIRCUIT_LOG>");
+    addRule("CIRCUIT_LOG'", "op_rel_bigger_equal", "<LOOPS_SYMBOLS> <CIRCUIT_LOG>");
+    addRule("CIRCUIT_LOG'", "op_rel_double_equal", "<LOOPS_SYMBOLS> <CIRCUIT_LOG>");
+    addRule("CIRCUIT_LOG'", "op_rel_not_equal", "<LOOPS_SYMBOLS> <CIRCUIT_LOG>");
+    addRule("CIRCUIT_LOG'", "op_rel_equal", "<LOOPS_SYMBOLS> <CIRCUIT_LOG>");
+    addRule("CIRCUIT_LOG'", "op_rel_and", "<LOOPS_SYMBOLS> <CIRCUIT_LOG>");
+    addRule("CIRCUIT_LOG'", "op_rel_or", "<LOOPS_SYMBOLS> <CIRCUIT_LOG>");
+    addRule("CIRCUIT_LOG'", "symbol_parameter_end", "ε");
+
+    addRule("LOOPS_SYMBOLS", "op_arit_sum", "<ARIT_SYMBOLS>"); // pronto
+    addRule("LOOPS_SYMBOLS", "op_arit_sub", "<ARIT_SYMBOLS>");
+    addRule("LOOPS_SYMBOLS", "op_arit_mult", "<ARIT_SYMBOLS>");
+    addRule("LOOPS_SYMBOLS", "op_arit_div", "<ARIT_SYMBOLS>");
+    addRule("LOOPS_SYMBOLS", "op_arit_pow", "<ARIT_SYMBOLS>");
+    addRule("LOOPS_SYMBOLS", "op_rel_minor", "<REL_SYMBOLS>");
+    addRule("LOOPS_SYMBOLS", "op_rel_bigger", "<REL_SYMBOLS>");
+    addRule("LOOPS_SYMBOLS", "op_rel_minor_equal", "<REL_SYMBOLS>");
+    addRule("LOOPS_SYMBOLS", "op_rel_bigger_equal", "<REL_SYMBOLS>");
+    addRule("LOOPS_SYMBOLS", "op_rel_double_equal", "<REL_SYMBOLS>");
+    addRule("LOOPS_SYMBOLS", "op_rel_not_equal", "<REL_SYMBOLS>");
+    addRule("LOOPS_SYMBOLS", "op_rel_equal", "<REL_SYMBOLS>");
+    addRule("LOOPS_SYMBOLS", "op_rel_and", "<LOG_SYMBOLS>");
+    addRule("LOOPS_SYMBOLS", "op_rel_or", "<LOG_SYMBOLS>");
+    addRule("LOOPS_SYMBOLS", "id", "sinc");
+    addRule("LOOPS_SYMBOLS", "integer", "sinc");
+    addRule("LOOPS_SYMBOLS", "double", "sinc");
+
+    addRule("ARIT_SYMBOLS", "op_arit_sum", "op_arit_sum"); // pronto
+    addRule("ARIT_SYMBOLS", "op_arit_sub", "op_arit_sub");
+    addRule("ARIT_SYMBOLS", "op_arit_mult", "op_arit_mult");
+    addRule("ARIT_SYMBOLS", "op_arit_div", "op_arit_div");
+    addRule("ARIT_SYMBOLS", "op_arit_pow", "op_arit_pow");
+    addRule("ARIT_SYMBOLS", "id", "sinc");
+    addRule("ARIT_SYMBOLS", "integer", "sinc");
+    addRule("ARIT_SYMBOLS", "double", "sinc");
+
+    addRule("LOG_SYMBOLS", "op_log_e", "op_log_e"); // pronto
+    addRule("LOG_SYMBOLS", "op_log_or", "op_log_or");
+    addRule("LOG_SYMBOLS", "id", "sinc");
+    addRule("LOG_SYMBOLS", "integer", "sinc");
+    addRule("LOG_SYMBOLS", "double", "sinc");
+
+    addRule("REL_SYMBOLS", "op_rel_minor", "op_rel_minor"); // pronto
+    addRule("REL_SYMBOLS", "op_rel_bigger", "op_rel_bigger");
+    addRule("REL_SYMBOLS", "op_rel_minor_equal", "op_rel_minor_equal");
+    addRule("REL_SYMBOLS", "op_rel_bigger_equal", "op_rel_bigger_equal");
+    addRule("REL_SYMBOLS", "op_rel_double_equal", "op_rel_double_equal");
+    addRule("REL_SYMBOLS", "op_rel_not_equal", "op_rel_not_equal");
+    addRule("REL_SYMBOLS", "id", "sinc");
+    addRule("REL_SYMBOLS", "integer", "sinc");
+    addRule("REL_SYMBOLS", "double", "sinc");
+
+    addRule("PIT", "pitEntry", "pitEntry symbol_parameter_init <PIT_LOG> symbol_parameter_end symbol_op_init <CODE_BLOCK> symbol_op_end <PIT_EXIT>"); // pronto
+    addRule("PIT", "symbol_op_end", "<sinc'>");
     
+    addRule("PIT_LOG", "id", "id <PIT_LOG'>");  // pronto
+    addRule("PIT_LOG", "integer", "integer <PIT_LOG'>");
+    addRule("PIT_LOG", "double", "double <PIT_LOG'>");
+    addRule("PIT_LOG", "symbol_parameter_end", "sinc");
 
     
+    addRule("PIT_LOG'", "op_arit_sum", "<LOOPS_SYMBOLS> <PIT_LOG>");  // pronto
+    addRule("PIT_LOG'", "op_arit_sub", "<LOOPS_SYMBOLS> <PIT_LOG>");
+    addRule("PIT_LOG'", "op_arit_mult", "<LOOPS_SYMBOLS> <PIT_LOG>");
+    addRule("PIT_LOG'", "op_arit_div", "<LOOPS_SYMBOLS> <PIT_LOG>");
+    addRule("PIT_LOG'", "op_arit_pow", "<LOOPS_SYMBOLS> <PIT_LOG>");
+    addRule("PIT_LOG'", "op_rel_minor", "<LOOPS_SYMBOLS> <PIT_LOG>");
+    addRule("PIT_LOG'", "op_rel_bigger", "<LOOPS_SYMBOLS> <PIT_LOG>");
+    addRule("PIT_LOG'", "op_rel_minor_equal", "<LOOPS_SYMBOLS> <PIT_LOG>");
+    addRule("PIT_LOG'", "op_rel_bigger_equal", "<LOOPS_SYMBOLS> <PIT_LOG>");
+    addRule("PIT_LOG'", "op_rel_double_equal", "<LOOPS_SYMBOLS> <PIT_LOG>");
+    addRule("PIT_LOG'", "op_rel_not_equal", "<LOOPS_SYMBOLS> <PIT_LOG>");
+    addRule("PIT_LOG'", "op_log_and", "<LOOPS_SYMBOLS> <PIT_LOG>");
+    addRule("PIT_LOG'", "op_log_or", "<LOOPS_SYMBOLS> <PIT_LOG>");
+    addRule("PIT_LOG'", "symbol_parameter_end", "ε");
+
+    addRule("PIT_EXIT", "pitExit", "pitExit symbol_op_init <CODE_BLOCK> symbol_op_end");
+    addRule("PIT_EXIT", "symbol_op_end", "ε");
     
-
-
-
-
 
     // Exibindo a gramática
     cout << "Gramática:" << endl;
