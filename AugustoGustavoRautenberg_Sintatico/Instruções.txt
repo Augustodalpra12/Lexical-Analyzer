@@ -1,0 +1,6 @@
+1 - Entre na pasta "./lex", compile e execute com os seguinte códigos:
+	1.1 - g++ -o main main.cpp regex_definitions.h regex_functions.h
+	1.2 - ./main
+2 - Vá para a pasta "./sintatic", compile e execute:
+	2.1 - g++ main.cpp -o main
+	2.2 - ./main

@@ -7,11 +7,11 @@
 #include <vector>
 #include <queue>
 #include <stack>
-#include "grammar.cpp"
+#include "grammar_old.cpp"
 using namespace std;
 
 // g++ main -o main.cpp
-
+regex rule("\\{.*\\d+.*\\}");
 // Função para remover '<' e '>' de uma string
 string removeSymbols(const string& str) {
     string result;
@@ -97,6 +97,7 @@ int main() {
     stack<string> pilha;
     pilha.push("$");
     pilha.push("S");
+    stack<string> pilhaSemantico;
     // unordered_map<string, vector<string>> grammar = getGrammar();
     unordered_map <string, unordered_map<string, string>> table = getTable();
     bool error = false;
@@ -117,6 +118,10 @@ int main() {
                 // printStackWithoutLosingElements(pilha);
                 pilha.pop();
                 // printStackWithoutLosingElements(pilha);
+                cout << "Não terminal: " << it->first << endl;
+                cout << "Terminal: " << it2->first << endl;
+                cout << "Regra: " << it2->second << endl << endl;
+               
 
                 // antes de realizar o pilha.push abaixo
                 // inverta a ordem do it2 -> second e retire todos oos < e >, tem que fazer e retirar <>
@@ -125,13 +130,20 @@ int main() {
 
                 if(!(invertedTokens[0] == "ε") && !(invertedTokens[0] == "sinc")){
                     for (const auto& token : invertedTokens) {
-                        pilha.push(token);
+                            pilha.push(token);
+
+                        // if(!regex_match(token, rule)){ 
+                        //     pilha.push(token);
+                        // }
+                        // else {
+                        //     pilhaSemantico.push(token)
+                        // }
                     }
                 } if (invertedTokens[0] == "sinc"){
                     cout << "SINC: Erro de Sincronização" << endl;
                     // cout <<"TESTE: " << it->first << " " << it2->first << endl;
                     pilha.pop();
-                }
+                } 
                 
             } else {
                 // aqui printar os firsts
