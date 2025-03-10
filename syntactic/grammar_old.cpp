@@ -85,7 +85,7 @@ unordered_map <string, unordered_map<string, string>> getTable() {
                 {"op_log_e", "sinc"},
                 {"op_log_or", "sinc"},
                 {"op_arit_sum", "sinc"},
-                {"op_arit_sub", "sinc"}}},
+                {"op_arit_sub", "sinc"}}}, 
 
         {"POW'", {{"op_arit_pow", "op_arit_pow <VAR> <POW'>"}, 
                         {"end_line", "ε"},
@@ -97,7 +97,7 @@ unordered_map <string, unordered_map<string, string>> getTable() {
                         {"op_log_or", "ε"}}},
 
         {"VAR", {{"symbol_parameter_init", "symbol_parameter_init <EXPRESSION> symbol_parameter_end"},
-                 {"id", "id"},	
+                 {"id", "id {A.value = id.value} {POW.type = id.type}"},	
                  {"double", "double"},
                  {"integer", "integer"},
                  {"bool_false", "<VAR> <POW>"},

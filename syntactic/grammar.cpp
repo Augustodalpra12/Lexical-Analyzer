@@ -124,7 +124,7 @@ int main() {
 
 
     addRule("VAR", "symbol_parameter_init", "symbol_parameter_init <EXPRESSION> symbol_parameter_end"); // pronto
-    addRule("VAR", "id", "id");
+    addRule("VAR", "id", "id ");
     addRule("VAR", "double", "double");
     addRule("VAR", "integer", "integer");
     addRule("VAR", "bool_false", "<VAR> <POW>");

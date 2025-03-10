@@ -1,9 +1,13 @@
 int race() {
+    int a = 0 
+    int b = 0
+    a = a + b 
+}
 
-
-    int exemplo = 0.
-    double c = 12,2.
-
+    int exemplo = 0. {id.value = integer ou 0, id.type = typeInt ou int} TYPE ID inserir(exemplo, 0)
+    int e = 1.
+    //double c = 12,2.
+    a = exemplo + e. {id[i].value = id[i-1].value + id[i-2].value}
     
 
     laps(int i = 0; i<50; i = overtake) {
