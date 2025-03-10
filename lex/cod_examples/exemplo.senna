@@ -1,6 +1,11 @@
 int race() {
 
-    int a = 1.
-    int b = 2.
-    int c = a + b.
+    laps(i = 0; i<50; i = overtake) {
+        prt(exemplo).
+    }
+    int example;
+    laps(int i = 0; i<50; i = overtake) {
+        exemplo = i.
+        prt(exemplo).
+    }
 }

@@ -1,0 +1,27 @@
+int race() {
+
+    int a = 1.
+    int b = 2.
+    int c = a + b.
+    bool or_op = x || y.
+
+    circuit(c < 0) {
+        int teste = 1.
+    }
+
+    circuit(op_op == true) {
+        int teste = 1.
+    }
+    circuit(op_op) {
+        int teste = 1.
+    }
+
+    circuit(op_op == false) {
+        int teste = 1.
+    }
+
+    circuit(a - b != 0) {
+        int teste = 1.
+    }
+    
+}
