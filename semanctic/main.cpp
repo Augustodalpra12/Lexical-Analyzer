@@ -342,7 +342,7 @@ void semanticAnalysis(queue<vector<string>> tokens) {
             scopeManager.popScope();
             continue;
         }
-        
+
         // Gerenciamento de escopo: abrindo e fechando blocos.
         if (tokenType == "pitEntry" || tokenType == "pitExit" ||
             tokenType == "circuit") {
@@ -390,6 +390,8 @@ void semanticAnalysis(queue<vector<string>> tokens) {
                 tokens.pop(); // remove ")"
             continue;
         }
+
+
         // Declaração de variável.
         if (tokenType == "typeInt" || tokenType == "typeDouble" ||
             tokenType == "typeBoolean" || tokenType == "typeStr") {
@@ -454,8 +456,45 @@ void semanticAnalysis(queue<vector<string>> tokens) {
             }
             continue;
         }
-        // Outros tokens...
+        if (tokenType == "reserved_scn") {
+            // Remove o token de abertura de parênteses, se houver.
+            if (!tokens.empty() && tokens.front()[0] == "symbol_parameter_init")
+                tokens.pop(); // remove "("
+            
+            // Verifica se há um parâmetro.
+            if (tokens.empty()) {
+                cerr << "Erro: Expressao esperada em scn." << endl;
+                errorFound = true;
+                continue;
+            }
+            
+            // Espera que o parâmetro seja um identificador.
+            vector<string> paramToken = tokens.front();
+            tokens.pop();
+            if (paramToken[0] != "id") {
+                cerr << "Erro na linha " << paramToken[2] << ": scn espera um identificador, mas obteve '" 
+                     << paramToken[1] << "'." << endl;
+                errorFound = true;
+            } else {
+                // Verifica se a variável já foi declarada.
+                string varType = scopeManager.lookupVariable(paramToken[1]);
+                if (varType == "") {
+                    cerr << "Erro na linha " << paramToken[2] << ": Variavel '" << paramToken[1] 
+                         << "' nao declarada para scn." << endl;
+                    errorFound = true;
+                }
+            }
+            
+            // Remove o token de fechamento ")" se existir.
+            if (!tokens.empty() && tokens.front()[0] == "symbol_parameter_end")
+                tokens.pop(); // remove ")"
+            // Remove o token de final de linha (".") se existir.
+            if (!tokens.empty() && tokens.front()[0] == "end_line")
+                tokens.pop();
+            continue;
+        }
     }
+    
 
     if (!errorFound)
         cout << "Analise semantica concluida sem erros." << endl;

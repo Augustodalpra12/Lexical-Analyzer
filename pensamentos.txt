@@ -1,0 +1,6 @@
+Verificar laps, circuits e pitEntry exit.
+Verificar !x. Not, expressoes que comecem com um operador.
+Printar o print, pra ver se ta certo.
+SCAN n foi tratado.
+
+nao pode de while(1) somente while(true) ou while(expression)

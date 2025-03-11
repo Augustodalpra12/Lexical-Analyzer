@@ -12,14 +12,14 @@ int race() {
         prt("Velocidade segura.").
     }
 
-    pitEntry (op_op) {
+    pitEntry (or_op) {
         int teste = 1.
     }
-     pitEntry (op_op == true) {
+     pitEntry (or_op == true) {
         int teste = 1.
     }
 
-    pitEntry (op_op == false) {
+    pitEntry (or_op == false) {
         int teste = 1.
     }    
 

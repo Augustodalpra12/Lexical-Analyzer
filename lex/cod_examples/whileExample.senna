@@ -4,24 +4,26 @@ int race() {
     int b = 2.
     int c = a + b.
     bool or_op = x || y.
-
+    int c = a + b.
     circuit(c < 0) {
         int teste = 1.
     }
 
-    circuit(op_op == true) {
+    circuit(or_op == true) {
         int teste = 1.
     }
-    circuit(op_op) {
+    circuit(or_op) {
         int teste = 1.
     }
 
-    circuit(op_op == false) {
+    circuit(or_op == false) {
         int teste = 1.
     }
 
     circuit(a - b != 0) {
         int teste = 1.
     }
+    scn(a).
+    scn(x).
     
 }
