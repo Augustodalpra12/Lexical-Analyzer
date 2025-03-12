@@ -27,7 +27,7 @@ void displayGrammar() {
     }
 }
 
-int main() {
+int addRules() {
     // Adicionando regras ao hashmap
     addRule("S", "typeInt", "<BEGIN>"); // pronto
 
@@ -443,8 +443,8 @@ int main() {
     
 
     // Exibindo a gramática
-    cout << "Gramática:" << endl;
-    displayGrammar();
+    // cout << "Gramática:" << endl;
+    // displayGrammar();
 
     return 0;
 }

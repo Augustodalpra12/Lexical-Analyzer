@@ -1,13 +1,9 @@
 int race() {
-    int a = 0 
-    int b = 0
-    a = a + b 
-}
 
-    int exemplo = 0. {id.value = integer ou 0, id.type = typeInt ou int} TYPE ID inserir(exemplo, 0)
+    int exemplo = 0.
     int e = 1.
     //double c = 12,2.
-    a = exemplo + e. {id[i].value = id[i-1].value + id[i-2].value}
+    a = exemplo + e.
     
 
     laps(int i = 0; i<50; i = overtake) {
@@ -17,7 +13,7 @@ int race() {
     
     @Exemplo de condicional if-else@
     int velocidade = 120,0.
-    pitEntry (velocidade > 100) {
+    pitEntry (velocidade > 100+200) {
         prt("Velocidade alta, reduza éã!").
     } pitExit {
         prt("Velocidade segura.").
@@ -33,7 +29,7 @@ int race() {
     int divisao = a / b.
     str string1 = "opa".
 
-    prt+("Soma: " + soma).
+    prt("Soma: " + soma).
     prt("Subtracao: " + subtracao).
     prt("Multiplicacao: " + multiplicacao).
     prt("Divisao: " + divisao).
