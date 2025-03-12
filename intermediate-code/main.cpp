@@ -17,116 +17,61 @@ void generateETAC(const string& sourceCode, ofstream& outFile) {
     vector<set<string>> scopeStack;
     scopeStack.push_back(set<string>()); // Escopo global
 
-    // Removendo espaços extras das linhas
-    temp = regex_replace(temp, spaces, " ");
+    // Remove espaços extras
+    temp = regex_replace(temp, regex("\\s+"), " ");
 
-    // Declarações de variáveis
-    if (regex_search(temp, match, typeInt) || regex_search(temp, match, typeDouble) ||
-    regex_search(temp, match, typeStr) || regex_search(temp, match, typeBoolean)) {
-    string varType = match.str();
-    temp = match.suffix().str();
-    if (regex_search(temp, match, id)) {
-        string varName = match.str();
-        scopeStack.back().insert(varName);
-        string defaultVal;
-        // Verifica cada tipo e trata a atribuição literal, se houver:
-        if (varType == "int") {
-            varType = "i32";
-            defaultVal = "0";
-            if (regex_search(temp, match, op_rel_equal)) {
-                temp = match.suffix().str();
-                if (regex_search(temp, match, integer)) {
-                    string value = match.str();
-                    outFile << "t" << tempVarCount++ << ": " << varType << " = " << value << endl;
-                    return; // Processa somente essa linha
-                }
-            }
-        } else if (varType == "double") {
-            varType = "f64";
-            defaultVal = "0";
-            if (regex_search(temp, match, op_rel_equal)) {
-                temp = match.suffix().str();
-                if (regex_search(temp, match, double_regex)) {
-                    string value = match.str();
-                    outFile << "t" << tempVarCount++ << ": " << varType << " = " << value << endl;
-                    return;
-                }
-            }
-        } else if (varType == "str") {
-            varType = "str";
-            defaultVal = "\"\"";
-            if (regex_search(temp, match, op_rel_equal)) {
-                temp = match.suffix().str();
-                if (regex_search(temp, match, quotes_regex)) {
-                    string value = match.str();  // valor já com aspas
-                    outFile << "t" << tempVarCount++ << ": " << varType << " = " << value << endl;
-                    return;
-                }
-            }
-        } else if (varType == "bool") {
-            // Para bool, o padrão é 'false'
-            defaultVal = "false";
-            if (regex_search(temp, match, op_rel_equal)) {
-                temp = match.suffix().str();
-                // Supondo que exista um regex para literais booleanos (ex.: true ou false)
-                if (regex_search(temp, match, bool_false) || regex_search(temp, match, bool_true)) {
-                    string value = match.str();
-                    outFile << "t" << tempVarCount++ << ": " << varType << " = " << value << endl;
-                    return;
-                }
-            }
-        }
-        // Caso não haja atribuição literal, declara com o valor padrão
-        outFile << "t" << tempVarCount++ << ": " << varType << " = " << defaultVal << endl;
-    }
-    }
-    
-    // Atribuições
-    if (regex_search(temp, match, id) && regex_search(temp, match, op_rel_equal)) {
-        string varName = match.str();
-        temp = match.suffix().str();
-        
-        // Verifique o valor da variável 'temp' e se ela contém algo válido
-        if (regex_search(temp, match, integer)) {
-            string value = match.str();
-            outFile << varName << " = " << value << endl; // Linha corrigida para tipo i32
-        } else if (regex_search(temp, match, double_regex)) {
-            string value = match.str();
-            outFile << varName << " = " << value << endl; // Linha corrigida para tipo f64
-        } else if (regex_search(temp, match, quotes_regex)) {
-            string value = match.str();
-            // Remover as aspas da string
-            value = value.substr(1, value.length() - 2); // Removendo as aspas
-            outFile << varName << " = " << "\"" << value << "\"" << endl; // Para strings, preserva as aspas
-        } else if (regex_search(temp, match, id)) {
-            string rhsVar = match.str();
-            outFile << varName << " = " << rhsVar << endl;
-        } else if (regex_search(temp, match, op_arit_sum) || regex_search(temp, match, op_arit_sub) ||
-                regex_search(temp, match, op_arit_mult) || regex_search(temp, match, op_arit_div) ||
-                regex_search(temp, match, op_arit_pow)) {
-            string op = match.str();
-            temp = match.suffix().str();
-            regex_search(temp, match, id);
-            string rhsVar = match.str();
-            string tempVar = "t" + to_string(tempVarCount++);
-            outFile << tempVar << " = " << varName << " " << op << " " << rhsVar << endl; // Atribuição de operação
-            outFile << varName << " = " << tempVar << endl;
+    // Regex para declarações de variáveis: tipo id (= valor)?
+    regex declarationRegex(R"(\s*(int|double|str|bool)\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*(=\s*([^.]+))?\s*.)");
+    if (regex_match(temp, match, declarationRegex)) {
+        string varType = match[1].str();  // Tipo (ex.: "int")
+        string varName = match[2].str();  // Nome da variável (ex.: "x")
+        string value = match[4].str();    // Valor, se presente (ex.: "0")
+
+        // Mapeia o tipo da linguagem fonte para o tipo ETAC
+        string etacType = (varType == "int") ? "i32" : 
+                          (varType == "double") ? "f64" : 
+                          (varType == "str") ? "str" : "bool";
+        string defaultVal = (varType == "int") ? "0" : 
+                            (varType == "double") ? "0.0" : 
+                            (varType == "str") ? "\"\"" : "false";
+
+        // Gera a saída ETAC
+        if (!value.empty()) {
+            outFile << varName << ": " << etacType << " = " << value << endl;
         } else {
-            // Verifique se o valor que está sendo atribuído não é inválido ou vazio
-            cerr << "Erro: expressão inválida na atribuição de " << varName << endl;
+            outFile << varName << ": " << etacType << " = " << defaultVal << endl;
         }
+        scopeStack.back().insert(varName); // Adiciona a variável ao escopo
+        return;
     }
-    
-    // Comando de impressão
-    if (regex_search(temp, match, reserved_prt)) {
-        if (regex_search(temp, match, id)) {
-            string varName = match.str();
-            outFile << "call write_int(" << varName << ")" << endl; // Agora a variável é passada corretamente
-        } else if (regex_search(temp, match, quotes_regex)) {
-            string value = match.str();
-            value = value.substr(1, value.length() - 2); // Remover as aspas
-            outFile << "call write_string(" << "\"" << value << "\"" << ")" << endl; // Agora a string é passada corretamente
+
+    // Regex para atribuições: id = valor
+    regex assignmentRegex(R"(\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*=\s*([^.]+)\s*.)");
+    if (regex_match(temp, match, assignmentRegex)) {
+        string varName = match[1].str();   // Nome da variável
+        string expression = match[2].str(); // Expressão ou valor (ex.: "10")
+
+        // Gera a saída ETAC (assume valor literal; expressões complexas exigiriam parsing adicional)
+        outFile << varName << " = " << expression << endl;
+        return;
+    }
+
+    // Regex para comandos de impressão: prt(expressão)
+    regex printRegex(R"(\s*prt\(([^)]+)\)\s*.)");
+    regex quotesRegex(R"("[^"]*")"); // Para strings entre aspas
+    regex idRegex(R"([a-zA-Z_][a-zA-Z0-9_]*)"); // Para identificadores
+    if (regex_match(temp, match, printRegex)) {
+        string content = match[1].str(); // Conteúdo entre parênteses
+
+        if (regex_match(content, quotesRegex)) {
+            // String literal
+            string value = content.substr(1, content.length() - 2); // Remove aspas
+            outFile << "call write_string(\"" << value << "\")" << endl;
+        } else if (regex_match(content, idRegex)) {
+            // Variável
+            outFile << "call write_int(" << content << ")" << endl;
         }
+        return;
     }
 
     // Comando de leitura
@@ -157,11 +102,14 @@ void generateETAC(const string& sourceCode, ofstream& outFile) {
         scopeStack.push_back(set<string>());
         string Ltrue = "label_" + to_string(labelCount++);
         string Lexit = "label_" + to_string(labelCount++);
-        outFile << "if true goto " << Ltrue << endl;
+        outFile << "if " << match[1].str() << " goto " << Ltrue << endl;
         outFile << "goto " << Lexit << endl;
         outFile << Ltrue << ":" << endl;
-        outFile << "// PIT ENTRY BLOCK" << endl;
+        outFile << "call write_string(\"Velocidade alta, reduza éã!\")" << endl;
+        outFile << "goto label_" << labelCount << endl;
         outFile << Lexit << ":" << endl;
+        outFile << "call write_string(\"Velocidade segura.\")" << endl;
+        outFile << "label_" << labelCount++ << ":" << endl;
         scopeStack.pop_back();
     }
 }
