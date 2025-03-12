@@ -1,9 +1,9 @@
 int race() {
 
+
     int exemplo = 0.
-    int e = 1.
-    //double c = 12,2.
-    a = exemplo + e.
+    int c = 12.
+
     
 
     laps(int i = 0; i<50; i = overtake) {
@@ -12,7 +12,7 @@ int race() {
     }
     
     @Exemplo de condicional if-else@
-    int velocidade = 120,0.
+    int velocidade = 120.
     pitEntry (velocidade > 100+200) {
         prt("Velocidade alta, reduza éã!").
     } pitExit {

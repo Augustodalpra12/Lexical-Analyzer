@@ -1,22 +1,36 @@
-e: i32 = 1
-a = exemplo + e
-call write_int(exemplo)
-b: i32 = 5
-soma: i32 = a + b
-subtracao: i32 = a - b
-multiplicacao: i32 = a * b
-divisao: i32 = a / b
-string1: str = "opa"
-call write_string("Soma: " + som")
-call write_string("Subtracao: " + subtraca")
-call write_string("Multiplicacao: " + multiplicaca")
-call write_string("Divisao: " + divisa")
-x: bool = true
-y: bool = false
-and_op: bool = x && y
-or_op: bool = x || y
-not_op: bool = !x
-call write_string("AND: " + and_o")
-call write_string("OR: " + or_o")
-call write_string("NOT: " + not_o")
-call write_string("NOT: " + not_o")
+t0: i32 = 0
+t1: i32 = 12
+t2: u8 = 0u8
+loop_0:
+  if t2 >= 50u8 goto done_1
+  t0 = t2
+  call write_string(t0)
+  t2: u8 = t2 + 1u8
+  goto loop_0
+done_1:
+t3: bool = velocidade > 100+200
+if t3 goto label_2
+goto label_3
+label_2:
+call write_string("Velocidade alta, reduza éã!")
+label_3:
+t4: i32 = 10
+t5: i32 = 5
+t6: i32 = t4 + t5
+t7: i32 = t4 - t5
+t8: i32 = t4 * t5
+t9: i32 = t4 / t5
+t10: str = "opa"
+call write_string("Soma: " + t6)
+call write_string("Subtracao: " + t7)
+call write_string("Multiplicacao: " + t8)
+call write_string("Divisao: " + t9)
+t11: bool = true
+t12: bool = false
+t13: bool = t11 && t12
+t14: bool = t11 || t12
+t15: bool = !x
+call write_string("AND: " + t13)
+call write_string("OR: " + t14)
+call write_string("NOT: " + t15)
+call write_string("NOT: " + t15)
