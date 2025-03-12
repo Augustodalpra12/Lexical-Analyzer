@@ -1,34 +1,24 @@
-exemplo: i32 = 0
-c: f64 = 12,2
-t0: u8 = 0u8
-loop:
-  if t0 >= 50u8 goto label_1
-  t0: u8 = t0 + 1u8
-  goto loop
-label_1:
-exemplo = i
-call write_int(exemplo)
-velocidade: i32 = 120,0
-if  goto label_2
-goto label_3
-label_2:
-call write_string("Velocidade alta, reduza éã!")
-goto label_4
-label_3:
-call write_string("Velocidade segura.")
-label_4:
-call write_string("Velocidade alta, reduza éã!")
-call write_string("Velocidade segura.")
-a: i32 = 10
-b: i32 = 5
 c: i32 = 12
-soma: i32 = a + b + c
+call write_int(exemplo)
+b: i32 = 5
+soma: i32
+t0: i32 = a + b
+t1: i32 = t0 + c
+soma = t1
 subtracao: i32 = a - b
 multiplicacao: i32 = a * b
 divisao: i32 = a / b
 string1: str = "opa"
+call write_string("Soma: " + som")
+call write_string("Subtracao: " + subtraca")
+call write_string("Multiplicacao: " + multiplicaca")
+call write_string("Divisao: " + divisa")
 x: bool = true
 y: bool = false
 and_op: bool = x && y
 or_op: bool = x || y
 not_op: bool = !x
+call write_string("AND: " + and_o")
+call write_string("OR: " + or_o")
+call write_string("NOT: " + not_o")
+call write_string("NOT: " + not_o")
