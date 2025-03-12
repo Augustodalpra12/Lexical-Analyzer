@@ -1,12 +1,16 @@
 c: i32 = 12
+as: i32 = 0
 call write_int(exemplo)
 b: i32 = 5
 soma: i32
 t0: i32 = a + b
 t1: i32 = t0 + c
 soma = t1
+subtracao: i32
 subtracao: i32 = a - b
+multiplicacao: i32
 multiplicacao: i32 = a * b
+divisao: i32
 divisao: i32 = a / b
 string1: str = "opa"
 call write_string("Soma: " + som")
@@ -16,7 +20,9 @@ call write_string("Divisao: " + divisa")
 x: bool = true
 y: bool = false
 and_op: bool = x && y
-or_op: bool = x || y
+t2: bool = x || y
+t3: bool = t2 && and_op
+or_op = t3
 not_op: bool = !x
 call write_string("AND: " + and_o")
 call write_string("OR: " + or_o")

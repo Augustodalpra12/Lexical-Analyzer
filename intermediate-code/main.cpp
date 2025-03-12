@@ -11,16 +11,25 @@ using namespace std;
 int tempVarCount = 0; // Contador de variáveis temporárias
 int labelCount = 0;   // Contador de rótulos
 
-// Função para lidar com expressões complexas
+// Função para lidar com expressões complexas (aritméticas ou booleanas)
 void handleComplexExpression(const string& varName, const string& expression, const string& varType, ofstream& outFile) {
     istringstream iss(expression);
     string token;
     vector<string> operands;
-    vector<char> operators;
+    vector<string> operators;
     
     while (iss >> token) {
-        if (token == "+" || token == "-" || token == "*" || token == "/") {
-            operators.push_back(token[0]);
+        if (token == "+" || token == "-" || token == "*" || token == "/" || 
+            token == "&&" || token == "||" || token == "==" || token == "!=" || 
+            token == "<" || token == ">" || token == "<=" || token == ">=") {
+            operators.push_back(token);
+        } else if (token == "!") {
+            // Trata negação unária
+            string operand;
+            iss >> operand;
+            string tempVar = "t" + to_string(tempVarCount++);
+            outFile << tempVar << ": " << varType << " = !" << operand << endl;
+            operands.push_back(tempVar);
         } else {
             operands.push_back(token);
         }
@@ -67,24 +76,11 @@ void generateETAC(const string& sourceCode, ofstream& outFile, vector<map<string
                            (varType == "str") ? "\"\"" : "false";
 
         if (!value.empty()) {
-            if (value.find_first_of("+-*/") != string::npos) {
-                vector<string> operands;
-                vector<char> operators;
-                istringstream iss(value);
-                string token;
-                while (iss >> token) {
-                    if (token == "+" || token == "-" || token == "*" || token == "/") {
-                        operators.push_back(token[0]);
-                    } else {
-                        operands.push_back(token);
-                    }
-                }
-                if (operands.size() > 2) {
+            if (value.find_first_of("+-*/&&||==!=<>") != string::npos || value.find("!") != string::npos) {
+                if (etacType != "bool" || value.find_first_of("+-*/") != string::npos) {
                     outFile << varName << ": " << etacType << endl;
-                    handleComplexExpression(varName, value, etacType, outFile);
-                } else {
-                    outFile << varName << ": " << etacType << " = " << value << endl;
                 }
+                handleComplexExpression(varName, value, etacType, outFile);
             } else {
                 outFile << varName << ": " << etacType << " = " << value << endl;
             }
@@ -109,23 +105,8 @@ void generateETAC(const string& sourceCode, ofstream& outFile, vector<map<string
             }
         }
         
-        if (expression.find_first_of("+-*/") != string::npos) {
-            vector<string> operands;
-            vector<char> operators;
-            istringstream iss(expression);
-            string token;
-            while (iss >> token) {
-                if (token == "+" || token == "-" || token == "*" || token == "/") {
-                    operators.push_back(token[0]);
-                } else {
-                    operands.push_back(token);
-                }
-            }
-            if (operands.size() > 2) {
-                handleComplexExpression(varName, expression, varType, outFile);
-            } else {
-                outFile << varName << " = " << expression << endl;
-            }
+        if (expression.find_first_of("+-*/&&||==!=<>") != string::npos || expression.find("!") != string::npos) {
+            handleComplexExpression(varName, expression, varType, outFile);
         } else {
             outFile << varName << " = " << expression << endl;
         }
@@ -158,17 +139,12 @@ void generateETAC(const string& sourceCode, ofstream& outFile, vector<map<string
         string Lstart = "loop_" + to_string(labelCount++);
         string Lexit = "done_" + to_string(labelCount++);
 
-        // Processa inicialização
         generateETAC(init + ".", outFile, scopeStack);
-        
         outFile << Lstart << ":" << endl;
-        
-        // Avalia a condição como uma expressão booleana
         string tempCondVar = "t" + to_string(tempVarCount++);
         outFile << "  " << tempCondVar << ": bool = " << condition << endl;
         outFile << "  if not " << tempCondVar << " goto " << Lexit << endl;
         
-        // Processa corpo do loop
         istringstream bodyStream(body);
         string line;
         while (getline(bodyStream, line, '.')) {
@@ -178,7 +154,6 @@ void generateETAC(const string& sourceCode, ofstream& outFile, vector<map<string
             }
         }
         
-        // Processa incremento
         outFile << "  ";
         generateETAC(increment + ".", outFile, scopeStack);
         outFile << "  goto " << Lstart << endl;
@@ -206,7 +181,6 @@ void generateETAC(const string& sourceCode, ofstream& outFile, vector<map<string
         outFile << tempCondVar << ": bool = " << condition << endl;
         outFile << "if " << tempCondVar << " goto " << Ltrue << endl;
         
-        // Processa corpo do else (pitExit)
         istringstream falseStream(falseBody);
         string falseLine;
         while (getline(falseStream, falseLine, '.')) {
@@ -218,7 +192,6 @@ void generateETAC(const string& sourceCode, ofstream& outFile, vector<map<string
         outFile << "goto " << Lexit << endl;
         outFile << Ltrue << ":" << endl;
         
-        // Processa corpo do if (pitEntry)
         istringstream trueStream(trueBody);
         string trueLine;
         while (getline(trueStream, trueLine, '.')) {
@@ -245,7 +218,6 @@ void generateETAC(const string& sourceCode, ofstream& outFile, vector<map<string
         outFile << "goto " << Lexit << endl;
         outFile << Ltrue << ":" << endl;
         
-        // Processa corpo do if (pitEntry)
         istringstream trueStream(trueBody);
         string trueLine;
         while (getline(trueStream, trueLine, '.')) {
@@ -268,24 +240,23 @@ int main() {
         return 1;
     }
 
-    // Lê o arquivo inteiro como uma string
     stringstream buffer;
     buffer << inFile.rdbuf();
     string sourceCode = buffer.str();
 
-    // Substitui quebras de linha por espaços para processar blocos
-    sourceCode = regex_replace(sourceCode, regex("\\n+"), " ");
-
     vector<map<string, string>> scopeStack;
     scopeStack.push_back(map<string, string>());
 
-    // Divide o código em instruções baseadas em ponto final (.)
-    istringstream codeStream(sourceCode);
-    string instruction;
-    while (getline(codeStream, instruction, '.')) {
-        if (!instruction.empty()) {
-            instruction += ".";
-            generateETAC(instruction, outFile, scopeStack);
+    // Regex para capturar blocos completos
+    regex blockRegex(R"((laps\s*\([^)]+\)\s*\{[^}]+\}\s*[.;]?)|(pitEntry\s*\([^)]+\)\s*\{[^}]+\}\s*pitExit\s*\{[^}]+\}\s*[.;]?)|(pitEntry\s*\([^)]+\)\s*\{[^}]+\}\s*[.;]?)|([^.]+?\.))");
+    sregex_iterator it(sourceCode.begin(), sourceCode.end(), blockRegex);
+    sregex_iterator end;
+
+    for (; it != end; ++it) {
+        string block = it->str();
+        if (!block.empty()) {
+            cout << "Processando bloco: " << block << endl;
+            generateETAC(block, outFile, scopeStack);
         }
     }
 
