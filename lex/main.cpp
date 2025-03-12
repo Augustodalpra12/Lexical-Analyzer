@@ -12,7 +12,7 @@ map<int, tuple<string, string, int>> lex;
 
 int main()
 {
-    ifstream file("./cod_examples/exemplo.senna");
+    ifstream file("./cod_examples/exemploSprint.senna");
 
     if (!file)
     {

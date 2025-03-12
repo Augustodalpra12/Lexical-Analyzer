@@ -1,0 +1,31 @@
+int race() {
+
+    int a = 1.
+    int b = 2.
+    int c = a + b.
+    bool or_op = x || y.
+
+
+    pitEntry (c < 0) {
+        prt("Velocidade alta, reduza éã!").
+    } pitExit {
+        prt("Velocidade segura.").
+    }
+
+    pitEntry (or_op) {
+        int teste = 1.
+    }
+     pitEntry (or_op == true) {
+        int teste = 1.
+    }
+
+    pitEntry (or_op == false) {
+        int teste = 1.
+    }    
+
+
+    pitEntry(a - b != 0) {
+        int teste = 1.
+    }
+    
+}

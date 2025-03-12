@@ -1,9 +1,12 @@
 int race() {
 
-    laps(i = 0; i<50; i = overtake) {
-        prt(exemplo).
-    }
-    int example;
+
+    int exemplo = 0.
+    double c = 12,2.
+    int teste = 21,31.
+
+    
+
     laps(int i = 0; i<50; i = overtake) {
         exemplo = i.
         prt(exemplo).

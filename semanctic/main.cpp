@@ -71,144 +71,145 @@ string evaluateExpression(queue<vector<string>> &tokens, const string &boundary,
     const string &declaredType, bool assignment, 
     ScopeManager &scopeManager, bool &errorFlag, 
     bool isCondition = false, bool isPrint = false) {
-string exprType = "";
-bool encounteredRelational = false;
-while (!tokens.empty() && tokens.front()[0] != boundary) {
-vector<string> token = tokens.front();
+        string exprType = "";
+        bool encounteredRelational = false;
+        while (!tokens.empty() && tokens.front()[0] != boundary) {
+            vector<string> token = tokens.front();
 
-// Se o token for o operador de atribuição, ignora-o.
-if (token[0] == "op_rel_equal") {
-tokens.pop();
-continue;
-}
+            // Se o token for o operador de atribuição, ignora-o.
+            if (token[0] == "op_rel_equal") {
+                tokens.pop();
+                continue;
+            }
+            
 
-if(token[0] == "op_rel_not") {
-tokens.pop();
-if(!tokens.empty() && tokens.front()[0] != boundary) {
-vector<string> nextToken = tokens.front();
-tokens.pop();
-string nextType = "";
-if(nextToken[0] == "bool_true" || nextToken[0] == "bool_false")
-nextType = "bool";
-else if(nextToken[0] == "id") {
-nextType = scopeManager.lookupVariable(nextToken[1]);
-if(nextType == "") {
-cerr << "Erro na linha " << nextToken[2] << ": Variavel '" << nextToken[1] 
-     << "' nao declarada." << endl;
-errorFlag = true;
-}
-}
-if(nextType != "bool") {
-cerr << "Erro na linha " << nextToken[2] << ": Operador '!' espera bool, mas obteve '" 
- << nextType << "'." << endl;
-errorFlag = true;
-}
-if(exprType.empty())
-exprType = "bool";
-else if(exprType != "bool" && !isPrint) {
-cerr << "Erro na linha " << nextToken[2] << ": Inconsistencia de tipos com operador '!'." << endl;
-errorFlag = true;
-}
-continue;
-}
-}
-if (isRelationalOperator(token[0])) {
-encounteredRelational = true;
-tokens.pop(); // remove o operador relacional
-break;
-}
-tokens.pop();
-if (isOperator(token[0]))
-continue;
-string currentType = "";
-if (token[0] == "integer")
-currentType = "int";
-else if (token[0] == "double")
-currentType = "double";
-else if (token[0] == "text_between_quotes")
-currentType = "str";
-else if (token[0] == "bool_true" || token[0] == "bool_false")
-currentType = "bool";
-// Tratar os operadores reservados para incremento/decremento como int.
-else if (token[0] == "overtake" || token[0] == "brake")
-currentType = "int";
-else if (token[0] == "id") {
-currentType = scopeManager.lookupVariable(token[1]);
-if (currentType == "") {
-cerr << "Erro na linha " << token[2] << ": Variavel '" 
-<< token[1] << "' nao declarada." << endl;
-errorFlag = true;
-continue;
-}
-}
-if (exprType.empty())
-exprType = currentType;
-else if (!isPrint && exprType != currentType) {
-cerr << "Erro na linha " << token[2] 
-<< ": Inconsistencia de tipos na expressao. Operando anterior era '" 
-<< exprType << "' e o atual eh '" << currentType << "'." << endl;
-errorFlag = true;
-}
-if (assignment && !declaredType.empty() && currentType != declaredType) {
-cerr << "Erro na linha " << token[2] << ": Atribuicao invalida. Tipo '" 
-<< currentType << "' nao pode ser atribuido a uma variavel do tipo '" 
-<< declaredType << "'." << endl;
-errorFlag = true;
-}
-}
-if (!encounteredRelational) {
-if (isCondition && exprType != "bool") {
-cerr << "Erro: Expressao condicional invalida. Esperado bool, mas obteve '" 
-<< exprType << "'." << endl;
-errorFlag = true;
-}
-return exprType;
-}
-string rightType = "";
-while (!tokens.empty() && tokens.front()[0] != boundary) {
-vector<string> token = tokens.front();
-tokens.pop();
-if (token[0] == "op_rel_equal") {
-continue; // ignora operador de atribuição
-}
-if (isOperator(token[0]))
-continue;
-string currentType = "";
-if (token[0] == "integer")
-currentType = "int";
-else if (token[0] == "double")
-currentType = "double";
-else if (token[0] == "text_between_quotes")
-currentType = "str";
-else if (token[0] == "bool_true" || token[0] == "bool_false")
-currentType = "bool";
-else if (token[0] == "overtake" || token[0] == "brake")
-currentType = "int";
-else if (token[0] == "id") {
-currentType = scopeManager.lookupVariable(token[1]);
-if (currentType == "") {
-cerr << "Erro na linha " << token[2] << ": Variavel '" 
-<< token[1] << "' nao declarada." << endl;
-errorFlag = true;
-continue;
-}
-}
-if (rightType.empty())
-rightType = currentType;
-else if (!isPrint && rightType != currentType) {
-cerr << "Erro na linha " << token[2] 
-<< ": Inconsistencia de tipos na expressao condicional. Operando anterior era '" 
-<< rightType << "' e o atual eh '" << currentType << "'." << endl;
-errorFlag = true;
-}
-}
-if (!isPrint && !rightType.empty() && exprType != rightType) {
-cerr << "Erro: Inconsistencia de tipos na expressao condicional. "
-<< "Operando esquerdo possui tipo '" << exprType << "' e o direito '" 
-<< rightType << "'." << endl;
-errorFlag = true;
-}
-return "bool";
+            if(token[0] == "op_rel_not") {
+                tokens.pop();
+                if(!tokens.empty() && tokens.front()[0] != boundary) {
+                    vector<string> nextToken = tokens.front();
+                    tokens.pop();
+                    string nextType = "";
+                    if(nextToken[0] == "bool_true" || nextToken[0] == "bool_false")
+                        nextType = "bool";
+                    else if(nextToken[0] == "id") {
+                        nextType = scopeManager.lookupVariable(nextToken[1]);
+                        if(nextType == "") {
+                            cerr << "Erro na linha " << nextToken[2] << ": Variavel '" << nextToken[1] 
+                                << "' nao declarada." << endl;
+                            errorFlag = true;
+                        }
+                    }
+                    if(nextType != "bool") {
+                        cerr << "Erro na linha " << nextToken[2] << ": Operador '!' espera bool, mas obteve '" 
+                        << nextType << "'." << endl;
+                        errorFlag = true;
+                    }
+                    if(exprType.empty())
+                        exprType = "bool";
+                    else if(exprType != "bool" && !isPrint) {
+                        cerr << "Erro na linha " << nextToken[2] << ": Inconsistencia de tipos com operador '!'." << endl;
+                        errorFlag = true;
+                    }
+                    continue;
+                }
+            }
+            if (isRelationalOperator(token[0])) {
+                encounteredRelational = true;
+                tokens.pop(); // remove o operador relacional
+                break;
+            }
+            tokens.pop();
+            if (isOperator(token[0]))
+                continue;
+            string currentType = "";
+            if (token[0] == "integer")
+                currentType = "int";
+            else if (token[0] == "double")
+                currentType = "double";
+            else if (token[0] == "text_between_quotes")
+                currentType = "str";
+            else if (token[0] == "bool_true" || token[0] == "bool_false")
+                currentType = "bool";
+            // Tratar os operadores reservados para incremento/decremento como int.
+            else if (token[0] == "overtake" || token[0] == "brake")
+                currentType = "int";
+            else if (token[0] == "id") {
+                currentType = scopeManager.lookupVariable(token[1]);
+                if (currentType == "") {
+                    cerr << "Erro na linha " << token[2] << ": Variavel '" 
+                    << token[1] << "' nao declarada." << endl;
+                    errorFlag = true;
+                    continue;
+                }
+            }
+            if (exprType.empty())
+                exprType = currentType;
+            else if (!isPrint && exprType != currentType) {
+                cerr << "Erro na linha " << token[2] 
+                << ": Inconsistencia de tipos na expressao. Operando anterior era '" 
+                << exprType << "' e o atual eh '" << currentType << "'." << endl;
+                errorFlag = true;
+            }
+            if (assignment && !declaredType.empty() && currentType != declaredType) {
+                cerr << "Erro na linha " << token[2] << ": Atribuicao invalida. Tipo '" 
+                << currentType << "' nao pode ser atribuido a uma variavel do tipo '" 
+                << declaredType << "'." << endl;
+                errorFlag = true;
+            }
+        }
+        if (!encounteredRelational) {
+            if (isCondition && exprType != "bool") {
+                cerr << "Erro: Expressao condicional invalida. Esperado bool, mas obteve '" 
+                << exprType << "'." << endl;
+                errorFlag = true;
+            }
+            return exprType;
+        }
+        string rightType = "";
+        while (!tokens.empty() && tokens.front()[0] != boundary) {
+            vector<string> token = tokens.front();
+            tokens.pop();
+            if (token[0] == "op_rel_equal") {
+                continue; // ignora operador de atribuição
+            }
+            if (isOperator(token[0]))
+                continue;
+            string currentType = "";
+            if (token[0] == "integer")
+                currentType = "int";
+            else if (token[0] == "double")
+                currentType = "double";
+            else if (token[0] == "text_between_quotes")
+                currentType = "str";
+            else if (token[0] == "bool_true" || token[0] == "bool_false")
+                currentType = "bool";
+            else if (token[0] == "overtake" || token[0] == "brake")
+                currentType = "int";
+            else if (token[0] == "id") {
+                currentType = scopeManager.lookupVariable(token[1]);
+            if (currentType == "") {
+                cerr << "Erro na linha " << token[2] << ": Variavel '" 
+                << token[1] << "' nao declarada." << endl;
+                errorFlag = true;
+                continue;
+            }
+            }
+            if (rightType.empty())
+                rightType = currentType;
+            else if (!isPrint && rightType != currentType) {
+                cerr << "Erro na linha " << token[2] 
+                << ": Inconsistencia de tipos na expressao condicional. Operando anterior era '" 
+                << rightType << "' e o atual eh '" << currentType << "'." << endl;
+                errorFlag = true;
+            }
+        }
+        if (!isPrint && !rightType.empty() && exprType != rightType) {
+            cerr << "Erro: Inconsistencia de tipos na expressao condicional. "
+            << "Operando esquerdo possui tipo '" << exprType << "' e o direito '" 
+            << rightType << "'." << endl;
+            errorFlag = true;
+        }
+        return "bool";
 }
 
 //-----------------------------------------------------------------
@@ -337,6 +338,10 @@ void semanticAnalysis(queue<vector<string>> tokens) {
         string tokenType = token[0];
         string lexeme = token[1];
         string line = token[2];
+        if (tokenType == "symbol_op_end") {
+            scopeManager.popScope();
+            continue;
+        }
 
         // Gerenciamento de escopo: abrindo e fechando blocos.
         if (tokenType == "pitEntry" || tokenType == "pitExit" ||
@@ -385,6 +390,8 @@ void semanticAnalysis(queue<vector<string>> tokens) {
                 tokens.pop(); // remove ")"
             continue;
         }
+
+
         // Declaração de variável.
         if (tokenType == "typeInt" || tokenType == "typeDouble" ||
             tokenType == "typeBoolean" || tokenType == "typeStr") {
@@ -449,8 +456,45 @@ void semanticAnalysis(queue<vector<string>> tokens) {
             }
             continue;
         }
-        // Outros tokens...
+        if (tokenType == "reserved_scn") {
+            // Remove o token de abertura de parênteses, se houver.
+            if (!tokens.empty() && tokens.front()[0] == "symbol_parameter_init")
+                tokens.pop(); // remove "("
+            
+            // Verifica se há um parâmetro.
+            if (tokens.empty()) {
+                cerr << "Erro: Expressao esperada em scn." << endl;
+                errorFound = true;
+                continue;
+            }
+            
+            // Espera que o parâmetro seja um identificador.
+            vector<string> paramToken = tokens.front();
+            tokens.pop();
+            if (paramToken[0] != "id") {
+                cerr << "Erro na linha " << paramToken[2] << ": scn espera um identificador, mas obteve '" 
+                     << paramToken[1] << "'." << endl;
+                errorFound = true;
+            } else {
+                // Verifica se a variável já foi declarada.
+                string varType = scopeManager.lookupVariable(paramToken[1]);
+                if (varType == "") {
+                    cerr << "Erro na linha " << paramToken[2] << ": Variavel '" << paramToken[1] 
+                         << "' nao declarada para scn." << endl;
+                    errorFound = true;
+                }
+            }
+            
+            // Remove o token de fechamento ")" se existir.
+            if (!tokens.empty() && tokens.front()[0] == "symbol_parameter_end")
+                tokens.pop(); // remove ")"
+            // Remove o token de final de linha (".") se existir.
+            if (!tokens.empty() && tokens.front()[0] == "end_line")
+                tokens.pop();
+            continue;
+        }
     }
+    
 
     if (!errorFound)
         cout << "Analise semantica concluida sem erros." << endl;

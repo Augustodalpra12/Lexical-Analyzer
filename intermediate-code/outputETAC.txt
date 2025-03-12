@@ -1,0 +1,22 @@
+e: i32 = 1
+a = exemplo + e
+call write_int(exemplo)
+b: i32 = 5
+soma: i32 = a + b
+subtracao: i32 = a - b
+multiplicacao: i32 = a * b
+divisao: i32 = a / b
+string1: str = "opa"
+call write_string("Soma: " + som")
+call write_string("Subtracao: " + subtraca")
+call write_string("Multiplicacao: " + multiplicaca")
+call write_string("Divisao: " + divisa")
+x: bool = true
+y: bool = false
+and_op: bool = x && y
+or_op: bool = x || y
+not_op: bool = !x
+call write_string("AND: " + and_o")
+call write_string("OR: " + or_o")
+call write_string("NOT: " + not_o")
+call write_string("NOT: " + not_o")
